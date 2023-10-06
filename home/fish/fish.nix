@@ -55,10 +55,6 @@
       la = "eza -la --color=never --git --icons";
       l = "eza -l --color=never --git --icons";
 
-      # scala
-      scala = "scala-cli";
-      sc = "scala-cli";
-
     };
   };
 }

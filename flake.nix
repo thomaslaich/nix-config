@@ -14,24 +14,9 @@
     let
       machines = [
         {
-          name = "thinkpad-x1";
-          user = "buntec";
-          system = flake-utils.lib.system.x86_64-linux;
-        }
-        {
           name = "macbook-pro-m1";
-          user = "christophbunte";
+          user = "thomaslaich";
           system = flake-utils.lib.system.aarch64-darwin;
-        }
-        {
-          name = "imac-intel";
-          user = "christophbunte";
-          system = flake-utils.lib.system.x86_64-darwin;
-        }
-        {
-          name = "macbook-pro-intel";
-          user = "christophbunte";
-          system = flake-utils.lib.system.x86_64-darwin;
         }
       ];
       isDarwin = machine: (builtins.match ".*darwin" machine.system) != null;

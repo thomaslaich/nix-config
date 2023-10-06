@@ -138,7 +138,6 @@
       nil
       nodePackages.bash-language-server
       nodePackages.typescript-language-server
-      texlab
       vscode-langservers-extracted
     ];
 

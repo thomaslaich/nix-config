@@ -25,31 +25,22 @@
       ];
     python-with-packages = (pkgs.python3.withPackages python-packages);
   in with pkgs; [
-    amber
     any-nix-shell
-    atool
+    amber
     bat
-    cargo
-    coursier
     curl
     eza
     fd
     fzf
     gh
-    ghc
-    go
     httpie
-    jdk
     jq
     killall
     kubernetes-helm
-    lazygit
-    minikube
     ncdu
+    nil
     nixfmt
     nixpkgs-fmt
-    nodePackages.live-server
-    nodejs
     postgresql
     python-with-packages
     restic
@@ -57,24 +48,19 @@
     sbt
     scala-cli
     stack
-    texlive.combined.scheme-full
     tldr
     vifm
     wget
     yarn
     yazi
-    zig
-    zoxide
   ];
 
   programs.git = {
     enable = true;
-    userEmail = "christophbunte@gmail.com";
-    userName = "Christoph Bunte";
+    userEmail = "thomaslaich@gmail.com";
+    userName = "Thomas Laich";
     diff-so-fancy.enable = true;
   };
-
-  programs.java = { enable = true; };
 
   programs.zsh = { enable = true; };
 

@@ -28,17 +28,21 @@
   homebrew = {
     enable = true;
     casks = [
-      "kitty"
+      "discord"
+      "docker"
+      "dropbox"
       "firefox"
       "google-chrome"
-      "brave-browser"
-      "docker"
-      "keepassxc"
+      "kitty"
+      "nordvpn"
+      "postman"
+      "skype"
+      "slack"
       "spotify"
-      "discord"
+      "studio-3t"
       "telegram"
+      "visual-studio-code"
       "whatsapp"
-      "mattermost"
     ];
   };
 
@@ -60,9 +64,9 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 
-  users.users.christophbunte = {
-    name = "christophbunte";
-    home = "/Users/christophbunte";
+  users.users.thomaslaich = {
+    name = "thomaslaich";
+    home = "/Users/thomaslaich";
     # shell = pkgs.fish;
   };
 }
