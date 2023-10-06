@@ -45,7 +45,6 @@
     python-with-packages
     restic
     ripgrep
-    sbt
     scala-cli
     stack
     tldr

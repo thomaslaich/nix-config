@@ -112,17 +112,42 @@
         config = builtins.readFile ./plugins/lualine.lua;
       };
 
+      surround = {
+        plugin = pkgs.vimPlugins.nvim-surround;
+        type = "lua";
+        config = ''
+          require"nvim-surround".setup{}
+        '';
+      };
+
+      lightspeed = {
+        plugin = pkgs.vimPlugins.lightspeed-nvim;
+        type = "lua";
+      };
+
+      comment-nvim = {
+        plugin = pkgs.vimPlugins.comment-nvim;
+        type = "lua";
+        config = ''
+          require"Comment".setup{}
+        '';
+
+      };
+
     in pkgs.lib.lists.flatten [
       cmp
+      comment-nvim
       dressing
       gitsigns
       indent-blank-line
+      lightspeed
       lsp-kind
       lspconfig
       lualine
       metals
       oil
       plenary
+      surround
       telescope
       tokyonight
       treesitter

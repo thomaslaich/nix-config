@@ -19,6 +19,8 @@ lsp_config.tsserver.setup {}
 
 lsp_config.html.setup {}
 
+lsp_config.svelte.setup {}
+
 lsp_config.nil_ls.setup({
   settings = {
     ["nil"] = {
@@ -54,4 +56,3 @@ lsp_config.lua_ls.setup({
     },
   },
 })
-
