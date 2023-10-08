@@ -129,12 +129,22 @@
         plugin = pkgs.vimPlugins.comment-nvim;
         type = "lua";
         config = ''
-          require"Comment".setup{}
+          require"Comment".setup {}
         '';
+      };
 
+      blame = {
+        plugin = pkgs.vimPlugins.git-blame-nvim;
+        type = "lua";
+        config = ''
+          require"gitblame".setup {
+            enabled = false,
+          }
+        '';
       };
 
     in pkgs.lib.lists.flatten [
+      blame
       cmp
       comment-nvim
       dressing

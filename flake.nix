@@ -8,21 +8,25 @@
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
-  outputs = { darwin, nixpkgs, home-manager, flake-utils, ... }@attrs:
+  outputs = { darwin, nixpkgs, home-manager, flake-utils, nix-vscode-extensions
+    , ... }@attrs:
     let
-      machines = [
-        {
-          name = "macbook-pro-m1";
-          user = "thomaslaich";
-          system = flake-utils.lib.system.aarch64-darwin;
-        }
-      ];
+      machines = [{
+        name = "macbook-pro-m1";
+        user = "thomaslaich";
+        system = flake-utils.lib.system.aarch64-darwin;
+      }];
       isDarwin = machine: (builtins.match ".*darwin" machine.system) != null;
       darwinMachines = builtins.filter (machine: isDarwin machine) machines;
       nixosMachines = builtins.filter (machine: !isDarwin machine) machines;
       machinesBySystem = builtins.groupBy (machine: machine.system) machines;
+      overlays = [
+        # Nix VSCode Extensions Overlay
+        nix-vscode-extensions.overlays.default
+      ];
     in rec {
       nixosConfigurations = builtins.listToAttrs (builtins.map (machine: {
         name = machine.name;
@@ -51,6 +55,11 @@
         name = machine.name;
         value = darwin.lib.darwinSystem {
           system = machine.system;
+          pkgs = import nixpkgs {
+            inherit overlays;
+            system = machine.system;
+            config = { allowUnfree = true; };
+          };
           modules = [
             ./system/configuration-darwin.nix
             ./system/configuration-${machine.name}.nix

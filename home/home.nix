@@ -1,6 +1,11 @@
 { pkgs, ... }: {
-  imports =
-    [ ./kitty/kitty.nix ./fish/fish.nix ./tmux/tmux.nix ./neovim/neovim.nix ];
+  imports = [
+    ./kitty/kitty.nix
+    ./fish/fish.nix
+    ./tmux/tmux.nix
+    ./neovim/neovim.nix
+    ./vscode/vscode.nix
+  ];
 
   home.stateVersion = "22.11";
 

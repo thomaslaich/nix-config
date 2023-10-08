@@ -11,10 +11,7 @@
 
   # `home-manager` currently has issues adding them to `~/Applications`
   # Issue: https://github.com/nix-community/home-manager/issues/1341
-  environment.systemPackages = with pkgs;
-    [
-      # kitty
-    ];
+  environment.systemPackages = with pkgs; [ ];
 
   # Fonts
   fonts.fontDir.enable = true;
@@ -25,6 +22,7 @@
       })
     ];
 
+  # some GUI apps need to be installed with homebrew (but not all!)
   homebrew = {
     enable = true;
     casks = [
@@ -35,13 +33,11 @@
       "google-chrome"
       "kitty"
       "nordvpn"
-      "postman"
       "skype"
       "slack"
       "spotify"
       "studio-3t"
       "telegram"
-      "visual-studio-code"
       "whatsapp"
     ];
   };
