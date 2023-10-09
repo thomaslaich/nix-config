@@ -30,8 +30,8 @@
       ];
     python-with-packages = (pkgs.python3.withPackages python-packages);
   in with pkgs; [
-    any-nix-shell
     amber
+    any-nix-shell
     bat
     curl
     eza
@@ -46,6 +46,7 @@
     nil
     nixfmt
     nixpkgs-fmt
+    nodejs
     postgresql
     python-with-packages
     restic

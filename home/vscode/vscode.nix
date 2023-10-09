@@ -3,6 +3,7 @@
     enable = true;
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
+    # I try to make the key bindings as similar as possible to my nvim setup
     keybindings = [
       {
         "args" = "j";
@@ -14,6 +15,17 @@
         "key" = ", f f";
         "command" = "workbench.action.quickOpen";
         "when" = "neovim.mode != insert && editorTextFocus";
+      }
+      {
+        "key" = ", l g";
+        "command" = "workbench.action.findInFiles";
+        "when" = "neovim.mode != insert && editorTextFocus";
+      }
+      {
+        "key" = ", -";
+        "command" = "workbench.view.explorer";
+        "when" =
+          "neovim.mode != insert && editorTextFocus && viewContainer.workbench.view.explorer.enabled";
       }
       {
         "key" = "space a";
@@ -77,8 +89,11 @@
       "update.mode" = "none";
       "settingsSync.keybindingsPerPlatform" = false;
 
-      # extension configurations
+      # neovim extension config
       "extensions.experimental.affinity" = { "asvetliakov.vscode-neovim" = 1; };
+      "vscode-neovim.neovimInitVimPaths.darwin" = "~/.config/nvim/init.lua";
+
+      # svelte extension config
       "svelte.enable-ts-plugin" = true;
     };
     extensions = [
@@ -86,9 +101,10 @@
       pkgs.vscode-marketplace.enkia.tokyo-night
 
       # Misc
-      pkgs.vscode-marketplace.visualstudioexptteam.vscodeintellicode
-      pkgs.vscode-marketplace.redhat.vscode-yaml
+      pkgs.vscode-marketplace.eamodio.gitlens
       pkgs.vscode-marketplace.asvetliakov.vscode-neovim
+      pkgs.vscode-marketplace.github.copilot
+      pkgs.vscode-marketplace.github.copilot-chat
 
       # JS/TS
       pkgs.vscode-marketplace.ms-vscode.vscode-typescript-next
@@ -112,12 +128,19 @@
       pkgs.vscode-marketplace.ms-dotnettools.dotnet-interactive-vscode
       pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
 
-      # Docker
-      pkgs.vscode-marketplace.ms-azuretools.vscode-docker
+      # Lua
+      pkgs.vscode-marketplace.sumneko.lua
 
       # Nix
       pkgs.vscode-marketplace.bbenoist.nix
       pkgs.vscode-marketplace.brettm12345.nixfmt-vscode
+
+      # Docker
+      pkgs.vscode-marketplace.ms-azuretools.vscode-docker
+      pkgs.vscode-marketplace.ms-kubernetes-tools.vscode-kubernetes-tools
+
+      # YAML
+      pkgs.vscode-marketplace.redhat.vscode-yaml
     ];
   };
 }

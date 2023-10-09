@@ -5,8 +5,10 @@
     vimAlias = true;
     defaultEditor = true;
 
+    # note that we use neovim also as an extension in vscode.
+    # therefore, we need to disable the setup of most extensions for vscode specifically.
+    # this is done using the vim.g.vscode variable.
     plugins = let
-
       tokyonight = {
         plugin = pkgs.vimPlugins.tokyonight-nvim;
         type = "lua";
@@ -102,7 +104,9 @@
         plugin = pkgs.vimPlugins.gitsigns-nvim;
         type = "lua";
         config = ''
-          require("gitsigns").setup()
+          if not vim.g.vscode then
+            require"gitsigns".setup {}
+          end
         '';
       };
 
@@ -116,7 +120,7 @@
         plugin = pkgs.vimPlugins.nvim-surround;
         type = "lua";
         config = ''
-          require"nvim-surround".setup{}
+          require"nvim-surround".setup {}
         '';
       };
 
@@ -129,7 +133,9 @@
         plugin = pkgs.vimPlugins.comment-nvim;
         type = "lua";
         config = ''
-          require"Comment".setup {}
+          if not vim.g.vscode then
+            require"Comment".setup {}
+          end
         '';
       };
 
@@ -137,16 +143,25 @@
         plugin = pkgs.vimPlugins.git-blame-nvim;
         type = "lua";
         config = ''
-          require"gitblame".setup {
-            enabled = false,
-          }
+          if not vim.g.vscode then
+            require"gitblame".setup {
+              enabled = false,
+            }
+          end
         '';
+      };
+
+      copilot = {
+        plugin = pkgs.vimPlugins.copilot-lua;
+        type = "lua";
+        config = builtins.readFile ./plugins/copilot.lua;
       };
 
     in pkgs.lib.lists.flatten [
       blame
       cmp
       comment-nvim
+      copilot
       dressing
       gitsigns
       indent-blank-line
