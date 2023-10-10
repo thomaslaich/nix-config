@@ -133,9 +133,7 @@
         plugin = pkgs.vimPlugins.comment-nvim;
         type = "lua";
         config = ''
-          if not vim.g.vscode then
-            require"Comment".setup {}
-          end
+          require"Comment".setup {}
         '';
       };
 

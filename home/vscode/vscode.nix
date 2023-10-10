@@ -73,6 +73,24 @@
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor";
       }
+
+      # (split) window navigation
+      {
+        "key" = "ctrl+h";
+        "command" = "workbench.action.navigateLeft";
+      }
+      {
+        "key" = "ctrl+l";
+        "command" = "workbench.action.navigateRight";
+      }
+      {
+        "key" = "ctrl+k";
+        "command" = "workbench.action.navigateUp";
+      }
+      {
+        "key" = "ctrl+j";
+        "command" = "workbench.action.navigateDown";
+      }
     ];
     userSettings = {
       # editor basics
@@ -95,6 +113,13 @@
 
       # svelte extension config
       "svelte.enable-ts-plugin" = true;
+
+      # JS/TS setup
+      "eslint.format.enable" = true;
+      "eslint.workingDirectories" = [{ "mode" = "auto"; }];
+      "[typescriptreact]" = {
+        "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
+      };
     };
     extensions = [
       # Theme
@@ -109,6 +134,8 @@
       # JS/TS
       pkgs.vscode-marketplace.ms-vscode.vscode-typescript-next
       pkgs.vscode-marketplace.svelte.svelte-vscode
+      # pkgs.vscode-marketplace.esbenp.prettier-vscode
+      pkgs.vscode-marketplace.dbaeumer.vscode-eslint
 
       # Python
       pkgs.vscode-marketplace.ms-python.python
