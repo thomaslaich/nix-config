@@ -42,6 +42,7 @@
     jq
     killall
     kubernetes-helm
+    lua
     ncdu
     nil
     nixfmt

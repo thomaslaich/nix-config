@@ -103,6 +103,7 @@
       "window.zoomLevel" = 1;
 
       # disable updates & synching
+      "extensions.autoUpdate" = false;
       "extensions.autoCheckUpdates" = false;
       "update.mode" = "none";
       "settingsSync.keybindingsPerPlatform" = false;
