@@ -121,7 +121,11 @@
       "[typescriptreact]" = {
         "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
       };
+      "[typescript]" = {
+        "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
+      };
     };
+
     extensions = [
       # Theme
       pkgs.vscode-marketplace.enkia.tokyo-night
