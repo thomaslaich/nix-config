@@ -155,6 +155,12 @@
         config = builtins.readFile ./plugins/copilot.lua;
       };
 
+      neorg = {
+        plugin = pkgs.vimPlugins.neorg;
+        type = "lua";
+        config = builtins.readFile ./plugins/neorg.lua;
+      };
+
     in pkgs.lib.lists.flatten [
       blame
       cmp
@@ -168,6 +174,7 @@
       lspconfig
       lualine
       metals
+      neorg
       oil
       plenary
       surround

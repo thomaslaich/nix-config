@@ -38,6 +38,8 @@ opt.relativenumber = true -- Relative line numbers
 opt.wrap = false          -- Disable line wrap
 opt.swapfile = false
 
+opt.conceallevel = 2      -- Hide * markup for bold and italic (Neorg)
+
 map("n", "<C-j>", "<C-W><C-J>")
 map("n", "<C-k>", "<C-W><C-K>")
 map("n", "<C-l>", "<C-W><C-L>")
