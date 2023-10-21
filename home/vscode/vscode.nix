@@ -106,6 +106,7 @@
       "editor.fontFamily" = "JetBrainsMono Nerd Font";
       "editor.fontLigatures" = true;
       "window.zoomLevel" = 1;
+      "editor.minimap.enabled" = false;
 
       # disable updates & synching
       "extensions.autoUpdate" = false;

@@ -9,10 +9,11 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
   };
 
   outputs = { darwin, nixpkgs, home-manager, flake-utils, nix-vscode-extensions
-    , ... }@attrs:
+    , neorg-overlay, ... }@attrs:
     let
       machines = [
         {
@@ -34,31 +35,33 @@
       overlays = [
         # Nix VSCode Extensions Overlay
         nix-vscode-extensions.overlays.default
+        # Neorg Overlay
+        neorg-overlay.overlays.default
       ];
     in rec {
       nixosConfigurations = builtins.listToAttrs (builtins.map (machine: {
         name = machine.name;
         value = nixpkgs.lib.nixosSystem {
           system = machine.system;
-          pkgs = import nixpkgs {
-            inherit overlays;
-            system = machine.system;
-            config = { allowUnfree = true; };
-          };
           specialArgs = attrs;
           modules = [
+            {
+              nixpkgs.overlays = overlays;
+              nixpkgs.config.allowUnfree = true;
+            }
             ./system/configuration-nixos.nix
             ./system/configuration-${machine.name}.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.sharedModules = [
-                ./home/home.nix
-                ./home/home-nixos.nix
-                ./home/home-${machine.name}.nix
-              ];
-              home-manager.users.${machine.user} = { };
+              home-manager.users.${machine.user} = {
+                imports = [
+                  ./home/home.nix
+                  ./home/home-nixos.nix
+                  ./home/home-${machine.name}.nix
+                ];
+              };
             }
           ];
         };
@@ -68,25 +71,25 @@
         name = machine.name;
         value = darwin.lib.darwinSystem {
           system = machine.system;
-          pkgs = import nixpkgs {
-            inherit overlays;
-            system = machine.system;
-            config = { allowUnfree = true; };
-          };
           specialArgs = attrs;
           modules = [
+            {
+              nixpkgs.overlays = overlays;
+              nixpkgs.config.allowUnfree = true;
+            }
             ./system/configuration-darwin.nix
             ./system/configuration-${machine.name}.nix
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.sharedModules = [
-                ./home/home.nix
-                ./home/home-darwin.nix
-                ./home/home-${machine.name}.nix
-              ];
-              home-manager.users.${machine.user} = { };
+              home-manager.users.${machine.user} = {
+                imports = [
+                  ./home/home.nix
+                  ./home/home-darwin.nix
+                  ./home/home-${machine.name}.nix
+                ];
+              };
             }
           ];
         };
