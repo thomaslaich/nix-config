@@ -167,7 +167,7 @@
         type = "lua";
         config = ''
           if not vim.g.vscode then
-            require("lsp-progress").setup()
+            require"lsp-progress".setup {}
           end
         '';
       };
