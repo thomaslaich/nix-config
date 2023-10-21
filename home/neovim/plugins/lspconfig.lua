@@ -16,9 +16,26 @@ if not vim.g.vscode then
 
   lsp_config.gopls.setup {}
 
+  lsp_config.html.setup {}
+
   lsp_config.tsserver.setup {}
 
-  lsp_config.html.setup {}
+  lsp_config.eslint.setup({
+    on_attach = function(client, bufnr)
+      -- Uncomment this to run eslint --fix on save
+      -- vim.api.nvim_create_autocmd("BufWritePre", {
+      --   buffer = bufnr,
+      --   command = "EslintFixAll",
+      -- })
+      client.server_capabilities.documentFormattingProvider = true
+    end,
+    settings = {
+      format = true,
+      workingDirectory = {
+        mode = "auto"
+      }
+    }
+  })
 
   lsp_config.svelte.setup {}
 
@@ -35,9 +52,7 @@ if not vim.g.vscode then
   lsp_config.lua_ls.setup({
     settings = {
       Lua = {
-        format = {
-          enable = true,
-        },
+        format = true,
         runtime = {
           -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
           version = "LuaJIT",

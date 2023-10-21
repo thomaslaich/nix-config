@@ -14,15 +14,23 @@
   outputs = { darwin, nixpkgs, home-manager, flake-utils, nix-vscode-extensions
     , ... }@attrs:
     let
-      machines = [{
-        name = "macbook-pro-m1";
-        user = "thomaslaich";
-        system = flake-utils.lib.system.aarch64-darwin;
-      }];
+      machines = [
+        {
+          name = "macbook-pro-m1";
+          user = "thomaslaich";
+          system = flake-utils.lib.system.aarch64-darwin;
+        }
+        {
+          name = "lenovo-desktop-intel";
+          user = "thomaslaich";
+          system = flake-utils.lib.system.x86_64-linux;
+        }
+      ];
       isDarwin = machine: (builtins.match ".*darwin" machine.system) != null;
       darwinMachines = builtins.filter (machine: isDarwin machine) machines;
       nixosMachines = builtins.filter (machine: !isDarwin machine) machines;
       machinesBySystem = builtins.groupBy (machine: machine.system) machines;
+
       overlays = [
         # Nix VSCode Extensions Overlay
         nix-vscode-extensions.overlays.default
@@ -32,6 +40,11 @@
         name = machine.name;
         value = nixpkgs.lib.nixosSystem {
           system = machine.system;
+          pkgs = import nixpkgs {
+            inherit overlays;
+            system = machine.system;
+            config = { allowUnfree = true; };
+          };
           specialArgs = attrs;
           modules = [
             ./system/configuration-nixos.nix
@@ -60,6 +73,7 @@
             system = machine.system;
             config = { allowUnfree = true; };
           };
+          specialArgs = attrs;
           modules = [
             ./system/configuration-darwin.nix
             ./system/configuration-${machine.name}.nix

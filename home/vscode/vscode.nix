@@ -22,6 +22,11 @@
         "when" = "neovim.mode != insert && editorTextFocus";
       }
       {
+        "key" = ", g s";
+        "command" = "workbench.view.scm";
+        "when" = "neovim.mode != insert && editorTextFocus";
+      }
+      {
         "key" = ", -";
         "command" = "workbench.view.explorer";
         "when" =
@@ -139,7 +144,6 @@
       # JS/TS
       pkgs.vscode-marketplace.ms-vscode.vscode-typescript-next
       pkgs.vscode-marketplace.svelte.svelte-vscode
-      # pkgs.vscode-marketplace.esbenp.prettier-vscode
       pkgs.vscode-marketplace.dbaeumer.vscode-eslint
 
       # Python
@@ -173,6 +177,14 @@
 
       # YAML
       pkgs.vscode-marketplace.redhat.vscode-yaml
+
+      # GraphQL
+      pkgs.vscode-marketplace.graphql.vscode-graphql-syntax
+      pkgs.vscode-marketplace.graphql.vscode-graphql
+
+      # C/C++
+      pkgs.vscode-marketplace.ms-vscode.makefile-tools
+      pkgs.vscode-marketplace.ms-vscode.cpptools
     ];
   };
 }

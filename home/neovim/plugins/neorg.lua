@@ -10,6 +10,8 @@ if not vim.g.vscode then
             -- TODO move this to dropbox maybe?
             work = '~/notes/work',
             home = '~/notes/home',
+            sabbatical = '~/notes/sabbatical',
+            personal = '~/notes/personal',
           },
           default_workspace = 'work'
         }

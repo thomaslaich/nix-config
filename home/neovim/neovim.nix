@@ -74,15 +74,6 @@
         config = builtins.readFile ./plugins/trouble.lua;
       };
 
-      # TODO: uncomment when available in nixpkgs
-      # lsp-progress = {
-      #   plugin = pkgs.vimPlugins.lsp-progress-nvim;
-      #   type = "lua";
-      #   config = ''
-      #     require("lsp-progress").setup()
-      #   '';
-      # };
-
       lsp-kind = {
         plugin = pkgs.vimPlugins.lspkind-nvim;
         type = "lua";
@@ -161,6 +152,26 @@
         config = builtins.readFile ./plugins/neorg.lua;
       };
 
+      lsp-progress = {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          pname = "lsp-progress";
+          version = "2023-10-13";
+          src = pkgs.fetchFromGitHub {
+            owner = "linrongbin16";
+            repo = "lsp-progress.nvim";
+            rev = "df7a3d0d865d584552ab571295e73868e736e60f";
+            sha256 = "sha256-+bp8t+CPFQD6iUENc7ktHxIkMpJdQabA9Ouzk5GV2IM=";
+          };
+          meta.homepage = "https://github.com/linrongbin16/lsp-progress.nvim/";
+        };
+        type = "lua";
+        config = ''
+          if not vim.g.vscode then
+            require("lsp-progress").setup()
+          end
+        '';
+      };
+
     in pkgs.lib.lists.flatten [
       blame
       cmp
@@ -171,6 +182,7 @@
       indent-blank-line
       lightspeed
       lsp-kind
+      lsp-progress
       lspconfig
       lualine
       metals
