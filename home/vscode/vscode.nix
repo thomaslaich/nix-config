@@ -130,6 +130,7 @@
       "[typescript]" = {
         "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
       };
+      "extensions.ignoreRecommendations" = true;
     };
 
     extensions = [
@@ -141,6 +142,7 @@
       pkgs.vscode-marketplace.asvetliakov.vscode-neovim
       pkgs.vscode-marketplace.github.copilot
       pkgs.vscode-marketplace.github.copilot-chat
+      pkgs.vscode-marketplace.postman.postman-for-vscode
 
       # JS/TS
       pkgs.vscode-marketplace.ms-vscode.vscode-typescript-next
