@@ -10,10 +10,12 @@
     flake-utils.url = "github:numtide/flake-utils";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+    vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
+    vimplugins-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { darwin, nixpkgs, home-manager, flake-utils, nix-vscode-extensions
-    , neorg-overlay, ... }@attrs:
+    , neorg-overlay, vimplugins-overlay, ... }@attrs:
     let
       machines = [
         {
@@ -37,6 +39,8 @@
         nix-vscode-extensions.overlays.default
         # Neorg Overlay
         neorg-overlay.overlays.default
+        # this adds a few vimplugins unavailable in nixpkgs
+        vimplugins-overlay.overlays.default
       ];
     in rec {
       nixosConfigurations = builtins.listToAttrs (builtins.map (machine: {
