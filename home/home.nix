@@ -5,6 +5,7 @@
     ./tmux/tmux.nix
     ./neovim/neovim.nix
     ./vscode/vscode.nix
+    ./emacs/emacs.nix
   ];
 
   home.stateVersion = "22.11";

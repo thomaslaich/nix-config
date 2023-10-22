@@ -12,68 +12,68 @@
         "when" = "neovim.mode == insert && editorTextFocus";
       }
       {
-        "key" = ", f f";
+        "key" = "space f f";
         "command" = "workbench.action.quickOpen";
         "when" = "neovim.mode != insert && editorTextFocus";
       }
       {
-        "key" = ", l g";
+        "key" = "space l g";
         "command" = "workbench.action.findInFiles";
         "when" = "neovim.mode != insert && editorTextFocus";
       }
       {
-        "key" = ", g s";
+        "key" = "space g s";
         "command" = "workbench.view.scm";
         "when" = "neovim.mode != insert && editorTextFocus";
       }
       {
-        "key" = ", -";
+        "key" = "space -";
         "command" = "workbench.view.explorer";
         "when" =
           "neovim.mode != insert && editorTextFocus && viewContainer.workbench.view.explorer.enabled";
       }
       {
-        "key" = "space a";
+        "key" = ", a";
         "command" = "editor.action.quickFix";
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasCodeActionsProvider && textInputFocus && !editorReadonly";
       }
       {
-        "key" = "space a";
+        "key" = ", a";
         "command" = "acceptSelectedCodeAction";
         "when" =
           "neovim.mode != insert && editorTextFocus && codeActionMenuVisible";
       }
       {
-        "key" = "space a";
+        "key" = ", a";
         "command" = "problems.action.showQuickFixes";
         "when" = "neovim.mode != insert && editorTextFocus && problemFocus";
       }
       {
-        "key" = "space f";
+        "key" = ", f";
         "command" = "editor.action.formatDocument";
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor";
       }
       {
-        "key" = "space m";
+        "key" = ", m";
         "command" = "editor.action.rename";
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasRenameProvider && editorTextFocus && !editorReadonly";
       }
       {
-        "key" = "space r";
+        "key" = ", r";
         "command" = "editor.action.goToReferences";
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor";
       }
       {
-        "key" = "space h";
+        "key" = ", h";
         "command" = "editor.action.showHover";
         "when" = "neovim.mode != insert && editorTextFocus && editorTextFocus";
       }
       {
-        "key" = "space d";
+        "key" = ", d";
         "command" = "editor.action.revealDefinition";
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor";
@@ -188,6 +188,9 @@
       # C/C++
       pkgs.vscode-marketplace.ms-vscode.makefile-tools
       pkgs.vscode-marketplace.ms-vscode.cpptools
+
+      # Lisp
+      pkgs.vscode-marketplace.mattn.lisp
     ];
   };
 }

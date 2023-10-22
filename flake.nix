@@ -12,10 +12,11 @@
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
     vimplugins-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
   };
 
   outputs = { darwin, nixpkgs, home-manager, flake-utils, nix-vscode-extensions
-    , neorg-overlay, vimplugins-overlay, ... }@attrs:
+    , neorg-overlay, vimplugins-overlay, nix-doom-emacs, ... }@attrs:
     let
       machines = [
         {
@@ -61,6 +62,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${machine.user} = {
                 imports = [
+                  nix-doom-emacs.hmModule
                   ./home/home.nix
                   ./home/home-nixos.nix
                   ./home/home-${machine.name}.nix
@@ -89,6 +91,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${machine.user} = {
                 imports = [
+                  nix-doom-emacs.hmModule
                   ./home/home.nix
                   ./home/home-darwin.nix
                   ./home/home-${machine.name}.nix

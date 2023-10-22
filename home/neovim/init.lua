@@ -5,8 +5,8 @@ local map = vim.keymap.set
 local opt = vim.opt
 local global_opt = vim.opt_global
 
-g.mapleader = ","
-g.maplocalleader = " "
+g.mapleader = " "
+g.maplocalleader = ","
 
 -- cmd.language("en_US")
 
