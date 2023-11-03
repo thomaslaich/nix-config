@@ -20,6 +20,7 @@ if not vim.g.vscode then
   vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "find files" })
   vim.keymap.set("n", "<leader>gf", builtin.git_files, { desc = "find files (git)" })
   vim.keymap.set("n", "<leader>lg", builtin.live_grep, { desc = "live grep" })
+  vim.keymap.set("n", "<leader>of", builtin.oldfiles, { desc = "recent files" })
   vim.keymap.set("n", "<leader>gs", builtin.grep_string, { desc = "grep string" })
   vim.keymap.set("n", "<leader>bu", builtin.buffers, { desc = "buffers" })
   vim.keymap.set("n", "<leader>co", builtin.commands, { desc = "commands" })

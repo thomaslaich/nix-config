@@ -9,6 +9,12 @@
     # therefore, we need to disable the setup of most extensions for vscode specifically.
     # this is done using the vim.g.vscode variable.
     plugins = let
+      dashboard = {
+        plugin = pkgs.vimPlugins.dashboard-nvim;
+        type = "lua";
+        config = builtins.readFile ./plugins/dashboard.lua;
+      };
+
       tokyonight = {
         plugin = pkgs.vimPlugins.tokyonight-nvim;
         type = "lua";
@@ -45,7 +51,12 @@
       lspconfig = {
         plugin = pkgs.vimPlugins.nvim-lspconfig;
         type = "lua";
-        config = builtins.readFile ./plugins/lspconfig.lua;
+        config = ''
+          local pid = vim.fn.getpid()
+          local omnisharpBin = "${pkgs.omnisharp-roslyn}/bin/omnisharp"
+
+          ${builtins.readFile ./plugins/lspconfig.lua}
+        '';
       };
 
       cmp = with pkgs.vimPlugins; [
@@ -162,7 +173,16 @@
         '';
       };
 
+      # TODO remove once I move to https://github.com/jmederosalvarado/roslyn.nvim
+      omnisharp-extended-lsp = {
+        plugin = pkgs.vimPlugins.omnisharp-extended-lsp-nvim;
+        type = "lua";
+        config = "";
+      };
+
     in pkgs.lib.lists.flatten [
+      dashboard
+      # startup-nvim
       blame
       cmp
       comment-nvim
@@ -178,6 +198,7 @@
       metals
       neorg
       oil
+      omnisharp-extended-lsp
       plenary
       surround
       telescope
@@ -195,6 +216,7 @@
       nil
       nodePackages.bash-language-server
       nodePackages.typescript-language-server
+      omnisharp-roslyn
       vscode-langservers-extracted
     ];
 

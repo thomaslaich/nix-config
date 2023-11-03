@@ -164,8 +164,11 @@
       # .NET
       pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-pack
       pkgs.vscode-marketplace.ms-dotnettools.csharp
+      # for some reason this is not working :(
+      # pkgs.vscode-marketplace.ms-dotnettools.csdevkit
       pkgs.vscode-marketplace.ms-dotnettools.dotnet-interactive-vscode
       pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
+      pkgs.vscode-marketplace.ionide.ionide-fsharp
 
       # Lua
       pkgs.vscode-marketplace.sumneko.lua
@@ -191,6 +194,10 @@
 
       # Lisp
       pkgs.vscode-marketplace.mattn.lisp
+
+      # Haskell
+      pkgs.vscode-marketplace.haskell.haskell
+      pkgs.vscode-marketplace.justusadam.language-haskell
     ];
   };
 }

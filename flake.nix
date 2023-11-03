@@ -13,6 +13,7 @@
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
     vimplugins-overlay.inputs.nixpkgs.follows = "nixpkgs";
     nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
+    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { darwin, nixpkgs, home-manager, flake-utils, nix-vscode-extensions

@@ -45,8 +45,9 @@ map("n", "<C-k>", "<C-W><C-K>")
 map("n", "<C-l>", "<C-W><C-L>")
 map("n", "<C-h>", "<C-W><C-H>")
 
-map("i", "jk", "<Esc>")
-map("i", "kj", "<Esc>")
+-- don't really need `jk` or `kj` to exit insert mode
+-- map("i", "jk", "<Esc>")
+-- map("i", "kj", "<Esc>")
 map("i", "jj", "<Esc>")
 
 map("n", "<leader>cf", "<cmd>edit $MYVIMRC<CR>", { desc = "open init.lua" })

@@ -26,15 +26,17 @@
   homebrew = {
     enable = true;
     casks = [
+      "1password"
       "discord"
       "docker"
       "dropbox"
       "firefox"
       "google-chrome"
       "kitty"
+      # mos allows that mouse scrolling and trackpad scrolling is inverted
+      "mos"
       "nordvpn"
       "skype"
-      "slack"
       "spotify"
       "studio-3t"
       "telegram"

@@ -20,6 +20,15 @@ if not vim.g.vscode then
 
   lsp_config.tsserver.setup {}
 
+  -- waiting for https://github.com/jmederosalvarado/roslyn.nvim to move the lsp server installation
+  -- outside the module. Until then, let's use omnisharp-roslyn for .NET
+  lsp_config.omnisharp.setup {
+    handlers = {
+      ["textDocument/definition"] = require('omnisharp_extended').handler,
+    },
+    cmd = { omnisharpBin }
+  }
+
   lsp_config.eslint.setup({
     on_attach = function(client, bufnr)
       -- Uncomment this to run eslint --fix on save

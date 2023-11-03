@@ -31,10 +31,12 @@
       ];
     python-with-packages = (pkgs.python3.withPackages python-packages);
   in with pkgs; [
+    _1password
     amber
     any-nix-shell
     bat
     curl
+    dotnet-sdk
     eza
     fd
     fzf
@@ -43,6 +45,8 @@
     jq
     killall
     kubernetes-helm
+    lazydocker
+    lazygit
     lua
     ncdu
     nil
@@ -54,12 +58,16 @@
     restic
     ripgrep
     scala-cli
+    scc
+    shellcheck
     stack
     tldr
+    vagrant
     vifm
     wget
     yarn
     yazi
+    zoxide
   ];
 
   programs.git = {
