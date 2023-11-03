@@ -1,6 +1,10 @@
 { pkgs, ... }: {
   nix.extraOptions = ''
     experimental-features = nix-command flakes
+
+    # following is for haskell.nix
+    extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
+    extra-substituters = https://cache.iog.io
   '';
 
   # Add ability to used TouchID for sudo authentication

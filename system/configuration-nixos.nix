@@ -3,6 +3,11 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { config, pkgs, ... }: {
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # # Binary Cache for Haskell.nix
+  # nix.settings.trusted-public-keys =
+  #   [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
+  # nix.settings.substituters = [ "https://cache.iog.io" ];
+
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
