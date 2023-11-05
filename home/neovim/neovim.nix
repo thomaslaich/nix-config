@@ -182,7 +182,6 @@
 
     in pkgs.lib.lists.flatten [
       dashboard
-      # startup-nvim
       blame
       cmp
       comment-nvim
