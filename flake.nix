@@ -19,18 +19,18 @@
   outputs = { darwin, nixpkgs, home-manager, flake-utils, nix-vscode-extensions
     , neorg-overlay, vimplugins-overlay, nix-doom-emacs, ... }@attrs:
     let
-      machines = [
-        {
-          name = "macbook-pro-m1";
-          user = "thomaslaich";
-          system = flake-utils.lib.system.aarch64-darwin;
-        }
-        {
-          name = "lenovo-desktop-intel";
-          user = "thomaslaich";
-          system = flake-utils.lib.system.x86_64-linux;
-        }
-      ];
+      machines = [{
+        name = "macbook-pro-m1";
+        user = "thomaslaich";
+        system = flake-utils.lib.system.aarch64-darwin;
+      }
+      # commented for now
+      # {
+      #   name = "lenovo-desktop";
+      #   user = "thomaslaich";
+      #   system = flake-utils.lib.system.x86_64-linux;
+      # }
+        ];
       isDarwin = machine: (builtins.match ".*darwin" machine.system) != null;
       darwinMachines = builtins.filter (machine: isDarwin machine) machines;
       nixosMachines = builtins.filter (machine: !isDarwin machine) machines;
@@ -120,6 +120,19 @@
               type = "app";
               program = "${script}";
             };
+          }) machines)) machinesBySystem;
+
+      # add all nixos and darwin configs to checks
+      checks = builtins.mapAttrs (system: machines:
+        builtins.listToAttrs (builtins.map (machine:
+          let
+            toplevel = (if (isDarwin machine) then
+              darwinConfigurations.${machine.name}.config.system.build.toplevel
+            else
+              nixosConfigurations.${machine.name}.config.system.build.toplevel);
+          in {
+            name = "toplevel-${machine.name}";
+            value = toplevel;
           }) machines)) machinesBySystem;
     };
 }
