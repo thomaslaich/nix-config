@@ -35,6 +35,7 @@
     amber
     any-nix-shell
     bat
+    btop
     curl
     dotnet-sdk
     eza
