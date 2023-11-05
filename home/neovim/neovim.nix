@@ -27,27 +27,6 @@
         config = builtins.readFile ./plugins/treesitter.lua;
       };
 
-      dressing = { plugin = pkgs.vimPlugins.dressing-nvim; };
-
-      web-devicons = { plugin = pkgs.vimPlugins.nvim-web-devicons; };
-
-      oil = {
-        plugin = pkgs.vimPlugins.oil-nvim;
-        type = "lua";
-        config = builtins.readFile ./plugins/oil.lua;
-      };
-
-      plenary = { plugin = pkgs.vimPlugins.plenary-nvim; };
-
-      telescope = [
-        {
-          plugin = pkgs.vimPlugins.telescope-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/telescope.lua;
-        }
-        { plugin = pkgs.vimPlugins.telescope-symbols-nvim; }
-      ];
-
       lspconfig = {
         plugin = pkgs.vimPlugins.nvim-lspconfig;
         type = "lua";
@@ -71,6 +50,39 @@
         { plugin = cmp-nvim-lsp; }
         { plugin = cmp-nvim-lsp-signature-help; }
         { plugin = vim-vsnip; }
+      ];
+
+      nvim-lint = {
+        plugin = pkgs.vimPlugins.nvim-lint;
+        type = "lua";
+        config = builtins.readFile ./plugins/nvim-lint.lua;
+      };
+
+      conform-nvim = {
+        plugin = pkgs.vimPlugins.conform-nvim;
+        type = "lua";
+        config = builtins.readFile ./plugins/conform-nvim.lua;
+      };
+
+      dressing = { plugin = pkgs.vimPlugins.dressing-nvim; };
+
+      web-devicons = { plugin = pkgs.vimPlugins.nvim-web-devicons; };
+
+      oil = {
+        plugin = pkgs.vimPlugins.oil-nvim;
+        type = "lua";
+        config = builtins.readFile ./plugins/oil.lua;
+      };
+
+      plenary = { plugin = pkgs.vimPlugins.plenary-nvim; };
+
+      telescope = [
+        {
+          plugin = pkgs.vimPlugins.telescope-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/telescope.lua;
+        }
+        { plugin = pkgs.vimPlugins.telescope-symbols-nvim; }
       ];
 
       metals = {
@@ -181,11 +193,12 @@
       };
 
     in pkgs.lib.lists.flatten [
-      dashboard
       blame
       cmp
       comment-nvim
+      conform-nvim
       copilot
+      dashboard
       dressing
       gitsigns
       indent-blank-line
@@ -196,6 +209,7 @@
       lualine
       metals
       neorg
+      nvim-lint
       oil
       omnisharp-extended-lsp
       plenary

@@ -10,9 +10,6 @@
 
   home.stateVersion = "22.11";
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
   services.syncthing = {
     enable = true;
     extraOptions = [ ];
@@ -29,7 +26,7 @@
         requests
         scipy
       ];
-    python-with-packages = (pkgs.python3.withPackages python-packages);
+    python-with-packages = pkgs.python3.withPackages python-packages;
   in with pkgs; [
     _1password
     amber
@@ -62,24 +59,30 @@
     scc
     shellcheck
     stack
+    statix
     tldr
     vagrant
+    vale
     vifm
     wget
     yarn
     yazi
     zoxide
   ];
+  programs = {
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
 
-  programs.git = {
-    enable = true;
-    userEmail = "thomaslaich@gmail.com";
-    userName = "Thomas Laich";
-    diff-so-fancy.enable = true;
+    git = {
+      enable = true;
+      userEmail = "thomaslaich@gmail.com";
+      userName = "Thomas Laich";
+      diff-so-fancy.enable = true;
+    };
+
+    zsh = { enable = true; };
+
+    htop.enable = true;
+    htop.settings.show_program_path = true;
   };
-
-  programs.zsh = { enable = true; };
-
-  programs.htop.enable = true;
-  programs.htop.settings.show_program_path = true;
 }
