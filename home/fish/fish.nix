@@ -37,6 +37,7 @@
       gd = "git diff";
       gf = "git fetch";
       gl = "git log";
+      lg = "lazygit";
 
       # vim
       v = "nvim";
@@ -52,9 +53,8 @@
       tkill = "t kill-session -t";
 
       # ls
-      la = "eza -la --color=never --git --icons";
-      l = "eza -l --color=never --git --icons";
-
+      la = "eza -la --git --icons";
+      l = "eza -l --git --icons";
     };
   };
 }
