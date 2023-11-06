@@ -58,11 +58,8 @@
     scala-cli
     scc
     shellcheck
-    stack
-    statix
     tldr
     vagrant
-    vale
     vifm
     wget
     yarn

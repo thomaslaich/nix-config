@@ -230,6 +230,8 @@
       nodePackages.bash-language-server
       nodePackages.typescript-language-server
       omnisharp-roslyn
+      statix
+      vale
       vscode-langservers-extracted
     ];
 

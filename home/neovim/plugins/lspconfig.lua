@@ -58,6 +58,8 @@ if not vim.g.vscode then
     },
   })
 
+  lsp_config.statix.setup {}
+
   lsp_config.lua_ls.setup({
     settings = {
       Lua = {
