@@ -125,7 +125,7 @@
        (cc +lsp)
        ;;crystal
        ;;clojure
-       ;;(csharp +unity +lsp)
+       (csharp +unity +lsp)
        ;;common-lisp
        ;;coq
        ;;data
