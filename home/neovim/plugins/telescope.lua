@@ -82,9 +82,9 @@ if not vim.g.vscode then
 
   -- Git specific
   vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Search [G]it [F]iles' })
-  vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "git commits" })
-  vim.keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "git branches" })
-  vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "git status" })
+  vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "[G]it [C]ommits" })
+  vim.keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "[G]it [B]ranches" })
+  vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "[G]it [S]tatus" })
 
   -- LSP specific
   vim.keymap.set("n", "<leader>mc", telescope.extensions.metals.commands, { desc = "metals commands" })
