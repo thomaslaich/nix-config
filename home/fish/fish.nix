@@ -45,6 +45,11 @@
       vim = "nvim";
       vimdiff = "nvim -d";
 
+      # emacs
+      # TODO enable once config is reasonably stable
+      # emacsdaemon = "emacs --daemon";
+      # emacs = "emacsclient -c";
+
       # tmux
       t = "tmux";
       ta = "t a -t";

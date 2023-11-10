@@ -13,12 +13,12 @@
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
     vimplugins-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
-    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, darwin, nixpkgs, home-manager, flake-utils, treefmt-nix
-    , nix-vscode-extensions, neorg-overlay, vimplugins-overlay, nix-doom-emacs
+    , nix-vscode-extensions, neorg-overlay, vimplugins-overlay, emacs-overlay
     , ... }@attrs:
     let
       inherit (nixpkgs) lib;
@@ -51,6 +51,8 @@
         neorg-overlay.overlays.default
         # this adds a few vimplugins unavailable in nixpkgs
         vimplugins-overlay.overlays.default
+        # Emacs Overlay
+        emacs-overlay.overlays.default
       ];
 
       treefmtEval = eachSystem (system:
@@ -81,7 +83,6 @@
                 useUserPackages = true;
                 users.${machine.user} = {
                   imports = [
-                    nix-doom-emacs.hmModule
                     ./home/home.nix
                     ./home/home-nixos.nix
                     ./home/home-${machine.name}.nix
@@ -112,7 +113,6 @@
                 useUserPackages = true;
                 users.${machine.user} = {
                   imports = [
-                    nix-doom-emacs.hmModule
                     ./home/home.nix
                     ./home/home-darwin.nix
                     ./home/home-${machine.name}.nix

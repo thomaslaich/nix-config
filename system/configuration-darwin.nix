@@ -3,15 +3,23 @@
     experimental-features = nix-command flakes
 
     # following is for haskell.nix
-    extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-    extra-substituters = https://cache.iog.io
+    extra-trusted-public-keys = hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+    extra-substituters = https://cache.iog.io https://nix-community.cachix.org
   '';
+
+  services.emacs.enable = true;
 
   # Add ability to used TouchID for sudo authentication
   security.pam.enableSudoTouchIdAuth = true;
+  system = {
 
-  system.keyboard.enableKeyMapping = true;
-  system.keyboard.remapCapsLockToControl = true;
+    keyboard.enableKeyMapping = true;
+    keyboard.remapCapsLockToControl = true;
+
+    # Used for backwards compatibility, please read the changelog before changing.
+    # $ darwin-rebuild changelog
+    stateVersion = 4;
+  };
 
   # `home-manager` currently has issues adding them to `~/Applications`
   # Issue: https://github.com/nix-community/home-manager/issues/1341
@@ -31,6 +39,7 @@
     enable = true;
     casks = [
       "1password"
+      "amethyst"
       "discord"
       "docker"
       "dropbox"
@@ -61,10 +70,6 @@
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
   programs.fish.enable = true;
-
-  # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
-  system.stateVersion = 4;
 
   users.users.thomaslaich = {
     name = "thomaslaich";

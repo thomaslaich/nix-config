@@ -58,8 +58,6 @@ if not vim.g.vscode then
     },
   })
 
-  lsp_config.statix.setup {}
-
   lsp_config.lua_ls.setup({
     settings = {
       Lua = {
@@ -75,6 +73,7 @@ if not vim.g.vscode then
         workspace = {
           -- Make the server aware of Neovim runtime files
           library = vim.api.nvim_get_runtime_file("", true),
+          checkThirdParty = false, -- do not ask for third party on every startup
         },
         -- Do not send telemetry data containing a randomized but unique identifier
         telemetry = {

@@ -14,20 +14,30 @@
       {
         "key" = "space f f";
         "command" = "workbench.action.quickOpen";
-        "when" = "neovim.mode != insert && editorTextFocus";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space space";
+        "command" = "workbench.action.quickOpen";
+        "when" = "neovim.mode != insert";
       }
       {
         "key" = "space l g";
         "command" = "workbench.action.findInFiles";
-        "when" = "neovim.mode != insert && editorTextFocus";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space /";
+        "command" = "workbench.action.findInFiles";
+        "when" = "neovim.mode != insert";
       }
       {
         "key" = "space g s";
         "command" = "workbench.view.scm";
-        "when" = "neovim.mode != insert && editorTextFocus";
+        "when" = "neovim.mode != insert";
       }
       {
-        "key" = "space -";
+        "key" = "space .";
         "command" = "workbench.view.explorer";
         "when" =
           "neovim.mode != insert && editorTextFocus && viewContainer.workbench.view.explorer.enabled";
@@ -68,12 +78,12 @@
           "neovim.mode != insert && editorTextFocus && editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor";
       }
       {
-        "key" = ", h";
+        "key" = "K";
         "command" = "editor.action.showHover";
-        "when" = "neovim.mode != insert && editorTextFocus && editorTextFocus";
+        "when" = "neovim.mode != insert && editorTextFocus";
       }
       {
-        "key" = ", d";
+        "key" = "g d";
         "command" = "editor.action.revealDefinition";
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor";
@@ -133,71 +143,71 @@
       "extensions.ignoreRecommendations" = true;
     };
 
-    extensions = [
+    extensions = with pkgs.vscode-marketplace; [
       # Theme
-      pkgs.vscode-marketplace.enkia.tokyo-night
+      enkia.tokyo-night
 
       # Misc
-      pkgs.vscode-marketplace.eamodio.gitlens
-      pkgs.vscode-marketplace.asvetliakov.vscode-neovim
-      pkgs.vscode-marketplace.github.copilot
-      pkgs.vscode-marketplace.github.copilot-chat
-      pkgs.vscode-marketplace.postman.postman-for-vscode
+      eamodio.gitlens
+      asvetliakov.vscode-neovim
+      github.copilot
+      github.copilot-chat
+      postman.postman-for-vscode
 
       # JS/TS
-      pkgs.vscode-marketplace.ms-vscode.vscode-typescript-next
-      pkgs.vscode-marketplace.svelte.svelte-vscode
-      pkgs.vscode-marketplace.dbaeumer.vscode-eslint
+      ms-vscode.vscode-typescript-next
+      svelte.svelte-vscode
+      dbaeumer.vscode-eslint
 
       # Python
-      pkgs.vscode-marketplace.ms-python.python
-      pkgs.vscode-marketplace.ms-toolsai.jupyter
+      ms-python.python
+      ms-toolsai.jupyter
 
       # Go
-      pkgs.vscode-marketplace.golang.go
+      golang.go
 
       # Rust
-      pkgs.vscode-marketplace.rust-lang.rust-analyzer
+      rust-lang.rust-analyzer
       # example of using open-vsx instead
       # open-vsx-release.rust-lang.rust-analyzer
 
       # .NET
-      pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-pack
-      pkgs.vscode-marketplace.ms-dotnettools.csharp
+      ms-dotnettools.vscode-dotnet-pack
+      ms-dotnettools.csharp
       # for some reason this is not working :(
-      # pkgs.vscode-marketplace.ms-dotnettools.csdevkit
-      pkgs.vscode-marketplace.ms-dotnettools.dotnet-interactive-vscode
-      pkgs.vscode-marketplace.ms-dotnettools.vscode-dotnet-runtime
-      pkgs.vscode-marketplace.ionide.ionide-fsharp
+      # ms-dotnettools.csdevkit
+      ms-dotnettools.dotnet-interactive-vscode
+      ms-dotnettools.vscode-dotnet-runtime
+      ionide.ionide-fsharp
 
       # Lua
-      pkgs.vscode-marketplace.sumneko.lua
+      sumneko.lua
 
       # Nix
-      pkgs.vscode-marketplace.bbenoist.nix
-      pkgs.vscode-marketplace.brettm12345.nixfmt-vscode
+      bbenoist.nix
+      brettm12345.nixfmt-vscode
 
       # Docker
-      pkgs.vscode-marketplace.ms-azuretools.vscode-docker
-      pkgs.vscode-marketplace.ms-kubernetes-tools.vscode-kubernetes-tools
+      ms-azuretools.vscode-docker
+      ms-kubernetes-tools.vscode-kubernetes-tools
 
       # YAML
-      pkgs.vscode-marketplace.redhat.vscode-yaml
+      redhat.vscode-yaml
 
       # GraphQL
-      pkgs.vscode-marketplace.graphql.vscode-graphql-syntax
-      pkgs.vscode-marketplace.graphql.vscode-graphql
+      graphql.vscode-graphql-syntax
+      graphql.vscode-graphql
 
       # C/C++
-      pkgs.vscode-marketplace.ms-vscode.makefile-tools
-      pkgs.vscode-marketplace.ms-vscode.cpptools
+      ms-vscode.makefile-tools
+      ms-vscode.cpptools
 
       # Lisp
-      pkgs.vscode-marketplace.mattn.lisp
+      mattn.lisp
 
       # Haskell
-      pkgs.vscode-marketplace.haskell.haskell
-      pkgs.vscode-marketplace.justusadam.language-haskell
+      haskell.haskell
+      justusadam.language-haskell
     ];
   };
 }

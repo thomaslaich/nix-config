@@ -8,19 +8,8 @@
     # note that we use neovim also as an extension in vscode.
     # therefore, we need to disable the setup of most extensions for vscode specifically.
     # this is done using the vim.g.vscode variable.
+
     plugins = let
-      dashboard = {
-        plugin = pkgs.vimPlugins.dashboard-nvim;
-        type = "lua";
-        config = builtins.readFile ./plugins/dashboard.lua;
-      };
-
-      tokyonight = {
-        plugin = pkgs.vimPlugins.tokyonight-nvim;
-        type = "lua";
-        config = builtins.readFile ./plugins/tokyonight.lua;
-      };
-
       treesitter = {
         plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
         type = "lua";
@@ -52,22 +41,21 @@
         { plugin = vim-vsnip; }
       ];
 
+      # linting for some languages (when no lsp available)
       nvim-lint = {
         plugin = pkgs.vimPlugins.nvim-lint;
         type = "lua";
         config = builtins.readFile ./plugins/nvim-lint.lua;
       };
 
+      # formatter for some languages (when no lsp available)
       conform-nvim = {
         plugin = pkgs.vimPlugins.conform-nvim;
         type = "lua";
         config = builtins.readFile ./plugins/conform-nvim.lua;
       };
 
-      dressing = { plugin = pkgs.vimPlugins.dressing-nvim; };
-
-      web-devicons = { plugin = pkgs.vimPlugins.nvim-web-devicons; };
-
+      # file browser
       oil = {
         plugin = pkgs.vimPlugins.oil-nvim;
         type = "lua";
@@ -76,6 +64,7 @@
 
       plenary = { plugin = pkgs.vimPlugins.plenary-nvim; };
 
+      # fuzzy finder and live grep
       telescope = [
         {
           plugin = pkgs.vimPlugins.telescope-nvim;
@@ -85,83 +74,166 @@
         { plugin = pkgs.vimPlugins.telescope-symbols-nvim; }
       ];
 
-      metals = {
-        plugin = pkgs.vimPlugins.nvim-metals;
+      aerial = {
+        plugin = pkgs.vimPlugins.aerial-nvim;
         type = "lua";
-        config = builtins.readFile ./plugins/metals.lua;
+        config = builtins.readFile ./plugins/aerial.lua;
       };
 
-      trouble = {
-        plugin = pkgs.vimPlugins.trouble-nvim;
-        type = "lua";
-        config = builtins.readFile ./plugins/trouble.lua;
-      };
+      core-motion-plugins = [
+        # manipulate surrouding characters (e.g. brackets)
+        {
+          plugin = pkgs.vimPlugins.nvim-surround;
+          type = "lua";
+          config = ''
+            require"nvim-surround".setup {}
+          '';
+        }
+        # move around fast in the current buffer
+        {
+          plugin = pkgs.vimPlugins.lightspeed-nvim;
+          type = "lua";
+        }
+        # comment/uncomment with gcc
+        {
+          plugin = pkgs.vimPlugins.comment-nvim;
+          type = "lua";
+          config = ''
+            require"Comment".setup {}
+          '';
+        }
+        # use 'jk' and 'jj' to escape insert mode
+        {
+          plugin = pkgs.vimPlugins.better-escape-nvim;
+          type = "lua";
+          config = ''
+            require"better_escape".setup {}
+          '';
+        }
+      ];
 
-      lsp-kind = {
-        plugin = pkgs.vimPlugins.lspkind-nvim;
-        type = "lua";
-      };
+      ui-plugins = let
+        # editor color scheme
+        tokyonight = {
+          plugin = pkgs.vimPlugins.tokyonight-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/tokyonight.lua;
+        };
 
-      indent-blank-line = {
-        plugin = pkgs.vimPlugins.indent-blankline-nvim;
-        type = "lua";
-        config = builtins.readFile ./plugins/indent-blankline.lua;
-      };
+        # a dashboard for neovim (TODO make this nicer)
+        dashboard = {
+          plugin = pkgs.vimPlugins.dashboard-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/dashboard.lua;
+        };
 
-      which-key = {
-        plugin = pkgs.vimPlugins.which-key-nvim;
-        type = "lua";
-        config = builtins.readFile ./plugins/which-key.lua;
-      };
+        # nice popup windows
+        dressing = { plugin = pkgs.vimPlugins.dressing-nvim; };
 
-      gitsigns = {
-        plugin = pkgs.vimPlugins.gitsigns-nvim;
-        type = "lua";
-        config = ''
-          if not vim.g.vscode then
-            require"gitsigns".setup {}
-          end
-        '';
-      };
+        web-devicons = { plugin = pkgs.vimPlugins.nvim-web-devicons; };
 
-      lualine = {
-        plugin = pkgs.vimPlugins.lualine-nvim;
-        type = "lua";
-        config = builtins.readFile ./plugins/lualine.lua;
-      };
+        # make code blocks collapisble
+        nvim-ufo = [
+          { plugin = pkgs.vimPlugins.promise-async; }
+          {
+            plugin = pkgs.vimPlugins.nvim-ufo;
+            type = "lua";
+            config = builtins.readFile ./plugins/nvim-ufo.lua;
+          }
+        ];
 
-      surround = {
-        plugin = pkgs.vimPlugins.nvim-surround;
-        type = "lua";
-        config = ''
-          require"nvim-surround".setup {}
-        '';
-      };
+        lsp-kind = {
+          plugin = pkgs.vimPlugins.lspkind-nvim;
+          type = "lua";
+        };
 
-      lightspeed = {
-        plugin = pkgs.vimPlugins.lightspeed-nvim;
-        type = "lua";
-      };
+        # fancy notifications
+        nvim-notify = {
+          plugin = pkgs.vimPlugins.nvim-notify;
+          type = "lua";
+          config = ''
+            vim.notify = require("notify")
+          '';
+        };
 
-      comment-nvim = {
-        plugin = pkgs.vimPlugins.comment-nvim;
-        type = "lua";
-        config = ''
-          require"Comment".setup {}
-        '';
-      };
+        indent-blank-line = {
+          plugin = pkgs.vimPlugins.indent-blankline-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/indent-blankline.lua;
 
-      blame = {
-        plugin = pkgs.vimPlugins.git-blame-nvim;
-        type = "lua";
-        config = ''
-          if not vim.g.vscode then
-            require"gitblame".setup {
-              enabled = false,
-            }
-          end
-        '';
-      };
+        };
+
+        which-key = {
+          plugin = pkgs.vimPlugins.which-key-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/which-key.lua;
+        };
+
+        trouble = {
+          plugin = pkgs.vimPlugins.trouble-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/trouble.lua;
+        };
+
+        # status line
+        lualine = {
+          plugin = pkgs.vimPlugins.lualine-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/lualine.lua;
+        };
+
+        # show lsp progress in status line
+        lsp-progress = {
+          plugin = pkgs.vimPlugins.lsp-progress-nvim;
+          type = "lua";
+          config = ''
+            if not vim.g.vscode then
+              require"lsp-progress".setup {}
+            end
+          '';
+        };
+
+      in pkgs.lib.lists.flatten [
+        dashboard
+        dressing
+        indent-blank-line
+        lsp-kind
+        lsp-progress
+        lualine
+        nvim-notify
+        nvim-ufo
+        tokyonight
+        trouble
+        web-devicons
+        which-key
+      ];
+
+      git-plugins = [
+        {
+          plugin = pkgs.vimPlugins.gitsigns-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/gitsigns.lua;
+        }
+        {
+          plugin = pkgs.vimPlugins.git-blame-nvim;
+          type = "lua";
+          config = ''
+            if not vim.g.vscode then
+              require"gitblame".setup {
+                enabled = false,
+              }
+
+              vim.keymap.set("n", "<leader>hb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
+            end
+          '';
+        }
+        { plugin = pkgs.vimPlugins.vim-fugitive; }
+        { 
+          plugin = pkgs.vimPlugins.neogit;
+          type = "lua";
+          config = builtins.readFile ./plugins/neogit.lua;
+        }
+      ];
 
       copilot = {
         plugin = pkgs.vimPlugins.copilot-lua;
@@ -169,21 +241,20 @@
         config = builtins.readFile ./plugins/copilot.lua;
       };
 
-      neorg = {
-        plugin = pkgs.vimPlugins.neorg;
-        type = "lua";
-        config = builtins.readFile ./plugins/neorg.lua;
-      };
+      neorg = [
+        {
+          plugin = pkgs.vimPlugins.neorg;
+          type = "lua";
+          config = builtins.readFile ./plugins/neorg.lua;
+        }
+        {
+          plugin = pkgs.vimPlugins.neorg-telescope;
+          type = "lua";
+          config = builtins.readFile ./plugins/neorg-telescope.lua;
 
-      lsp-progress = {
-        plugin = pkgs.vimPlugins.lsp-progress-nvim;
-        type = "lua";
-        config = ''
-          if not vim.g.vscode then
-            require"lsp-progress".setup {}
-          end
-        '';
-      };
+        }
+
+      ];
 
       # TODO remove once I move to https://github.com/jmederosalvarado/roslyn.nvim
       omnisharp-extended-lsp = {
@@ -192,34 +263,29 @@
         config = "";
       };
 
+      metals = {
+        plugin = pkgs.vimPlugins.nvim-metals;
+        type = "lua";
+        config = builtins.readFile ./plugins/metals.lua;
+      };
+
     in pkgs.lib.lists.flatten [
-      blame
+      aerial
       cmp
-      comment-nvim
       conform-nvim
       copilot
-      dashboard
-      dressing
-      gitsigns
-      indent-blank-line
-      lightspeed
-      lsp-kind
-      lsp-progress
+      core-motion-plugins
+      git-plugins
       lspconfig
-      lualine
       metals
       neorg
       nvim-lint
       oil
       omnisharp-extended-lsp
       plenary
-      surround
       telescope
-      tokyonight
       treesitter
-      trouble
-      web-devicons
-      which-key
+      ui-plugins
     ];
 
     extraPackages = with pkgs; [
