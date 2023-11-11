@@ -262,12 +262,12 @@
         type = "lua";
         config = "";
       };
-
       metals = {
         plugin = pkgs.vimPlugins.nvim-metals;
         type = "lua";
         config = builtins.readFile ./plugins/metals.lua;
       };
+      haskell-tools = { plugin = pkgs.vimPlugins.haskell-tools-nvim; };
 
     in pkgs.lib.lists.flatten [
       aerial
@@ -286,6 +286,7 @@
       telescope
       treesitter
       ui-plugins
+      haskell-tools
     ];
 
     extraPackages = with pkgs; [

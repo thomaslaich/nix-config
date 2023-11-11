@@ -1,6 +1,7 @@
 if not vim.g.vscode then
   local lsp_config = require("lspconfig")
-  local capabilities = require("cmp_nvim_lsp").default_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
   lsp_config.util.default_config = vim.tbl_extend("force", lsp_config.util.default_config,
     { capabilities = capabilities, })
@@ -8,7 +9,8 @@ if not vim.g.vscode then
   lsp_config.smithy_ls.setup({
     cmd = { "cs", "launch", "com.disneystreaming.smithy:smithy-language-server:latest.stable", "--", "0", }, })
 
-  lsp_config.hls.setup {}
+  -- don't need this -> haskell-tools.nvim instead
+  -- lsp_config.hls.setup {}
 
   lsp_config.bashls.setup {}
 
