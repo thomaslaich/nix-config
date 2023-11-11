@@ -37,6 +37,10 @@
   # some GUI apps need to be installed with homebrew (but not all!)
   homebrew = {
     enable = true;
+    onActivation = {
+      autoUpdate = true;
+      cleanup = "zap";
+    };
     casks = [
       "1password"
       "amethyst"
