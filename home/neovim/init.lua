@@ -89,13 +89,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     -- general
-    -- nmap("n", "gd", vim.lsp.buf.definition, { desc = "lsp definition" })
-    nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+    nmap("gd", vim.lsp.buf.definition, '[G]oto [D]efinition')
+    -- nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
     nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
     nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
     nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
     nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-    nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+    -- TODO: find mapping under something else than "w"
+    -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
     -- See `:help K` for why this keymap
     nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -103,11 +104,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Lesser used LSP functionality
     nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-    nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-    nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-    nmap('<leader>wl', function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, '[W]orkspace [L]ist Folders')
+    -- TODO: find mapping under something else than "w"
+    -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+    -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+    -- nmap('<leader>wl', function()
+    --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    -- end, '[W]orkspace [L]ist Folders')
 
 
     -- code action
@@ -125,11 +127,27 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- WINDOW SHORTCUTS (AS IN DOOM EMACS)
+map("n", "<leader>wh", "<C-W>h", { desc = "[W]indow: Go [h] Left" })
+map("n", "<leader>wj", "<C-W>j", { desc = "[W]indow: Go [j] Down" })
+map("n", "<leader>wk", "<C-W>k", { desc = "[W]indow: Go [k] Up" })
+map("n", "<leader>wl", "<C-W>l", { desc = "[W]indow: Go [l] Right" })
+map("n", "<leader>wH", "<C-W>H", { desc = "[W]indow: Move [H] Left" })
+map("n", "<leader>wJ", "<C-W>J", { desc = "[W]indow: Move [J] Down" })
+map("n", "<leader>wK", "<C-W>K", { desc = "[W]indow: Move [K] Up" })
+map("n", "<leader>wL", "<C-W>L", { desc = "[W]indow: Move [L] Right" })
+map("n", "<leader>w=", "<C-W>=", { desc = "[W]indow: Equalize" })
+map("n", "<leader>w|", "<C-W>|", { desc = "[W]indow: Maximize Horizontally" })
+map("n", "<leader>w_", "<C-W>_", { desc = "[W]indow: Maximize Vertically" })
+map("n", "<leader>w+", "<C-W>+", { desc = "[W]indow: Increase Height" })
+map("n", "<leader>w-", "<C-W>-", { desc = "[W]indow: Decrease Height" })
+map("n", "<leader>w>", "<C-W>>", { desc = "[W]indow: Increase Width" })
+map("n", "<leader>w<", "<C-W><", { desc = "[W]indow: Decrease Width" })
+map("n", "<leader>ws", "<C-W>s", { desc = "[W]indow: [S]plit Horizontally" })
+map("n", "<leader>wv", "<C-W>v", { desc = "[W]indow: Split [V]ertically" })
+map("n", "<leader>wo", "<C-W>o", { desc = "[W]indow: Close all [other] windows" })
+map("n", "<leader>ww", "<C-W>w", { desc = "[W]indow: S[w]itch window" })
+map("n", "<leader>wc", "<C-W>q", { desc = "[W]indow: [C]lose Window" })
 
 -- BUFFER SHORTCUTS
--- map("n", "<leader>bk", vim.buffer.close, { desc = "lsp definition" })
--- map("n", "gi", vim.lsp.buf.implementation, { desc = "lsp implementation" })
--- map("n", "K", vim.lsp.buf.hover, { desc = "lsp hover" })
--- map("n", "gr", vim.lsp.buf.references, { desc = "lsp references" })
--- map("n", "gs", vim.lsp.buf.signature_help, { desc = "lsp signature help" })
--- map("n", "<localleader>s", vim.lsp.buf.document_symbol, { desc = "lsp document symbol" })
+-- TODO
