@@ -228,7 +228,7 @@
           '';
         }
         { plugin = pkgs.vimPlugins.vim-fugitive; }
-        { 
+        {
           plugin = pkgs.vimPlugins.neogit;
           type = "lua";
           config = builtins.readFile ./plugins/neogit.lua;
