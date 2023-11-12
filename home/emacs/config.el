@@ -22,28 +22,38 @@
 
 ;;; FONTS AND THEMES
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
-;; (set-face-attribute 'variable-pitch nil :font "Ubuntu" :height 140)
+(set-face-attribute 'variable-pitch nil :font "Ubuntu Nerd Font" :height 140)
 (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 140)
 ;; Make commented text and keywords italics.
-(set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-(set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+;; (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+;; (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+
+(use-package nerd-icons)
 
 (use-package doom-themes
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+        doom-themes-enable-italic t
+        doom-themes-padded-modeline t) ; if nil, italics is universally disabled
+  ;; (load-theme 'doom-one t)
+  (load-theme 'doom-tokyo-night t))
 
   ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
+  ;; (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
+  ;; (doom-themes-neotree-config)
   ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
+  ;; (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  ;; (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+  ;; (doom-themes-org-config))
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
+
+;; (use-package all-the-icons
+;;   :if (display-graphic-p))
 
 ;;; EVIL MODE
 
@@ -79,7 +89,6 @@
   (setq-default evil-escape-key-sequence "jj")
   (evil-escape-mode))
 
-
 ;;; KEYBINDINGS
 ;; (use-package bind-key
 ;;   :config
@@ -106,6 +115,8 @@
   :global-prefix "M-,") ; access leader in insert mode (do we need this?)
 
 (general-create-definer window-def
+  :states '(normal visual insert emacs)
+  :keymaps 'override
   :prefix "C-w")
 
 
@@ -118,6 +129,8 @@
 ;; top-level keybindings
 (leader-def
   "." 'find-file)
+;; (leader-def
+;;   "f c" '((lambda () (interactive) (find-file "~/.config/nixpkgs/home.nix")) :wk "Open [C]onfig"))
 
 ;; buffer keybindings
 (leader-def
@@ -154,6 +167,7 @@
 (leader-def
   "s" '(:ignore t :wk "[S]earch")
   "s f" '(consult-find :wk "[S]earch [F]iles")
+  "s b" '(consult-buffer :wk "[S]earch [B]uffer")
   ;; TODO maybe add "s a" as in neovim?
   "s g" '(consult-ripgrep :wk "[S]earch by [G]rep")
   "s h" '(consult-man :wk "[S]earch [H]elp")
@@ -171,8 +185,9 @@
 ;; toggle keybindings
 (leader-def
   "t" '(:ignore t :wk "[T]oggle")
-  "t l" '(display-line-numbers-mode :wk "Toggle [L]ine Numbers")
-  "t t" '(global-visual-line-mode :wk "Toggle [T]runcate Lines"))
+  "t l" '(display-line-numbers-mode :wk "[T]oggle [L]ine Numbers")
+  "t t" '(global-visual-line-mode :wk "[T]oggle [T]runcate Lines")
+  "t v" '(vterm-toggle :wk "[T]oggle [V]term"))
 
 ;; org keybindings
 (leader-def
@@ -184,21 +199,21 @@
   "o t" '(org-todo :wk "[T]odo"))
 
 ;; Window motions vim mode
-(global-set-key (kbd "C-h") 'evil-windmove-left)
-(global-set-key (kbd "C-j") 'evil-windmove-down)
-(global-set-key (kbd "C-k") 'evil-windmove-up)
-(global-set-key (kbd "C-l") 'evil-windmove-right)
+(global-set-key (kbd "C-h") 'evil-window-left)
+(global-set-key (kbd "C-j") 'evil-window-down)
+(global-set-key (kbd "C-k") 'evil-window-up)
+(global-set-key (kbd "C-l") 'evil-window-right)
 
-; (window-def
-;   "h" '(evil-window-left :wk "Move Horizontally Left")
-;   "j" '(evil-window-down :wk "Move Horizontally Down")
-;   "k" '(evil-window-up :wk "Move Horizontally Up")
-;   "l" '(evil-window-right :wk "Move Horizontally Right")
-; 
-;   "c" '(evil-window-delete :wk "[C]lose Current Window")
-;   "n" '(evil-window-new :wk "[N]ew Window")
-;   "s" '(evil-window-split :wk "[S]plit (Horizontally)")
-;   "v" '(evil-window-vsplit :wk "Split [V]ertically"))
+(window-def
+  "h" '(evil-window-left :wk "Move Horizontally Left")
+  "j" '(evil-window-down :wk "Move Horizontally Down")
+  "k" '(evil-window-up :wk "Move Horizontally Up")
+  "l" '(evil-window-right :wk "Move Horizontally Right")
+
+  "c" '(evil-window-delete :wk "[C]lose Current Window")
+  "n" '(evil-window-new :wk "[N]ew Window")
+  "s" '(evil-window-split :wk "[S]plit (Horizontally)")
+  "v" '(evil-window-vsplit :wk "Split [V]ertically"))
 
 (leader-def
   "w" '(:ignore t :wk "[W]indows")
@@ -208,6 +223,7 @@
   "w n" '(evil-window-new :wk "[N]ew Window")
   "w s" '(evil-window-split :wk "[S]plit (Horizontally)")
   "w v" '(evil-window-vsplit :wk "Split [V]ertically")
+  "w o" '(delete-other-windows :wk "[O]nly Window")
 
   ;; Window motions
   "w h" '(evil-window-left :wk "Move Horizontally Left")
@@ -221,6 +237,37 @@
   "w K" '(buf-move-up :wk "Buffer Move Up")
   "w L" '(buf-move-right :wk "Buffer Move Right"))
 
+  ;; Code keybindings
+  (leader-def
+    "c" '(:ignore t :wk "[C]ode")
+    "c c" '(compile :wk "[C]ompile")
+    "c d" '(lsp-find-definition :wk "[D]efinition")
+    "c f" '(lsp-format-buffer :wk "[F]ormat Buffer")
+    "c i" '(lsp-organize-imports :wk "[I]mports")
+    "c r" '(lsp-find-references :wk "[R]eferences")
+    "c t" '(lsp-find-type-definition :wk "[T]ype Definition"))
+
+  ;; LSP keybindings
+  ;; prefixed under leader
+  (leader-def
+    "l" '(:ignore t :wk "[L]SP")
+    "l d" '(lsp-find-definition :wk "[D]efinition")
+    "l r" '(lsp-find-references :wk "[R]eferences")
+    "l i" '(lsp-organize-imports :wk "[I]mports")
+    "l f" '(lsp-format-buffer :wk "[F]ormat Buffer"))
+
+  ;; local leader shorts
+  (local-leader-def
+    "d" `(lsp-find-definition :wk "[D]efinition")
+    "f" `(lsp-format-buffer :wk "[F]ormat Buffer"))
+
+  ;; TODO not working
+  ;; standardized
+  ;; (global-set-key (kbd "g d") '(lsp-find-definition :wk "[D]efinition"))
+  ;; (global-set-key "g D" '(lsp-find-declaration :wk "[D]eclaration"))
+  ;; (global-set-key "g i" '(lsp-find-implementation :wk "[I]mplementation"))
+  ;; (global-set-key "g r" '(lsp-find-references :wk "[R]eferences"))
+  ;; (global-set-key (kbd "K") '(lsp-describe-thing-at-point :wk "[K]ind"))
 
 ;;; WHICH-KEY
 (use-package which-key
@@ -328,16 +375,16 @@
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
+  ;; (setq register-preview-delay 0.5
+  ;;       register-preview-function #'consult-register-format)
 
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
-  (advice-add #'register-preview :override #'consult-register-window)
+  ;; (advice-add #'register-preview :override #'consult-register-window)
 
   ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+  ;; (setq xref-show-xrefs-function #'consult-xref
+  ;;       xref-show-definitions-function #'consult-xref)
 
   ;; Configure other variables and modes in the :config section,
   ;; after lazily loading the package.
@@ -350,14 +397,14 @@
   ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
   ;; For some commands and buffer sources it is useful to configure the
   ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  (consult-customize
-   consult-theme :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-file-register
-   consult--source-recent-file consult--source-project-recent-file
-   ;; :preview-key "M-."
-   :preview-key '(:debounce 0.4 any))
+  ;; (consult-customize
+  ;;  consult-theme :preview-key '(:debounce 0.2 any)
+  ;;  consult-ripgrep consult-git-grep consult-grep
+  ;;  consult-bookmark consult-recent-file consult-xref
+  ;;  consult--source-bookmark consult--source-file-register
+  ;;  consult--source-recent-file consult--source-project-recent-file
+  ;;  ;; :preview-key "M-."
+  ;;  :preview-key '(:debounce 0.4 any))
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
@@ -374,4 +421,89 @@
   ;; package.
   (marginalia-mode))
 
+;;; TERMINAL EMULATION
 
+(use-package vterm
+  :commands vterm
+  :config
+  (setq shell-file-name (getenv "$SHELL")
+        vterm-max-scrollback 5000))
+
+(use-package vterm-toggle
+  :after vterm
+  :config
+  (setq vterm-toggle-fullscreen-p nil
+        vterm-toggle-scope 'project
+        vterm-toggle-cd-auto-create-buffer nil
+        vterm-toggle-cd-auto-run-dired nil))
+
+;;; LANGUAGES
+
+;;; lsp-mode
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t)
+  :hook
+  ;; C#
+  (csharp-mode . lsp-deferred))
+
+
+;; Lispy
+(add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+
+;; Nix
+(use-package nix-mode
+  :mode "\\.nix\\'"
+  :hook (nix-mode . lsp-deferred))
+
+;; Lua (NOTE LSP is not working for lua yet)
+(use-package lua-mode
+  :mode "\\.lua\\'"
+  :hook (lua-mode . lsp-deferred)
+  :config
+  (setq lua-indent-level 2))
+
+;; Haskell
+(use-package lsp-haskell)
+(use-package haskell-mode
+  :mode "\\.hs\\'"
+  :hook (haskell-mode . lsp-deferred)
+  :config
+  (setq haskell-indentation-layout-offset 2
+        haskell-indentation-left-offset 2
+        haskell-indentation-starter-offset 2
+        haskell-indentation-where-pre-offset 2
+        haskell-indentation-where-post-offset 2))
+
+
+;; (setq-default lsp-clients-lua-language-server-bin (getenv "LUA_LSP_BIN"))
+;; (setq-default lsp-clients-lua-language-server-install-dir (getenv "LUA_LSP_DIR"))
+;; (setq-default lsp-clients-lua-language-server-main-location (getenv "LUA_LSP_MAIN"))
+
+;; C# LSP
+
+;; (setq-default lsp-csharp-omnisharp-roslyn-binary-path (getenv "OMNISHARP_LSP_BIN"))
+
+;; TypeScript
+
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
+
+  ;; optionally
+  (use-package lsp-ui :commands lsp-ui-mode)
+
+  ;; optionally if you want to use debugger
+  (use-package dap-mode)
+  ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+  ;; optional if you want which-key integration
+  (use-package which-key
+      :config
+      (which-key-mode))

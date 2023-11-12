@@ -112,7 +112,13 @@
   fonts.packages = with pkgs;
     [
       (nerdfonts.override {
-        fonts = [ "FiraCode" "JetBrainsMono" "DroidSansMono" ];
+        fonts = [
+          "FiraCode"
+          "JetBrainsMono"
+          "DroidSansMono"
+          "NerdFontsSymbolsOnly"
+          "Ubuntu"
+        ];
       })
     ];
 

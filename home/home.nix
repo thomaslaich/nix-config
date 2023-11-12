@@ -8,64 +8,73 @@
     ./emacs/emacs.nix
   ];
 
-  home.stateVersion = "22.11";
-
   services.syncthing = {
     enable = true;
     extraOptions = [ ];
   };
+  home = {
+    stateVersion = "22.11";
 
-  home.packages = let
-    python-packages = ps:
-      with ps; [
-        jupyter
-        numpy
-        pandas
-        python-lsp-ruff
-        python-lsp-server
-        requests
-        scipy
-      ];
-    python-with-packages = pkgs.python3.withPackages python-packages;
-  in with pkgs; [
-    _1password
-    amber
-    any-nix-shell
-    bat
-    btop
-    curl
-    dotnet-sdk
-    eza
-    fd
-    fzf
-    gh
-    httpie
-    jq
-    killall
-    kubernetes-helm
-    lazydocker
-    lazygit
-    lua
-    ncdu
-    nil
-    nixfmt
-    nixpkgs-fmt
-    nodejs
-    postgresql
-    python-with-packages
-    restic
-    ripgrep
-    scala-cli
-    scc
-    shellcheck
-    tldr
-    vagrant
-    vifm
-    wget
-    yarn
-    yazi
-    zoxide
-  ];
+    packages = let
+      python-packages = ps:
+        with ps; [
+          jupyter
+          numpy
+          pandas
+          python-lsp-ruff
+          python-lsp-server
+          requests
+          scipy
+        ];
+      python-with-packages = pkgs.python3.withPackages python-packages;
+    in with pkgs; [
+      _1password
+      amber
+      any-nix-shell
+      bat
+      btop
+      curl
+      dotnet-sdk
+      eza
+      fd
+      fzf
+      gh
+      httpie
+      jq
+      killall
+      kubernetes-helm
+      lazydocker
+      lazygit
+      lua
+      ncdu
+      nil # TODO <- is this needed?
+      nixfmt
+      nixpkgs-fmt
+      nodejs
+      postgresql
+      python-with-packages
+      restic
+      ripgrep
+      scala-cli
+      scc
+      shellcheck
+      tldr
+      vagrant
+      vifm
+      wget
+      yarn
+      yazi
+      zoxide
+    ];
+
+    # sessionVariables = rec {
+    #   LUA_LSP_DIR = "${pkgs.lua-language-server}";
+    #   LUA_LSP_BIN = "${LUA_LSP_DIR}/bin/lua-language-server";
+    #   LUA_LSP_MAIN = "${LUA_LSP_DIR}/share/lua-language-server/main.lua";
+    #   OMNISHARP_LSP_BIN = "${pkgs.omnisharp-roslyn}/bin/omnisharp";
+    # };
+  };
+
   programs = {
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
