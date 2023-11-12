@@ -1,5 +1,4 @@
-{ pkgs, lib, ... }:
- {
+{ pkgs, lib, ... }: {
 
   programs.emacs = {
     enable = true;
@@ -85,23 +84,48 @@
             cask
             treesit-grammars.with-all-grammars
             nerd-icons
-            (epkgs.trivialBuild {
+            copilot
+            lsp-install-servers
+          ];
+
+        # Optionally override derivations.
+        override = epkgs:
+          epkgs // {
+            weechat = epkgs.melpaPackages.weechat.overrideAttrs
+              (old: { patches = [ ./weechat-el.patch ]; });
+            # Install copilot.el
+            copilot = epkgs.trivialBuild {
+              pname = "copilot";
+              version = "2023-04-27";
+
+              packageRequires = with epkgs; [ dash editorconfig s ];
+
+              preInstall = ''
+                mkdir -p $out/share/emacs/site-lisp
+                cp -vr $src/dist $out/share/emacs/site-lisp
+              '';
+
+              src = pkgs.fetchFromGitHub {
+                owner = "zerolfx";
+                repo = "copilot.el";
+                rev = "7cb7beda89145ccb86a4324860584545ec016552";
+                sha256 = "sha256-57ACMikRzHSwRkFdEn9tx87NlJsWDYEfmg2n2JH8Ig0=";
+              };
+            };
+
+            lsp-install-servers = epkgs.trivialBuild {
               pname = "lsp-install-servers";
               version = "1.0";
               src = pkgs.writeText "lsp-install-servers.el" ''
                 (eval-after-load 'lsp-mode
-                  '(progn
-                     (lsp-dependency 'lua-language-server `(:system "${pkgs.lua-language-server}/bin/lua-language-server"))))
+                 '(progn
+                   (lsp-dependency 'omnisharp `(:system "${pkgs.omnisharp-roslyn}/bin/omnisharp"))
+                   (lsp-dependency 'lua-language-server `(:system "${pkgs.lua-language-server}/bin/lua-language-server"))))
               '';
               packageRequires = [ epkgs.lsp-mode ];
-            })
-          ];
+            };
 
-        # Optionally override derivations.
-        # override = final: prev: {
-        #   weechat = prev.melpaPackages.weechat.overrideAttrs
-        #     (old: { patches = [ ./weechat-el.patch ]; });
-        # };
+          };
       });
   };
 }

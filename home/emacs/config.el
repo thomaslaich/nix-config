@@ -30,24 +30,31 @@
 
 (use-package nerd-icons)
 
-(use-package doom-themes
+(use-package catppuccin-theme
   :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t
-        doom-themes-padded-modeline t) ; if nil, italics is universally disabled
-  ;; (load-theme 'doom-one t)
-  (load-theme 'doom-tokyo-night t))
+  (load-theme 'catppuccin :no-confirm))
 
-  ;; Enable flashing mode-line on errors
-  ;; (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;; (doom-themes-neotree-config)
-  ;; or for treemacs users
-  ;; (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  ;; (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  ;; (doom-themes-org-config))
+(setq catppuccin-flavor 'macchiato) ;; or 'latte, 'macchiato, or 'mocha
+(catppuccin-reload)
+
+;; (use-package doom-themes
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t
+;;         doom-themes-padded-modeline t) ; if nil, italics is universally disabled
+;;   ;; (load-theme 'doom-one t)
+;;   (load-theme 'doom-tokyo-night t))
+;; 
+;;   ;; Enable flashing mode-line on errors
+;;   ;; (doom-themes-visual-bell-config)
+;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
+;;   ;; (doom-themes-neotree-config)
+;;   ;; or for treemacs users
+;;   ;; (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+;;   ;; (doom-themes-treemacs-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   ;; (doom-themes-org-config))
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
@@ -224,12 +231,16 @@
   "w s" '(evil-window-split :wk "[S]plit (Horizontally)")
   "w v" '(evil-window-vsplit :wk "Split [V]ertically")
   "w o" '(delete-other-windows :wk "[O]nly Window")
+  "w =" '(balance-windows :wk "Balance [W]indows")
+  "w |" '(evil-window-set-width :wk "Set Window [W]idth")
+  "w _" '(evil-window-set-height :wk "Set Window [H]eight")
 
   ;; Window motions
   "w h" '(evil-window-left :wk "Move Horizontally Left")
   "w j" '(evil-window-down :wk "Move Horizontally Down")
   "w k" '(evil-window-up :wk "Move Horizontally Up")
   "w l" '(evil-window-right :wk "Move Horizontally Right")
+  "w w" '(evil-window-next :wk "Next [W]indow")
 
   ;; Move windows
   "w H" '(buf-move-left :wk "Buffer Move Left")
@@ -300,9 +311,6 @@
 
 ;; disable electric indent
 (electric-indent-mode -1)
-
-;; source code block tab expansion
-(use-package org-tempo)
 
 ;;; COMPLETION (VERTICO&CONSULT)
 ;; NOTE: use Vertico&Consult instead of Ivy&Counsel
@@ -437,6 +445,12 @@
         vterm-toggle-cd-auto-create-buffer nil
         vterm-toggle-cd-auto-run-dired nil))
 
+;;; COPILOT
+
+(use-package copilot)
+(add-hook 'prog-mode-hook 'copilot-mode)
+(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+
 ;;; LANGUAGES
 
 ;;; lsp-mode
@@ -452,7 +466,8 @@
   (csharp-mode . lsp-deferred))
 
 
-;; Lispy
+;; Lispy (for emacs lisp)
+(use-package lispy)
 (add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
 
 ;; Nix
@@ -460,7 +475,7 @@
   :mode "\\.nix\\'"
   :hook (nix-mode . lsp-deferred))
 
-;; Lua (NOTE LSP is not working for lua yet)
+;; Lua
 (use-package lua-mode
   :mode "\\.lua\\'"
   :hook (lua-mode . lsp-deferred)
@@ -479,17 +494,11 @@
         haskell-indentation-where-pre-offset 2
         haskell-indentation-where-post-offset 2))
 
-
-;; (setq-default lsp-clients-lua-language-server-bin (getenv "LUA_LSP_BIN"))
-;; (setq-default lsp-clients-lua-language-server-install-dir (getenv "LUA_LSP_DIR"))
-;; (setq-default lsp-clients-lua-language-server-main-location (getenv "LUA_LSP_MAIN"))
-
 ;; C# LSP
-
-;; (setq-default lsp-csharp-omnisharp-roslyn-binary-path (getenv "OMNISHARP_LSP_BIN"))
+;; note that csharp-mode is built-in for Emacs 29+
+(add-hook 'csharp-mode-hook 'lsp-deferred)
 
 ;; TypeScript
-
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :hook (typescript-mode . lsp-deferred)
@@ -500,7 +509,7 @@
   (use-package lsp-ui :commands lsp-ui-mode)
 
   ;; optionally if you want to use debugger
-  (use-package dap-mode)
+  ;; (use-package dap-mode)
   ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
   ;; optional if you want which-key integration
