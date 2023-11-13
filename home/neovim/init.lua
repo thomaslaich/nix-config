@@ -89,12 +89,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     -- general
-    nmap("gd", vim.lsp.buf.definition, '[G]oto [D]efinition')
+    nmap("gd", vim.lsp.buf.definition, 'Goto Definition')
     -- nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-    nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-    nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-    nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+    nmap('gr', require('telescope.builtin').lsp_references, 'Goto References')
+    nmap('gI', require('telescope.builtin').lsp_implementations, 'Goto Implementation')
+    nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
+    nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, 'Document Symbols')
     -- TODO: find mapping under something else than "w"
     -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
@@ -103,7 +103,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
     -- Lesser used LSP functionality
-    nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+    nmap('gD', vim.lsp.buf.declaration, 'Goto Declaration')
     -- TODO: find mapping under something else than "w"
     -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
     -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
@@ -113,41 +113,45 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 
     -- code action
-    nmap("<F4>", vim.lsp.buf.code_action, 'Code Action')
+    nmap("<localleader>a", vim.lsp.buf.code_action, 'Code Action')
 
     -- rename
-    nmap("<F2>", vim.lsp.buf.rename, "Rename")
+    nmap("<localleader>m", vim.lsp.buf.rename, "Rename")
 
     -- formatting
-    map({ "n", "v" }, "<F3>", vim.lsp.buf.format, { desc = "LSP: Format" })
-    map({ "n", "v" }, "<localleader>f", vim.lsp.buf.format, { desc = "LSP: [F]ormat" })
+    map({ "n", "v" }, "<localleader>f", vim.lsp.buf.format, { desc = "Format" })
     -- alternative formatter with conform (TODO: can we combine the 2 somehow?)
     map({ "n", "v" }, "<localleader>g", function() require("conform").format({ async = true, lsp_fallback = true }) end,
       { desc = "Conform: Format" })
+
+    -- F-keys
+    nmap("<F2>", vim.lsp.buf.rename, "Rename")
+    map({ "n", "v" }, "<F3>", vim.lsp.buf.format, { desc = "LSP: Format" })
+    nmap("<F4>", vim.lsp.buf.code_action, 'Code Action')
   end,
 })
 
 -- WINDOW SHORTCUTS (AS IN DOOM EMACS)
-map("n", "<leader>wh", "<C-W>h", { desc = "[W]indow: Go [h] Left" })
-map("n", "<leader>wj", "<C-W>j", { desc = "[W]indow: Go [j] Down" })
-map("n", "<leader>wk", "<C-W>k", { desc = "[W]indow: Go [k] Up" })
-map("n", "<leader>wl", "<C-W>l", { desc = "[W]indow: Go [l] Right" })
-map("n", "<leader>wH", "<C-W>H", { desc = "[W]indow: Move [H] Left" })
-map("n", "<leader>wJ", "<C-W>J", { desc = "[W]indow: Move [J] Down" })
-map("n", "<leader>wK", "<C-W>K", { desc = "[W]indow: Move [K] Up" })
-map("n", "<leader>wL", "<C-W>L", { desc = "[W]indow: Move [L] Right" })
-map("n", "<leader>w=", "<C-W>=", { desc = "[W]indow: Equalize" })
-map("n", "<leader>w|", "<C-W>|", { desc = "[W]indow: Maximize Horizontally" })
-map("n", "<leader>w_", "<C-W>_", { desc = "[W]indow: Maximize Vertically" })
-map("n", "<leader>w+", "<C-W>+", { desc = "[W]indow: Increase Height" })
-map("n", "<leader>w-", "<C-W>-", { desc = "[W]indow: Decrease Height" })
-map("n", "<leader>w>", "<C-W>>", { desc = "[W]indow: Increase Width" })
-map("n", "<leader>w<", "<C-W><", { desc = "[W]indow: Decrease Width" })
-map("n", "<leader>ws", "<C-W>s", { desc = "[W]indow: [S]plit Horizontally" })
-map("n", "<leader>wv", "<C-W>v", { desc = "[W]indow: Split [V]ertically" })
-map("n", "<leader>wo", "<C-W>o", { desc = "[W]indow: Close all [other] windows" })
-map("n", "<leader>ww", "<C-W>w", { desc = "[W]indow: S[w]itch window" })
-map("n", "<leader>wc", "<C-W>q", { desc = "[W]indow: [C]lose Window" })
+map("n", "<leader>wh", "<C-W>h", { desc = "Go Left" })
+map("n", "<leader>wj", "<C-W>j", { desc = "Go Down" })
+map("n", "<leader>wk", "<C-W>k", { desc = "Go Up" })
+map("n", "<leader>wl", "<C-W>l", { desc = "Go Right" })
+map("n", "<leader>wH", "<C-W>H", { desc = "Move Left" })
+map("n", "<leader>wJ", "<C-W>J", { desc = "Move Down" })
+map("n", "<leader>wK", "<C-W>K", { desc = "Move Up" })
+map("n", "<leader>wL", "<C-W>L", { desc = "Move Right" })
+map("n", "<leader>w=", "<C-W>=", { desc = "Equalize" })
+map("n", "<leader>w|", "<C-W>|", { desc = "Maximize Horizontally" })
+map("n", "<leader>w_", "<C-W>_", { desc = "Maximize Vertically" })
+map("n", "<leader>w+", "<C-W>+", { desc = "Increase Height" })
+map("n", "<leader>w-", "<C-W>-", { desc = "Decrease Height" })
+map("n", "<leader>w>", "<C-W>>", { desc = "Increase Width" })
+map("n", "<leader>w<", "<C-W><", { desc = "Decrease Width" })
+map("n", "<leader>ws", "<C-W>s", { desc = "Split Horizontally" })
+map("n", "<leader>wv", "<C-W>v", { desc = "Split Vertically" })
+map("n", "<leader>wo", "<C-W>o", { desc = "Close all other windows" })
+map("n", "<leader>ww", "<C-W>w", { desc = "Switch window" })
+map("n", "<leader>wc", "<C-W>q", { desc = "Close Window" })
 
 -- BUFFER SHORTCUTS
 -- TODO
@@ -204,27 +208,26 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-
-vim.keymap.set('n', '<leader>sf', telescope_builtin.find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sf', telescope_builtin.find_files, { desc = 'Search Files' })
 
 vim.keymap.set("n", "<leader>sa", function() telescope_builtin.find_files({ no_ignore = true, hidden = true }) end,
   { desc = "[S]earch [a]ll Files" })
-vim.keymap.set('n', '<leader>sh', telescope_builtin.help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', telescope_builtin.grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', telescope_builtin.live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
-vim.keymap.set('n', '<leader>sd', telescope_builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', telescope_builtin.resume, { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', '<leader>sc', telescope_builtin.commands, { desc = '[S]earch [C]ommands' })
-vim.keymap.set("n", "<leader>sy", telescope_builtin.symbols, { desc = "[S]earch emoji/s[y]mbols" })
+vim.keymap.set('n', '<leader>sh', telescope_builtin.help_tags, { desc = 'Search Help' })
+vim.keymap.set('n', '<leader>sw', telescope_builtin.grep_string, { desc = 'Search current Word' })
+vim.keymap.set('n', '<leader>sg', telescope_builtin.live_grep, { desc = 'Search by Grep' })
+vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = 'Search by Grep on Git Root' })
+vim.keymap.set('n', '<leader>sd', telescope_builtin.diagnostics, { desc = 'Search Diagnostics' })
+vim.keymap.set('n', '<leader>sr', telescope_builtin.resume, { desc = 'Search Resume' })
+vim.keymap.set('n', '<leader>sc', telescope_builtin.commands, { desc = 'Search Commands' })
+vim.keymap.set("n", "<leader>sy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
 
-vim.keymap.set("n", "<leader>st", telescope_builtin.treesitter, { desc = "[S]earch [T]reesitter" })
+vim.keymap.set("n", "<leader>st", telescope_builtin.treesitter, { desc = "Search Treesitter" })
 
 -- Git specific
-vim.keymap.set('n', '<leader>gf', telescope_builtin.git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set("n", "<leader>gc", telescope_builtin.git_commits, { desc = "[G]it [C]ommits" })
-vim.keymap.set("n", "<leader>gb", telescope_builtin.git_branches, { desc = "[G]it [B]ranches" })
-vim.keymap.set("n", "<leader>gs", telescope_builtin.git_status, { desc = "[G]it [S]tatus" })
+vim.keymap.set('n', '<leader>gf', telescope_builtin.git_files, { desc = 'Search Git Files' })
+vim.keymap.set("n", "<leader>gc", telescope_builtin.git_commits, { desc = "Git Commits" })
+vim.keymap.set("n", "<leader>gb", telescope_builtin.git_branches, { desc = "Git Branches" })
+vim.keymap.set("n", "<leader>gs", telescope_builtin.git_status, { desc = "Git Status" })
 
 -- LSP specific
-vim.keymap.set("n", "<leader>mc", require"telescope".extensions.metals.commands, { desc = "metals commands" })
+vim.keymap.set("n", "<leader>mc", require "telescope".extensions.metals.commands, { desc = "metals commands" })

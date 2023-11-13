@@ -13,7 +13,8 @@ if not vim.g.vscode then
     ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
     ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
     ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-    -- ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+    ['<leader>p'] = { name = '[P]rojects', _ = 'which_key_ignore' },
     ['<leader>w'] = { name = '[W]indows', _ = 'which_key_ignore' },
+    ['<leader>b'] = { name = '[B]uffers', _ = 'which_key_ignore' },
   }
 end
