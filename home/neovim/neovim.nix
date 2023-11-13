@@ -110,6 +110,8 @@
             require"better_escape".setup {}
           '';
         }
+        # heuristically set options for buffer (e.g. indentation)
+        { plugin = pkgs.vimPlugins.vim-sleuth; }
       ];
 
       ui-plugins = let
@@ -132,15 +134,15 @@
 
         web-devicons = { plugin = pkgs.vimPlugins.nvim-web-devicons; };
 
-        # make code blocks collapisble
-        nvim-ufo = [
-          { plugin = pkgs.vimPlugins.promise-async; }
-          {
-            plugin = pkgs.vimPlugins.nvim-ufo;
-            type = "lua";
-            config = builtins.readFile ./plugins/nvim-ufo.lua;
-          }
-        ];
+        # make code blocks collapsible
+        # nvim-ufo = [
+        #   { plugin = pkgs.vimPlugins.promise-async; }
+        #   {
+        #     plugin = pkgs.vimPlugins.nvim-ufo;
+        #     type = "lua";
+        #     config = builtins.readFile ./plugins/nvim-ufo.lua;
+        #   }
+        # ];
 
         lsp-kind = {
           plugin = pkgs.vimPlugins.lspkind-nvim;
@@ -201,7 +203,7 @@
         lsp-progress
         lualine
         nvim-notify
-        nvim-ufo
+        # nvim-ufo
         tokyonight
         trouble
         web-devicons
@@ -251,9 +253,7 @@
           plugin = pkgs.vimPlugins.neorg-telescope;
           type = "lua";
           config = builtins.readFile ./plugins/neorg-telescope.lua;
-
         }
-
       ];
 
       # TODO remove once I move to https://github.com/jmederosalvarado/roslyn.nvim
