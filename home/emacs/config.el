@@ -1,9 +1,15 @@
-;;; use-package is added automatically by the nix emacs overlay
-;;; here we just make sure we don't have to keep typing `:ensure t`
+;;; GENERAL SETUP (MISC)
 
+;; use-package is added automatically by the nix emacs overlay
+;; here we just make sure we don't have to keep typing `:ensure t`
 (setq use-package-always-ensure t)
 
-;;; GENERAL UI
+;; do not make unnecessary sounds
+(setq ring-bell-function #'ignore)
+
+;; By default Emacs requires you to hit ESC three times to close the minibuffer.
+;; This is annoying, so we're going to change it to just once.
+(global-set-key [escape] 'keyboard-escape-quit)
 
 ;;; disable the default emacs startup screen (setq inhibit-startup-screen t)
 (setq inhibit-splash-screen t)
@@ -21,12 +27,13 @@
 (setq display-line-numbers-type 'relative)
 
 ;;; FONTS AND THEMES
+
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
 (set-face-attribute 'variable-pitch nil :font "Ubuntu Nerd Font" :height 140)
 (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 140)
 ;; Make commented text and keywords italics.
-;; (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-;; (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+(set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+(set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
 
 (use-package nerd-icons)
 
