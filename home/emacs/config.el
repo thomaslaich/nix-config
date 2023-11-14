@@ -1,5 +1,31 @@
 ;;; GENERAL SETUP (MISC)
 
+;; -*- lexical-binding: t; -*-
+
+;; The default is 800 kilobytes.  Measured in bytes.
+(setq gc-cons-threshold (* 50 1000 1000))
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s seconds with %d garbage collections."
+                     (emacs-init-time "%.2f")
+                     gcs-done)))
+
+;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+;; (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+;;       url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+;; Use no-littering to automatically set common paths to the new user-emacs-directory
+(use-package no-littering)
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
+
 ;; use-package is added automatically by the nix emacs overlay
 ;; here we just make sure we don't have to keep typing `:ensure t`
 (setq use-package-always-ensure t)
@@ -7,9 +33,6 @@
 ;; do not make unnecessary sounds
 (setq ring-bell-function #'ignore)
 
-;; By default Emacs requires you to hit ESC three times to close the minibuffer.
-;; This is annoying, so we're going to change it to just once.
-(global-set-key [escape] 'keyboard-escape-quit)
 
 ;;; disable the default emacs startup screen (setq inhibit-startup-screen t)
 (setq inhibit-splash-screen t)
@@ -22,9 +45,19 @@
 (set-fringe-mode 10) ; Give some breathing room
 
 ;;; Line Numbers
-(global-display-line-numbers-mode 1)
-(global-visual-line-mode t)
+
+(column-number-mode)
 (setq display-line-numbers-type 'relative)
+
+;; Enable line numbers for some modes
+(dolist (mode '(text-mode-hook
+                prog-mode-hook
+                conf-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 1))))
+
+;; Override some modes which derive from the above
+(dolist (mode '(org-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;;; FONTS AND THEMES
 
@@ -45,6 +78,31 @@
 
 ;; Hide minor modes from modeline (by adding :diminish to use-package)
 (use-package diminish)
+
+(load-theme 'catppuccin t)
+(setq catppuccin-flavor 'macchiato)
+(catppuccin-reload)
+
+(use-package dashboard
+  :ensure t 
+  :init
+  (setq initial-buffer-choice 'dashboard-open)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  ;; (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+  ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+  ;; (setq dashboard-startup-banner "~/.config/emacs/images/dtmacs-logo.png")  ;; use custom image as banner
+  (setq dashboard-center-content t) ;; set to 't' for centered content
+  (setq dashboard-items '((recents . 5)
+                          (agenda . 5)
+                          (bookmarks . 3)
+                          (projects . 3)
+                          (registers . 3)))
+  :custom 
+  (dashboard-modify-heading-icons '((recents . "file-text")
+				      (bookmarks . "book")))
+  :config
+  (dashboard-setup-startup-hook))
 
 ;;; EVIL MODE
 
@@ -91,7 +149,19 @@
   :config
   (global-evil-surround-mode 1))
 
+;; editing config
+
+(setq-default tab-width 2)
+(setq-default evil-shift-width tab-width)
+
+(setq-default indent-tabs-mode nil)
+
 ;;; KEYBINDINGS
+
+;; By default Emacs requires you to hit ESC three times to close the minibuffer.
+;; This is annoying, so we're going to change it to just once.
+(global-set-key [escape] 'keyboard-escape-quit)
+
 (use-package bind-key
   :config
   (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
@@ -161,15 +231,15 @@
 
 ;; search
 (leader-def
-  "s" '(:ignore t :wk "[S]earch")
-  "s f" '(consult-find :wk "Search Files")
-  "s b" '(consult-buffer :wk "Search Buffer")
-  "s /" '(consult-buffer :wk "Search Buffer")
-  ;; TODO maybe add "s a" as in neovim?
-  "s g" '(consult-ripgrep :wk "Search by [G]rep")
-  "s h" '(consult-man :wk "Search Help")
-  "s i" '(info :wk "Search Info")
-  "s r" '(consult-recent-file :wk "Search Recent Files"))
+  "f" '(:ignore t :wk "[F]earch")
+  "f f" '(consult-find :wk "Find Files")
+  "f b" '(consult-buffer :wk "Find Buffer")
+  "f /" '(consult-buffer :wk "Find Buffer")
+  ;; TODO maybe add "f a" as in neovim?
+  "f g" '(consult-ripgrep :wk "Find by Grep")
+  "f h" '(consult-man :wk "Find Help")
+  "f i" '(info :wk "Find Info")
+  "f r" '(consult-recent-file :wk "Find Recent Files"))
 
 ;; Git
 (leader-def
@@ -194,6 +264,13 @@
   "o l" '(org-store-link :wk "Link")
   "o r" '(org-refile :wk "Refile")
   "o t" '(org-todo :wk "Todo"))
+
+;; dired keybindings
+(leader-def
+  "d" '(:ignore t :wk "[D]ired")
+  "d d" '(dired :wk "Open Dired")
+  "d j" '(dired-jump :wk "Jump to Current")
+  "d p" '(peep-dired :wk "Peep Dired"))
 
 ;; Window motions vim mode
 (global-set-key (kbd "C-h") 'evil-window-left)
@@ -535,6 +612,13 @@
   :commands magit-status
   :bind (("C-x g" . magit-status)))
 
-;; now part of evil-collection?
-;; (use-package evil-magit
-;;   :after magit)
+;; DIRED
+(use-package peep-dired
+  :after dired
+  :hook (evil-normalize-keymaps . peep-dired-hook)
+  :config
+  (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+  (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-file) ;; replace with dired-find-file once we install dired-open
+  (evil-define-key 'normal peep-dired-mode-map (kbd "h") 'peep-dired-prev-file)
+  (evil-define-key 'normal peep-dired-mode-map (kbd "l") 'peep-dired-next-file)
+)
