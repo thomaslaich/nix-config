@@ -22,14 +22,14 @@
         "when" = "neovim.mode != insert";
       }
       {
-        "key" = "space l g";
+        "key" = "space f g";
         "command" = "workbench.action.findInFiles";
         "when" = "neovim.mode != insert";
       }
       {
         "key" = "space /";
-        "command" = "workbench.action.findInFiles";
-        "when" = "neovim.mode != insert";
+        "command" = "actions.find";
+        "when" = "neovim.mode != insert && (editorFocus || editorIsOpen)";
       }
       {
         "key" = "space g s";
@@ -37,7 +37,7 @@
         "when" = "neovim.mode != insert";
       }
       {
-        "key" = "space .";
+        "key" = "space n";
         "command" = "workbench.view.explorer";
         "when" =
           "neovim.mode != insert && editorTextFocus && viewContainer.workbench.view.explorer.enabled";
@@ -71,23 +71,6 @@
         "when" =
           "neovim.mode != insert && editorTextFocus && editorHasRenameProvider && editorTextFocus && !editorReadonly";
       }
-      {
-        "key" = ", r";
-        "command" = "editor.action.goToReferences";
-        "when" =
-          "neovim.mode != insert && editorTextFocus && editorHasReferenceProvider && editorTextFocus && !inReferenceSearchEditor && !isInEmbeddedEditor";
-      }
-      {
-        "key" = "K";
-        "command" = "editor.action.showHover";
-        "when" = "neovim.mode != insert && editorTextFocus";
-      }
-      {
-        "key" = "g d";
-        "command" = "editor.action.revealDefinition";
-        "when" =
-          "neovim.mode != insert && editorTextFocus && editorHasDefinitionProvider && editorTextFocus && !isInEmbeddedEditor";
-      }
 
       # (split) window navigation
       {
@@ -108,11 +91,17 @@
       }
     ];
     userSettings = {
+      # theming
+      "editor.semanticHighlighting.enabled" = true;
+      "terminal.integrated.minimumContrastRatio" = 1;
+      "window.titleBarStyle" = "custom";
+      # "workbench.colorTheme" = "Catppuccin Macchiato";
+      "workbench.colorTheme" = "Tokyo Night Storm";
+
       # editor basics
       "editor.tabSize" = 2;
       "editor.lineNumbers" = "relative";
       "files.autoSave" = "off";
-      "workbench.colorTheme" = "Tokyo Night Storm";
       "editor.fontFamily" = "JetBrainsMono Nerd Font";
       "editor.fontLigatures" = true;
       "window.zoomLevel" = 1;
@@ -146,6 +135,8 @@
     extensions = with pkgs.vscode-marketplace; [
       # Theme
       enkia.tokyo-night
+      keifererikson.nightfox
+      catppuccin.catppuccin-vsc
 
       # Misc
       eamodio.gitlens
