@@ -131,7 +131,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- WINDOW SHORTCUTS (AS IN DOOM EMACS)
+-- [w] WINDOW MANAGEMENT
 map("n", "<leader>wh", "<C-W>h", { desc = "Go Left" })
 map("n", "<leader>wj", "<C-W>j", { desc = "Go Down" })
 map("n", "<leader>wk", "<C-W>k", { desc = "Go Up" })
@@ -153,10 +153,13 @@ map("n", "<leader>wo", "<C-W>o", { desc = "Close all other windows" })
 map("n", "<leader>ww", "<C-W>w", { desc = "Switch window" })
 map("n", "<leader>wc", "<C-W>q", { desc = "Close Window" })
 
--- BUFFER SHORTCUTS
--- TODO
+-- [b] BUFFER SHORTCUTS
+map("n", "<leader>bk", ":bdelete<CR>", { desc = "Kill buffer" })
+map("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
+map("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
+map("n", "<leader>bb", ":Telescope buffers<CR>", { desc = "Switch buffer" })
 
--- SEARCH KEYBINDINGS
+-- [f] FIND KEYBINDINGS
 
 -- general search
 -- Telescope live_grep in git root
@@ -198,7 +201,7 @@ vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 local telescope_builtin = require("telescope.builtin")
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', telescope_builtin.oldfiles, { desc = '[?] Find recently opened files' })
+vim.keymap.set('n', '<leader>?', telescope_builtin.man_pages, { desc = '[?] Find in help' })
 vim.keymap.set('n', '<leader><space>', telescope_builtin.buffers, { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
@@ -208,26 +211,28 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-vim.keymap.set('n', '<leader>sf', telescope_builtin.find_files, { desc = 'Search Files' })
+vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, { desc = 'Search Files' })
 
-vim.keymap.set("n", "<leader>sa", function() telescope_builtin.find_files({ no_ignore = true, hidden = true }) end,
+vim.keymap.set("n", "<leader>fa", function() telescope_builtin.find_files({ no_ignore = true, hidden = true }) end,
   { desc = "[S]earch [a]ll Files" })
-vim.keymap.set('n', '<leader>sh', telescope_builtin.help_tags, { desc = 'Search Help' })
-vim.keymap.set('n', '<leader>sw', telescope_builtin.grep_string, { desc = 'Search current Word' })
-vim.keymap.set('n', '<leader>sg', telescope_builtin.live_grep, { desc = 'Search by Grep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = 'Search by Grep on Git Root' })
-vim.keymap.set('n', '<leader>sd', telescope_builtin.diagnostics, { desc = 'Search Diagnostics' })
-vim.keymap.set('n', '<leader>sr', telescope_builtin.resume, { desc = 'Search Resume' })
-vim.keymap.set('n', '<leader>sc', telescope_builtin.commands, { desc = 'Search Commands' })
-vim.keymap.set("n", "<leader>sy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
+vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, { desc = 'Search Help' })
+vim.keymap.set('n', '<leader>fw', telescope_builtin.grep_string, { desc = 'Search current Word' })
+vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, { desc = 'Search by Grep' })
+vim.keymap.set('n', '<leader>fG', ':LiveGrepGitRoot<cr>', { desc = 'Search by Grep on Git Root' })
+vim.keymap.set('n', '<leader>fd', telescope_builtin.diagnostics, { desc = 'Search Diagnostics' })
+vim.keymap.set('n', '<leader>fr', telescope_builtin.resume, { desc = 'Search Resume' })
+vim.keymap.set('n', '<leader>fc', telescope_builtin.commands, { desc = 'Search Commands' })
+vim.keymap.set("n", "<leader>fy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
+vim.keymap.set('n', '<leader>fo', telescope_builtin.oldfiles, { desc = 'Find recently opened files' })
 
-vim.keymap.set("n", "<leader>st", telescope_builtin.treesitter, { desc = "Search Treesitter" })
+vim.keymap.set("n", "<leader>ft", telescope_builtin.treesitter, { desc = "Search Treesitter" })
 
--- Git specific
+-- [g] GIT KEYBINDINGS
+
 vim.keymap.set('n', '<leader>gf', telescope_builtin.git_files, { desc = 'Search Git Files' })
 vim.keymap.set("n", "<leader>gc", telescope_builtin.git_commits, { desc = "Git Commits" })
 vim.keymap.set("n", "<leader>gb", telescope_builtin.git_branches, { desc = "Git Branches" })
 vim.keymap.set("n", "<leader>gs", telescope_builtin.git_status, { desc = "Git Status" })
 
--- LSP specific
+-- MISC
 vim.keymap.set("n", "<leader>mc", require "telescope".extensions.metals.commands, { desc = "metals commands" })
