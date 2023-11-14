@@ -5,10 +5,6 @@
     vimAlias = true;
     defaultEditor = true;
 
-    # note that we use neovim also as an extension in vscode.
-    # therefore, we need to disable the setup of most extensions for vscode specifically.
-    # this is done using the vim.g.vscode variable.
-
     plugins = let
       treesitter = {
         plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
@@ -182,9 +178,7 @@
           plugin = pkgs.vimPlugins.lsp-progress-nvim;
           type = "lua";
           config = ''
-            if not vim.g.vscode then
-              require"lsp-progress".setup {}
-            end
+            require"lsp-progress".setup {}
           '';
         };
 
@@ -212,13 +206,11 @@
           plugin = pkgs.vimPlugins.git-blame-nvim;
           type = "lua";
           config = ''
-            if not vim.g.vscode then
-              require"gitblame".setup {
-                enabled = false,
-              }
+            require"gitblame".setup {
+              enabled = false,
+            }
 
-              vim.keymap.set("n", "<leader>hb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
-            end
+            vim.keymap.set("n", "<leader>hb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
           '';
         }
         { plugin = pkgs.vimPlugins.vim-fugitive; }

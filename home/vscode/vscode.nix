@@ -72,7 +72,7 @@
           "neovim.mode != insert && editorTextFocus && editorHasRenameProvider && editorTextFocus && !editorReadonly";
       }
 
-      # (split) window navigation
+      # (split) window navigation (next to default vim)
       {
         "key" = "ctrl+h";
         "command" = "workbench.action.navigateLeft";
@@ -88,6 +88,53 @@
       {
         "key" = "ctrl+j";
         "command" = "workbench.action.navigateDown";
+      }
+
+      # make vscode window navigation more like emacs
+      {
+        "key" = "space w h";
+        "command" = "workbench.action.navigateLeft";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space w j";
+        "command" = "workbench.action.navigateDown";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space w k";
+        "command" = "workbench.action.navigateUp";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space w l";
+        "command" = "workbench.action.navigateRight";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space w c";
+        "command" = "workbench.action.closeActiveEditor";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space w o";
+        "command" = "workbench.action.closeOtherEditors";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space w s";
+        "command" = "workbench.action.splitEditorOrthogonal";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space w v";
+        "command" = "workbench.action.splitEditor";
+        "when" = "neovim.mode != insert";
+      }
+      {
+        "key" = "space .";
+        "command" = "extension.dired.open";
+        "when" = "editorTextFocus && !inDebugRepl";
       }
     ];
     userSettings = {
@@ -106,6 +153,8 @@
       "editor.fontLigatures" = true;
       "window.zoomLevel" = 1;
       "editor.minimap.enabled" = false;
+      # no tabs (like my emacs and vim)
+      "workbench.editor.showTabs" = false;
 
       # disable updates & synching
       "extensions.autoUpdate" = false;
@@ -115,7 +164,8 @@
 
       # neovim extension config
       "extensions.experimental.affinity" = { "asvetliakov.vscode-neovim" = 1; };
-      "vscode-neovim.neovimInitVimPaths.darwin" = "~/.config/nvim/init.lua";
+      # no need for plugins -> thus, commented for now
+      # "vscode-neovim.neovimInitVimPaths.darwin" = "~/.config/nvim/init.lua";
 
       # svelte extension config
       "svelte.enable-ts-plugin" = true;
@@ -130,6 +180,10 @@
         "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
       };
       "extensions.ignoreRecommendations" = true;
+
+      # dired
+      "dired.ask_directory" = false;
+
     };
 
     extensions = with pkgs.vscode-marketplace; [
@@ -144,6 +198,7 @@
       github.copilot
       github.copilot-chat
       postman.postman-for-vscode
+      rrudi.vscode-dired
 
       # JS/TS
       ms-vscode.vscode-typescript-next
