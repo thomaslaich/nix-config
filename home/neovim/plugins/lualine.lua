@@ -1,8 +1,6 @@
 if not vim.g.vscode then
   require("lualine").setup({
-    options = {
-      theme = "tokyonight",
-    },
+    options = { theme = "auto", },
     sections = {
       lualine_a = { { "mode", upper = true } },
       lualine_b = { { "branch", icon = "" } },

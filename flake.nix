@@ -15,11 +15,14 @@
     vimplugins-overlay.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
+
+    # themes
+    colorscheme.url = "github:buntec/nix-colorscheme";
   };
 
   outputs = { self, darwin, nixpkgs, home-manager, flake-utils, treefmt-nix
     , nix-vscode-extensions, neorg-overlay, vimplugins-overlay, emacs-overlay
-    , ... }@attrs:
+    , colorscheme, ... }@attrs:
     let
       inherit (nixpkgs) lib;
       inherit (lib) genAttrs;
@@ -113,6 +116,13 @@
                 useUserPackages = true;
                 users.${machine.user} = {
                   imports = [
+                    {
+                      imports = [ colorscheme.homeModules.colorscheme ];
+                      colorscheme = {
+                        enable = true;
+                        name = "catppuccin-macchiato";
+                      };
+                    }
                     ./home/home.nix
                     ./home/home-darwin.nix
                     ./home/home-${machine.name}.nix

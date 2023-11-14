@@ -115,13 +115,6 @@
       ];
 
       ui-plugins = let
-        # editor color scheme
-        tokyonight = {
-          plugin = pkgs.vimPlugins.tokyonight-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/tokyonight.lua;
-        };
-
         # a dashboard for neovim (TODO make this nicer)
         dashboard = {
           plugin = pkgs.vimPlugins.dashboard-nvim;
@@ -204,7 +197,6 @@
         lualine
         nvim-notify
         # nvim-ufo
-        tokyonight
         trouble
         web-devicons
         which-key

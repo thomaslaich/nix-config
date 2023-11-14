@@ -37,13 +37,6 @@
 
 (use-package nerd-icons)
 
-(use-package catppuccin-theme
-  :config
-  (load-theme 'catppuccin :no-confirm))
-
-(setq catppuccin-flavor 'macchiato) ;; or 'latte, 'macchiato, or 'mocha
-(catppuccin-reload)
-
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
@@ -99,9 +92,9 @@
   (global-evil-surround-mode 1))
 
 ;;; KEYBINDINGS
-;; (use-package bind-key
-;;   :config
-;;   (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
+(use-package bind-key
+  :config
+  (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
 (use-package buffer-move)
 
 (use-package general
@@ -390,9 +383,10 @@
   )
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-  :init
-  (savehist-mode))
+;; (use-package savehist
+;;   :init
+;;   (savehist-mode))
+(savehist-mode)
 
 ;; A few more useful configurations...
 (use-package emacs
