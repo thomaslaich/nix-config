@@ -46,9 +46,7 @@
       vimdiff = "nvim -d";
 
       # emacs
-      # TODO enable once config is reasonably stable
-      # emacsdaemon = "emacs --daemon";
-      # emacs = "emacsclient -c";
+      e = "emacsclient -c";
 
       # tmux
       t = "tmux";
@@ -60,6 +58,9 @@
       # ls
       la = "eza -la --git --icons";
       l = "eza -l --git --icons";
+
+      # cd
+      z = "zoxide";
     };
   };
 }

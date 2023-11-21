@@ -24,35 +24,7 @@
       defaultInitFile = true;
 
       # Package is optional, defaults to pkgs.emacs
-      package = pkgs.emacs-pgtk.overrideAttrs (old: {
-        # the following is need for darwin (i.e., replicate homebrew emacs-plus patches)
-        patches = (old.patches or [ ]) ++ [
-          # Fix OS window role (needed for window managers like yabai)
-          (pkgs.fetchpatch {
-            url =
-              "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/fix-window-role.patch";
-            sha256 = "sha256-+z/KfsBm1lvZTZNiMbxzXQGRTjkCFO4QPlEK35upjsE=";
-          })
-          # Use poll instead of select to get file descriptors
-          (pkgs.fetchpatch {
-            url =
-              "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/poll.patch";
-            sha256 = "sha256-jN9MlD8/ZrnLuP2/HUXXEVVd6A+aRZNYFdZF8ReJGfY=";
-          })
-          # Enable rounded window with no decoration
-          (pkgs.fetchpatch {
-            url =
-              "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-29/round-undecorated-frame.patch";
-            sha256 = "sha256-uYIxNTyfbprx5mCqMNFVrBcLeo+8e21qmBE3lpcnd+4=";
-          })
-          # Make Emacs aware of OS-level light/dark mode
-          (pkgs.fetchpatch {
-            url =
-              "https://raw.githubusercontent.com/d12frosted/homebrew-emacs-plus/master/patches/emacs-28/system-appearance.patch";
-            sha256 = "sha256-oM6fXdXCWVcBnNrzXmF0ZMdp8j0pzkLE66WteeCutv8=";
-          })
-        ];
-      });
+      package = pkgs.emacs29-pgtk.override { withNativeCompilation = true; };
 
       # By default emacsWithPackagesFromUsePackage will only pull in
       # packages with `:ensure`, `:ensure t` or `:ensure <package name>`.
@@ -78,11 +50,16 @@
       # (lsp-dependency 'typescript `(:system "${pkgs.nodePackages.typescript}/bin/tsserver"))))
       extraEmacsPackages = epkgs:
         with epkgs; [
+          # packages from melpa (pre-requisites)
+          # TODO can I just move them into config.el?
           cask
           treesit-grammars.with-all-grammars
           nerd-icons
+          oauth2
+
+          # custom built packages
           copilot
-          lsp-install-servers
+          lsp-install-servers # TODO <- this does not seem to work
         ];
 
       # Optionally override derivations.
@@ -105,9 +82,10 @@
             src = pkgs.fetchFromGitHub {
               owner = "zerolfx";
               repo = "copilot.el";
-              rev = "7cb7beda89145ccb86a4324860584545ec016552";
+              rev = "30a054f8569550853a9b6f947a2fe1ded7e7cc6b";
               sha256 = "sha256-57ACMikRzHSwRkFdEn9tx87NlJsWDYEfmg2n2JH8Ig0=";
             };
+
           };
 
           lsp-install-servers = epkgs.trivialBuild {

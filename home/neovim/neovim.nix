@@ -209,8 +209,6 @@
             require"gitblame".setup {
               enabled = false,
             }
-
-            vim.keymap.set("n", "<leader>hb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
           '';
         }
         { plugin = pkgs.vimPlugins.vim-fugitive; }

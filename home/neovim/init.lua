@@ -1,10 +1,10 @@
 -- local cmd = vim.cmd
 -- local api = vim.api
 local g = vim.g
+local o = vim.o
 local map = vim.keymap.set
 local opt = vim.opt
 local global_opt = vim.opt_global
-
 
 g.mapleader = " "
 g.maplocalleader = ","
@@ -25,13 +25,17 @@ global_opt.splitright = true                               -- Put new windows ri
 global_opt.termguicolors = true                            -- True color support
 global_opt.wildmode = "list:longest"                       -- Command-line completion mode
 global_opt.clipboard = "unnamedplus"
+-- global_opt.hlsearch = false                                -- Disable search highlight
+global_opt.mouse = "a"                                     -- Enable mouse support
 
 local indent = 2
 
 opt.expandtab = true      -- Use spaces instead of tabs
 opt.shiftwidth = indent   -- Size of an indent
-opt.smartindent = true    -- Insert indents automatically
+-- opt.smartindent = true    -- Insert indents automatically
 opt.tabstop = indent      -- Number of spaces tabs count for
+vim.bo.softtabstop = 2
+opt.breakindent = true    -- Break line indent
 
 opt.list = true           -- Show some invisible characters (tabs...)
 opt.number = true         -- Print line number
@@ -233,6 +237,9 @@ vim.keymap.set('n', '<leader>gf', telescope_builtin.git_files, { desc = 'Search 
 vim.keymap.set("n", "<leader>gc", telescope_builtin.git_commits, { desc = "Git Commits" })
 vim.keymap.set("n", "<leader>gb", telescope_builtin.git_branches, { desc = "Git Branches" })
 vim.keymap.set("n", "<leader>gs", telescope_builtin.git_status, { desc = "Git Status" })
+
+-- [t] Toggle
+vim.keymap.set("n", "<leader>tb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
 
 -- MISC
 vim.keymap.set("n", "<leader>mc", require "telescope".extensions.metals.commands, { desc = "metals commands" })

@@ -1,6 +1,6 @@
-;;; GENERAL SETUP (MISC)
-
 ;; -*- lexical-binding: t; -*-
+
+;;; GENERAL SETUP (MISC)
 
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
@@ -72,6 +72,12 @@
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
+(use-package minions
+  :hook (doom-modeline-mode . minions-mode))
+
+;; folding with origami
+(use-package origami
+  :hook (yaml-mode . origami-mode))
 
 ;; tranparency (doing nothing on MacOS :( )
 (add-to-list 'default-frame-alist '(alpha-background . 90))
@@ -79,9 +85,27 @@
 ;; Hide minor modes from modeline (by adding :diminish to use-package)
 (use-package diminish)
 
-(load-theme 'catppuccin t)
-(setq catppuccin-flavor 'macchiato)
-(catppuccin-reload)
+;; (load-theme 'catppuccin t)
+;; (setq catppuccin-flavor 'macchiato)
+;; (catppuccin-reload)
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t)
+  ;; (load-theme 'doom-nord-light	 t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (use-package dashboard
   :ensure t 
@@ -89,9 +113,8 @@
   (setq initial-buffer-choice 'dashboard-open)
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
-  ;; (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
-  ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
-  ;; (setq dashboard-startup-banner "~/.config/emacs/images/dtmacs-logo.png")  ;; use custom image as banner
+  ;; (setq dashboard-startup-banner "./banner.txt") ;; use standard emacs logo as banner
+  (setq dashboard-startup-banner 'logo)
   (setq dashboard-center-content t) ;; set to 't' for centered content
   (setq dashboard-items '((recents . 5)
                           (agenda . 5)
@@ -100,9 +123,20 @@
                           (registers . 3)))
   :custom 
   (dashboard-modify-heading-icons '((recents . "file-text")
-				      (bookmarks . "book")))
+                                    (bookmarks . "book")))
   :config
   (dashboard-setup-startup-hook))
+
+
+;; notifications
+(use-package alert
+  :commands alert
+  :config
+  (setq alert-default-style 'notifications))
+
+;; rainbow delimiters
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;;; EVIL MODE
 
@@ -122,7 +156,6 @@
 (use-package evil-collection
   :after evil
   :config
-  (setq evil-collection-mode-list '(dashboard dired ibuffer magit))
   (evil-collection-init))
 
 (use-package evil-tutor)
@@ -148,6 +181,34 @@
 (use-package evil-surround
   :config
   (global-evil-surround-mode 1))
+
+;; multiple cursors
+
+;; evil-multiedit
+(use-package evil-multiedit
+  :config
+  (evil-multiedit-default-keybinds))
+
+
+;; evil-mc
+(use-package evil-mc
+  :config
+  evil-define-key ('(normal visual) 'global
+                   "gzm" #'evil-mc-make-all-cursors
+                   "gzu" #'evil-mc-undo-all-cursors
+                   "gzz" #'+evil/mc-toggle-cursors
+                   "gzc" #'+evil/mc-make-cursor-here
+                   "gzn" #'evil-mc-make-and-goto-next-cursor
+                   "gzp" #'evil-mc-make-and-goto-prev-cursor
+                   "gzN" #'evil-mc-make-and-goto-last-cursor
+                   "gzP" #'evil-mc-make-and-goto-first-cursor
+                   (with-eval-after-load 'evil-mc
+                     (evil-define-key '(normal visual) evil-mc-key-map
+                       (kbd "C-n") #'evil-mc-make-and-goto-next-cursor
+                       (kbd "C-N") #'evil-mc-make-and-goto-last-cursor
+                       (kbd "C-p") #'evil-mc-make-and-goto-prev-cursor
+                       (kbd "C-P") #'evil-mc-make-and-goto-first-cursor)))
+  (global-evil-mc-mode 1))
 
 ;; editing config
 
@@ -239,7 +300,8 @@
   "f g" '(consult-ripgrep :wk "Find by Grep")
   "f h" '(consult-man :wk "Find Help")
   "f i" '(info :wk "Find Info")
-  "f r" '(consult-recent-file :wk "Find Recent Files"))
+  "f r" '(consult-recent-file :wk "Find Recent Files")
+  "f m" '(consult-notmuch-tree :wk "Find Mail"))
 
 ;; Git
 (leader-def
@@ -260,10 +322,22 @@
 (leader-def
   "o" '(:ignore t :wk "[O]rg")
   "o a" '(org-agenda :wk "Agenda")
+  "o f" '(cfw:open-org-calendar :wk "Calendar")
   "o c" '(org-capture :wk "Capture")
   "o l" '(org-store-link :wk "Link")
   "o r" '(org-refile :wk "Refile")
-  "o t" '(org-todo :wk "Todo"))
+  "o t" '(org-todo :wk "Todo")
+  "o n" '(notmuch :wk "Notmuch Mail")
+  "o m" '(mu4e :wk "Mail")
+  "o r" '(elfeed :wk "RSS Feeds"))
+
+;; email bindings
+(leader-def
+  "m" '(:ignore t :wk "[M]ail")
+  "m f" '(consult-notmuch-tree :wk "Find Mail")
+  "m n" '(notmuch :wk "Notmuch Mail")
+  "m m" '(mu4e :wk "Mail")
+  "m c" '(mu4e-compose-new :wk "Compose Mail"))
 
 ;; dired keybindings
 (leader-def
@@ -309,42 +383,9 @@
 "c" '(:ignore t :wk "[C]ode")
 "c c" '(compile :wk "Compile"))
 
-;; LSP only keybindings
-(add-hook 'lsp-mode-hook
-          (lambda ()
-            (progn 
-              (leader-def
-                "l" '(:ignore t :wk "[L]SP")
-                "l d" '(lsp-find-definition :wk "[D]efinition")
-                "l r" '(lsp-find-references :wk "[R]eferences")
-                "l i" '(lsp-organize-imports :wk "[I]mports")
-                "l f" '(lsp-format-buffer :wk "[F]ormat Buffer")
-
-                "c d" '(lsp-find-definition :wk "Definition")
-                "c f" '(lsp-format-buffer :wk "Format Buffer")
-                "c i" '(lsp-organize-imports :wk "Imports")
-                "c r" '(lsp-find-references :wk "References")
-                "c t" '(lsp-find-type-definition :wk "Type Definition"))
-
-              (local-leader-def
-                "d" `(lsp-find-definition :wk "Definition")
-                "f" `(lsp-format-buffer :wk "Format Buffer"))
-            ))
-          )
-
 ;; local leader shorts
 
 (leader-def "p" '(projectile-command-map :wk "[P]rojects"))
-
-;; TODO not working
-;; standardized
-(define-key evil-motion-state-map (kbd "gd") 'lsp-find-declaration)
-
-;; (global-set-key (kbd "g d") '(lsp-find-definition :wk "[D]efinition"))
-;; (global-set-key "g D" '(lsp-find-declaration :wk "[D]eclaration"))
-;; (global-set-key "g i" '(lsp-find-implementation :wk "[I]mplementation"))
-;; (global-set-key "g r" '(lsp-find-references :wk "[R]eferences"))
-;; (global-set-key (kbd "K") '(lsp-describe-thing-at-point :wk "[K]ind"))
 
 ;;; WHICH-KEY
 (use-package which-key
@@ -379,8 +420,163 @@
 ;; disable electric indent
 (electric-indent-mode -1)
 
+;; GTD setup
+(setq org-agenda-files '("~/notes/org/gtd/inbox.org"
+                         "~/notes/org/gtd/gtd.org"
+                         "~/notes/org/gtd/tickler.org"
+                         "~/notes/org/gtd/appointments.org"
+                         "~/notes/org/gtd/appointments-private.org"))
+
+(setq org-capture-templates '(("t" "Todo [inbox]" entry
+                               (file+headline "~/notes/org/gtd/inbox.org" "Tasks")
+                               "* TODO %i%?")
+                              ("T" "Tickler" entry
+                               (file+headline "~/notes/org/gtd/tickler.org" "Tickler")
+                               "* %i%? \n %U")))
+
+(setq org-refile-targets '(("~/notes/org/gtd/gtd.org" :maxlevel . 3)
+                           ("~/notes/org/gtd/someday.org" :level . 1)
+                           ("~/notes/org/gtd/tickler.org" :maxlevel . 2)))
+
+(setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+;; org roam
+(use-package org-roam)
+
+;; nice calendars
+(use-package calfw)
+(use-package calfw-org
+  :after calfw)
+
+
+
+;;; CREDENTIAL MANAGEMENT
+
+;; I use 1password
+;; TODO can we do oauth2 instead and access the plist directly without 1password?
+(use-package auth-source-1password
+  :config
+  (auth-source-1password-enable))
+(setq auth-source-debug t)
+
+;; EMAIL & ORG SYNCHRONIZATION
+
+(use-package mu4e
+  :config
+  ;; This is set to 't' to avoid mail syncing issues when using mbsync
+  (setq mu4e-change-filenames-when-moving t)
+
+  ;; Refresh mail using isync every 10 minutes
+  ;; Since I'm being prompted for 1pass authorization every time, I'm disabling automatic refresh for now
+  ;; (setq mu4e-update-interval (* 10 60))
+  (setq mu4e-get-mail-command "mbsync -a")
+  (setq mu4e-maildir "~/Maildir/gmail")
+  
+  ;; Further customization:
+  (setq mu4e-html2text-command "w3m -T text/html" ; how to hanfle html-formatted emails
+        mu4e-headers-auto-update t                ; avoid to type `g' to update
+        mu4e-view-show-images t                   ; show images in the view buffer
+        mu4e-compose-signature-auto-include nil   ; I don't want a message signature
+        mu4e-use-fancy-chars t)                   ; allow fancy icons for mail threads
+  
+  (setq mu4e-inbox-folder "/INBOX")
+  (setq mu4e-drafts-folder "/Drafts")
+  (setq mu4e-sent-folder   "/Sent Mail")
+  (setq mu4e-refile-folder "/All Mail")
+  (setq mu4e-trash-folder  "/Trash")
+  
+  (setq user-full-name "Thomas Laich")
+  (setq user-mail-address "thomaslaich@gmail.com")
+
+  (setq mu4e-maildir-shortcuts
+        '(("/INBOX"     . ?i)
+          ("/Primary"   . ?p)
+          ("/Updates"   . ?u)
+          ("/Starred"   . ?r)
+          ("/All Mail"  . ?a)
+          ("/Sent Mail" . ?s)
+          ("/Drafts"    . ?d)
+          ("/Trash"     . ?t)))
+  
+  ;; Display options
+  (setq mu4e-view-show-images t)
+  (setq mu4e-view-show-addresses 't)
+
+  ;; Use mu4e for sending e-mail
+  (setq mail-user-agent 'mu4e-user-agent
+        message-send-mail-function 'smtpmail-send-it
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-user "thomaslaich"
+        ;; smtpmail-smtp-service 465
+        smtpmail-smtp-service 587
+        smtpmail-stream-type 'starttls)
+
+  ;; Some styling
+  (add-to-list 'mu4e-header-info-custom
+              '(:empty . (:name "Empty"
+                          :shortname ""
+                          :function (lambda (msg) "  "))))
+  (setq mu4e-headers-fields '((:empty         .   10)
+                              (:human-date    .   12)
+                              (:flags         .    6)
+                              (:mailing-list  .   10)
+                              (:from          .   22)
+                              (:subject       .   nil)))
+  (setq mu4e-headers-unread-mark    '("u" . "📩 "))
+  (setq mu4e-headers-draft-mark     '("D" . "🚧 "))
+  (setq mu4e-headers-flagged-mark   '("F" . "🚩 "))
+  (setq mu4e-headers-new-mark       '("N" . "✨ "))
+  (setq mu4e-headers-passed-mark    '("P" . "↪ "))
+  (setq mu4e-headers-replied-mark   '("R" . "↩ "))
+  (setq mu4e-headers-seen-mark      '("S" . " "))
+  (setq mu4e-headers-trashed-mark   '("T" . "🗑️"))
+  (setq mu4e-headers-attach-mark    '("a" . "📎 "))
+  (setq mu4e-headers-encrypted-mark '("x" . "🔑 "))
+  (setq mu4e-headers-signed-mark    '("s" . "🔏 "))
+  (setq mu4e-headers-calendar-mark  '("c" . "📅 "))
+  (setq mu4e-headers-personal-mark '("p" . "👤 "))
+  (setq mu4e-headers-mailing-list-mark '("l" . "📧 "))
+  )
+
+;; allow mu4e functions in org-mode
+;; (use-package mu4e-dashboard)
+
+;; TODO does this work?
+;; alerts
+(use-package mu4e-alert
+  :config
+  (mu4e-alert-set-default-style 'libnotify)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
+
+;; Notmuch 
+;; TODO maybe remove this?
+(use-package notmuch)
+(use-package consult-notmuch
+  :after
+  notmuch)
+(setq notmuch-search-oldest-first nil)
+
+
+(with-temp-buffer
+  (insert-file-contents "~/.emacs.d/gcal-clientid")
+  (setq org-gcal-client-id (replace-regexp-in-string "\n$" "" (buffer-string))))
+(with-temp-buffer
+  (insert-file-contents "~/.emacs.d/gcal-clientsecret")
+  (setq org-gcal-client-secret (replace-regexp-in-string "\n$" "" (buffer-string))))
+
+;; Google calendar sync
+(use-package org-gcal
+  :config
+  (setq org-gcal-fetch-file-alist '(("thomaslaich@gmail.com" .  "~/notes/org/gtd/appointments.org")))
+  (org-gcal-reload-client-id-secret))
+
+;; enter pinentry password directly from emacs (no popup)
+(setq epg-pinentry-mode 'loopback)
+;; prevent logging in all the time
+(setq-default plstore-cache-passphrase-for-symmetric-encryption t)
+
 ;;; COMPLETION (VERTICO&CONSULT)
-;; NOTE: use Vertico&Consult instead of Ivy&Counsel
+;; NOTE: use Vertico&Consult instead of Ivy&Counsel because cool kids use consult/vertico/embark/corfu
 
 ;; Grepping using Consult
 ;; Example configuration for Consult
@@ -389,47 +585,14 @@
   ;; relevant when you use the default completion UI.
   :hook (completion-list-mode . consult-preview-at-point-mode)
 
-  ;; The :init configuration is always executed (Not lazy)
-  :init
+  :custom
+  ;; set consult project root
+  (setq consult-project-function #'projectile-project-root)
 
-  ;; Optionally configure the register formatting. This improves the register
-  ;; preview for `consult-register', `consult-register-load',
-  ;; `consult-register-store' and the Emacs built-ins.
-  ;; (setq register-preview-delay 0.5
-  ;;       register-preview-function #'consult-register-format)
-
-  ;; Optionally tweak the register preview window.
-  ;; This adds thin lines, sorting and hides the mode line of the window.
-  ;; (advice-add #'register-preview :override #'consult-register-window)
-
-  ;; Use Consult to select xref locations with preview
-  ;; (setq xref-show-xrefs-function #'consult-xref
-  ;;       xref-show-definitions-function #'consult-xref)
-
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
   :config
-
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key "M-.")
-  ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  ;; (consult-customize
-  ;;  consult-theme :preview-key '(:debounce 0.2 any)
-  ;;  consult-ripgrep consult-git-grep consult-grep
-  ;;  consult-bookmark consult-recent-file consult-xref
-  ;;  consult--source-bookmark consult--source-file-register
-  ;;  consult--source-recent-file consult--source-project-recent-file
-  ;;  ;; :preview-key "M-."
-  ;;  :preview-key '(:debounce 0.4 any))
-
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
   (setq consult-narrow-key "<") ;; "C-+"
-)
+  )
+  
 
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
@@ -441,49 +604,45 @@
   ;; package.
   (marginalia-mode))
 
+(use-package embark
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim))        ;; good alternative: M-.
+   ;; ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
+  ;; strategy, if you want to see the documentation from multiple providers.
+  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package vertico
   :init
-  (vertico-mode)
-  ;; TODO maybe we want to add one of these?
-  
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  ;; (setq vertico-count 20)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
+  (vertico-mode))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
-;; (use-package savehist
-;;   :init
-;;   (savehist-mode))
 (savehist-mode)
 
 ;; A few more useful configurations...
 (use-package emacs
   :init
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
 
@@ -534,16 +693,43 @@
   ;; C#
   (csharp-mode . lsp-deferred))
 
-;; completion
-(use-package company)
-(add-hook 'after-init-hook 'global-company-mode)
-(use-package company-box
-  :hook (company-mode . company-box-mode))
+(use-package lsp-ui
+  :after lsp-mode)
 
+;; completion
+;; (use-package company)
+;; (add-hook 'after-init-hook 'global-company-mode)
+;; (use-package company-box
+;;   :hook (company-mode . company-box-mode))
+
+;; cool kids use corfu, not company
+(use-package corfu
+  ;; Optional customizations
+  :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+  :init
+  (global-corfu-mode))
 
 ;; Lispy (for emacs lisp)
-(use-package lispy)
-(add-hook 'emacs-lisp-mode-hook (lambda () (lispy-mode 1)))
+;; TODO I get very strange behaviour with lispy sometimes, not sure I like it
+;; Would love to have an LSP and formatting capabilities for emacs lisp :(
+(use-package lispy
+  :hook ((emacs-lisp-mode . lispy-mode)
+         (scheme-mode . lispy-mode)))
+(use-package lispyville
+  :hook ((lispy-mode . lispyville-mode))
+  :config
+  (lispyville-set-key-theme '(operators c-w additional
+                                        additional-movement slurp/barf-cp
+                                        prettify)))
 
 ;; Nix
 (use-package nix-mode
@@ -604,6 +790,7 @@
               ("s-p" . projectile-command-map)
               ("C-c p" . projectile-command-map)))
 
+
 ;; Projectile consult integration
 (use-package consult-projectile)
 
@@ -612,7 +799,8 @@
   :commands magit-status
   :bind (("C-x g" . magit-status)))
 
-;; DIRED
+;;; DIRED
+
 (use-package peep-dired
   :after dired
   :hook (evil-normalize-keymaps . peep-dired-hook)
@@ -622,3 +810,18 @@
   (evil-define-key 'normal peep-dired-mode-map (kbd "h") 'peep-dired-prev-file)
   (evil-define-key 'normal peep-dired-mode-map (kbd "l") 'peep-dired-next-file)
 )
+
+
+;; RSS feeds
+(use-package elfeed
+  :config
+  (setq elfeed-feeds
+        '(("https://planet.emacslife.com/atom.xml" coding emacs)
+          ("https://hnrss.org/frontpage" coding hackernews)
+          ("https://hnrss.org/jobs" hackernews jobs)
+          ("https://hackernoon.com/feed" coding hackernoon)
+          ("https://devblogs.microsoft.com/dotnet/feed/" coding dotnet)
+          ("https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" news)
+          ("https://www.nzz.ch/startseite.rss" news)
+          )))
+

@@ -56,8 +56,7 @@
       "firefox"
       "google-chrome"
       "kitty"
-      # mos allows that mouse scrolling and trackpad scrolling is inverted
-      "mos"
+      "mos" # mos allows that mouse scrolling and trackpad scrolling is inverted
       "nordvpn"
       "skype"
       "spotify"

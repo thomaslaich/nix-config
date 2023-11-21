@@ -9,6 +9,10 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    # overlays
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
@@ -21,8 +25,8 @@
   };
 
   outputs = { self, darwin, nixpkgs, home-manager, flake-utils, treefmt-nix
-    , nix-vscode-extensions, neorg-overlay, vimplugins-overlay, emacs-overlay
-    , colorscheme, ... }@attrs:
+    , agenix, nix-vscode-extensions, neorg-overlay, vimplugins-overlay
+    , emacs-overlay, colorscheme, ... }@attrs:
     let
       inherit (nixpkgs) lib;
       inherit (lib) genAttrs;
@@ -76,9 +80,14 @@
             {
               nixpkgs.overlays = overlays;
               nixpkgs.config.allowUnfree = true;
+              # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
+              # in turn gnupg 2.2.x has an insecure dep
+              # TODO remove when gnupg gets upgraded to >= 2.4.3
+              nixpkgs.config.permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
             }
             ./system/configuration-nixos.nix
             ./system/configuration-${machine.name}.nix
+            agenix.homeManagerModules.default # user secrets
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -106,9 +115,14 @@
             {
               nixpkgs.overlays = overlays;
               nixpkgs.config.allowUnfree = true;
+              # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
+              # in turn gnupg 2.2.x has an insecure dep
+              # TODO remove when gnupg gets upgraded to >= 2.4.3
+              nixpkgs.config.permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
             }
             ./system/configuration-darwin.nix
             ./system/configuration-${machine.name}.nix
+            agenix.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               home-manager = {
@@ -116,11 +130,12 @@
                 useUserPackages = true;
                 users.${machine.user} = {
                   imports = [
+                    agenix.homeManagerModules.default
                     {
                       imports = [ colorscheme.homeModules.colorscheme ];
                       colorscheme = {
                         enable = true;
-                        name = "catppuccin-macchiato";
+                        name = "tokyonight-storm";
                       };
                     }
                     ./home/home.nix
