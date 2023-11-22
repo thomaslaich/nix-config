@@ -5,7 +5,8 @@ IMAPAccount gmail
 # Address to connect to
 Host imap.gmail.com
 User thomaslaich@gmail.com
-PassCmd "op item get smtp.gmail.com --fields password"
+# PassCmd "op item get smtp.gmail.com --fields password"
+PassCmd "cat ~/.mbsync-gmail-pass"
 AuthMechs LOGIN
 SSLType IMAPS
 SSLVersions TLSv1.3

@@ -45,49 +45,20 @@
       alwaysTangle = true;
 
       # Optionally provide extra packages not in the configuration file.
-
-      # (lsp-dependency 'typescript-language-server `(:system "${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server"))
-      # (lsp-dependency 'typescript `(:system "${pkgs.nodePackages.typescript}/bin/tsserver"))))
       extraEmacsPackages = epkgs:
         with epkgs; [
           # packages from melpa (pre-requisites)
           # TODO can I just move them into config.el?
-          cask
           treesit-grammars.with-all-grammars
           nerd-icons
-          oauth2
 
           # custom built packages
-          copilot
           lsp-install-servers # TODO <- this does not seem to work
         ];
 
       # Optionally override derivations.
       override = epkgs:
         epkgs // {
-          weechat = epkgs.melpaPackages.weechat.overrideAttrs
-            (old: { patches = [ ./weechat-el.patch ]; });
-          # Install copilot.el
-          copilot = epkgs.trivialBuild {
-            pname = "copilot";
-            version = "2023-04-27";
-
-            packageRequires = with epkgs; [ dash editorconfig s ];
-
-            preInstall = ''
-              mkdir -p $out/share/emacs/site-lisp
-              cp -vr $src/dist $out/share/emacs/site-lisp
-            '';
-
-            src = pkgs.fetchFromGitHub {
-              owner = "zerolfx";
-              repo = "copilot.el";
-              rev = "30a054f8569550853a9b6f947a2fe1ded7e7cc6b";
-              sha256 = "sha256-57ACMikRzHSwRkFdEn9tx87NlJsWDYEfmg2n2JH8Ig0=";
-            };
-
-          };
-
           lsp-install-servers = epkgs.trivialBuild {
             pname = "lsp-install-servers";
             version = "1.0";
@@ -99,7 +70,11 @@
             '';
             packageRequires = [ epkgs.lsp-mode ];
           };
-
+          
+          # unfortunately, I have to add the packages from the epkgs-overlay
+          # here manually. Apparently, emacs-overlay does not take them
+          # into account on its own.
+          copilot = pkgs.emacsPackages.copilot;
         };
     });
   };

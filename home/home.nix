@@ -72,14 +72,21 @@
   # secrets for emacs 
   age.secrets = {
     gcal-clientid = {
-      file = /etc/nixos/secrets/gcal-clientid.age;
+      file = /Users/thomaslaich/.config/nix/secrets/gcal-clientid.age;
       path = "/Users/thomaslaich/.emacs.d/gcal-clientid";
     };
     gcal-clientsecret = {
-      file = /etc/nixos/secrets/gcal-clientsecret.age;
+      file = /Users/thomaslaich/.config/nix/secrets/gcal-clientsecret.age;
       path = "/Users/thomaslaich/.emacs.d/gcal-clientsecret";
     };
-    # TODO use this for netrc and mbsync as well (mbsync unclear to me as of now)
+    authinfo = {
+      file = /Users/thomaslaich/.config/nix/secrets/authinfo.age;
+      path = "/Users/thomaslaich/.authinfo";
+    };
+    mbsyncpass = {
+      file = /Users/thomaslaich/.config/nix/secrets/mbsync-gmail-pass.age;
+      path = "/Users/thomaslaich/.mbsync-gmail-pass";
+    };
   };
 
   # Let Home Manager install and manage itself.

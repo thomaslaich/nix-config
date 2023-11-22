@@ -14,11 +14,13 @@
 
     # overlays
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
-    vimplugins-overlay.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
+    epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
 
     # themes
     colorscheme.url = "github:buntec/nix-colorscheme";
@@ -26,7 +28,7 @@
 
   outputs = { self, darwin, nixpkgs, home-manager, flake-utils, treefmt-nix
     , agenix, nix-vscode-extensions, neorg-overlay, vimplugins-overlay
-    , emacs-overlay, colorscheme, ... }@attrs:
+    , epkgs-overlay, emacs-overlay, colorscheme, ... }@attrs:
     let
       inherit (nixpkgs) lib;
       inherit (lib) genAttrs;
@@ -54,10 +56,14 @@
       overlays = [
         # Nix VSCode Extensions Overlay
         nix-vscode-extensions.overlays.default
+        # Neovim Nightly Overlay
+        # neovim-nightly-overlay.overlays.default
         # Neorg Overlay
         neorg-overlay.overlays.default
         # this adds a few vimplugins unavailable in nixpkgs
         vimplugins-overlay.overlays.default
+        # this adds a few emacs packages unavailable in nixpkgs
+        epkgs-overlay.overlays.default
         # Emacs Overlay
         emacs-overlay.overlays.default
       ];

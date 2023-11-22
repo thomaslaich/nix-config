@@ -219,6 +219,10 @@
 
 ;;; KEYBINDINGS
 
+;; disable right option key on mac to allow for emacs bindings
+(setq ns-option-modifier 'meta
+      ns-right-option-modifer nil)
+
 ;; By default Emacs requires you to hit ESC three times to close the minibuffer.
 ;; This is annoying, so we're going to change it to just once.
 (global-set-key [escape] 'keyboard-escape-quit)
@@ -417,22 +421,34 @@
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
+;; evil org mode
+(use-package evil-org
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+
 ;; disable electric indent
 (electric-indent-mode -1)
 
 ;; GTD setup
+;; TODO move to org-gtd
+(setq org-directory "~/notes/org")
 (setq org-agenda-files '("~/notes/org/gtd/inbox.org"
                          "~/notes/org/gtd/gtd.org"
                          "~/notes/org/gtd/tickler.org"
-                         "~/notes/org/gtd/appointments.org"
-                         "~/notes/org/gtd/appointments-private.org"))
+                         "~/notes/org/gtd/appointments.org"))
 
 (setq org-capture-templates '(("t" "Todo [inbox]" entry
                                (file+headline "~/notes/org/gtd/inbox.org" "Tasks")
                                "* TODO %i%?")
                               ("T" "Tickler" entry
                                (file+headline "~/notes/org/gtd/tickler.org" "Tickler")
-                               "* %i%? \n %U")))
+                               "* %i%? \n %U")
+                              ("a" "Appointment" entry (file "~/notes/org/gtd/appointments.org") ; ,(concat org-directory "gtd/appointments.org"))
+                               "* %?\n:PROPERTIES:\n:calendar-id:\tthomas.laich@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)))
 
 (setq org-refile-targets '(("~/notes/org/gtd/gtd.org" :maxlevel . 3)
                            ("~/notes/org/gtd/someday.org" :level . 1)
@@ -440,8 +456,24 @@
 
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
-;; org roam
-(use-package org-roam)
+;; ORG GTD
+(setq org-gtd-update-ack "3.0.0")
+(use-package org-gtd :after org
+  :config
+  (setq org-edna-use-inheritance t)
+  (org-edna-mode)
+  (setq org-gtd-directory "~/notes/org/org-gtd")
+  (leader-def
+    "d" '(:ignore t :wk "Org GT[D]")
+    "d c" '(org-gtd-capture :wk "Capture")
+    "d e" '(org-gtd-engage :wk "Engage")
+    "d p" '(org-gtd-process-inbox :wk "Process Inbox")
+    "d n" '(org-gtd-show-all-next :wk "Show all next")
+    "d s" '(org-gtd-review-stuck-projects :wk "Stuck Projects"))
+  (define-key org-gtd-clarify-map (kbd "C-c c") #'org-gtd-organize))
+
+;; ORG ROAM FOR ZETTELKASTEN
+(use-package org-roam :after org)
 
 ;; nice calendars
 (use-package calfw)
@@ -452,12 +484,12 @@
 
 ;;; CREDENTIAL MANAGEMENT
 
+;; commented for now as I'm using agenix now
 ;; I use 1password
-;; TODO can we do oauth2 instead and access the plist directly without 1password?
-(use-package auth-source-1password
-  :config
-  (auth-source-1password-enable))
-(setq auth-source-debug t)
+;; (use-package auth-source-1password
+;;   :config
+;;   (auth-source-1password-enable))
+;; (setq auth-source-debug t)
 
 ;; EMAIL & ORG SYNCHRONIZATION
 
@@ -467,8 +499,7 @@
   (setq mu4e-change-filenames-when-moving t)
 
   ;; Refresh mail using isync every 10 minutes
-  ;; Since I'm being prompted for 1pass authorization every time, I'm disabling automatic refresh for now
-  ;; (setq mu4e-update-interval (* 10 60))
+  (setq mu4e-update-interval (* 10 60))
   (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-maildir "~/Maildir/gmail")
   
@@ -506,7 +537,8 @@
   (setq mail-user-agent 'mu4e-user-agent
         message-send-mail-function 'smtpmail-send-it
         smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-user "thomaslaich"
+        ;; only used for auth-source-1password
+        smtpmail-smtp-user "thomaslaich@gmail.com"
         ;; smtpmail-smtp-service 465
         smtpmail-smtp-service 587
         smtpmail-stream-type 'starttls)
@@ -799,6 +831,11 @@
   :commands magit-status
   :bind (("C-x g" . magit-status)))
 
+;; Git gutter
+(use-package git-gutter
+  :config
+  (global-git-gutter-mode +1))
+
 ;;; DIRED
 
 (use-package peep-dired
@@ -822,6 +859,5 @@
           ("https://hackernoon.com/feed" coding hackernoon)
           ("https://devblogs.microsoft.com/dotnet/feed/" coding dotnet)
           ("https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" news)
-          ("https://www.nzz.ch/startseite.rss" news)
-          )))
+          ("https://www.nzz.ch/startseite.rss" news))))
 
