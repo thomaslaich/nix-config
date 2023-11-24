@@ -72,20 +72,16 @@
   # secrets for emacs 
   age.secrets = {
     gcal-clientid = {
-      file = /Users/thomaslaich/.config/nix/secrets/gcal-clientid.age;
-      path = "/Users/thomaslaich/.emacs.d/gcal-clientid";
+      file = ../secrets/gcal-clientid.age;
+      path = "${config.home.homeDirectory}/.emacs.d/gcal-clientid";
     };
     gcal-clientsecret = {
-      file = /Users/thomaslaich/.config/nix/secrets/gcal-clientsecret.age;
-      path = "/Users/thomaslaich/.emacs.d/gcal-clientsecret";
+      file = ../secrets/gcal-clientsecret.age;
+      path = "${config.home.homeDirectory}/.emacs.d/gcal-clientsecret";
     };
     authinfo = {
-      file = /Users/thomaslaich/.config/nix/secrets/authinfo.age;
-      path = "/Users/thomaslaich/.authinfo";
-    };
-    mbsyncpass = {
-      file = /Users/thomaslaich/.config/nix/secrets/mbsync-gmail-pass.age;
-      path = "/Users/thomaslaich/.mbsync-gmail-pass";
+      file = ../secrets/authinfo.age;
+      path = "${config.home.homeDirectory}/.authinfo";
     };
   };
 

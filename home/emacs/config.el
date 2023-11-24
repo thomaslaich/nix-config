@@ -221,7 +221,9 @@
 
 ;; disable right option key on mac to allow for emacs bindings
 (setq ns-option-modifier 'meta
-      ns-right-option-modifer nil)
+      mac-option-modifier 'meta
+      ns-right-option-modifer nil
+      mac-right-option-modifier nil)
 
 ;; By default Emacs requires you to hit ESC three times to close the minibuffer.
 ;; This is annoying, so we're going to change it to just once.
@@ -434,27 +436,25 @@
 (electric-indent-mode -1)
 
 ;; GTD setup
-;; TODO move to org-gtd
-(setq org-directory "~/notes/org")
-(setq org-agenda-files '("~/notes/org/gtd/inbox.org"
-                         "~/notes/org/gtd/gtd.org"
-                         "~/notes/org/gtd/tickler.org"
-                         "~/notes/org/gtd/appointments.org"))
 
-(setq org-capture-templates '(("t" "Todo [inbox]" entry
-                               (file+headline "~/notes/org/gtd/inbox.org" "Tasks")
-                               "* TODO %i%?")
-                              ("T" "Tickler" entry
-                               (file+headline "~/notes/org/gtd/tickler.org" "Tickler")
-                               "* %i%? \n %U")
-                              ("a" "Appointment" entry (file "~/notes/org/gtd/appointments.org") ; ,(concat org-directory "gtd/appointments.org"))
-                               "* %?\n:PROPERTIES:\n:calendar-id:\tthomas.laich@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)))
+;; (setq org-capture-templates '(("t" "Todo [inbox]" entry
+;;                                (file+headline "~/notes/org/gtd/inbox.org" "Tasks")
+;;                                "* TODO %i%?")
+;;                               ("T" "Tickler" entry
+;;                                (file+headline "~/notes/org/gtd/tickler.org" "Tickler")
+;;                                "* %i%? \n %U")
+;;                               ("a" "Appointment" entry (file "~/notes/org/gtd/appointments.org") ; ,(concat org-directory "gtd/appointments.org"))
+;;                                "* %?\n:PROPERTIES:\n:calendar-id:\tthomas.laich@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)))
 
-(setq org-refile-targets '(("~/notes/org/gtd/gtd.org" :maxlevel . 3)
-                           ("~/notes/org/gtd/someday.org" :level . 1)
-                           ("~/notes/org/gtd/tickler.org" :maxlevel . 2)))
+;; (setq org-refile-targets '(("~/notes/org/gtd/gtd.org" :maxlevel . 3)
+;;                            ("~/notes/org/gtd/someday.org" :level . 1)
+;;                            ("~/notes/org/gtd/tickler.org" :maxlevel . 2)))
 
-(setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+;; (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+;; Directories
+(setq org-agenda-files '("~/Dropbox/notes/gcal-appointments.org"))
+(setq org-gtd-directory "~/Dropbox/notes/org-gtd")
 
 ;; ORG GTD
 (setq org-gtd-update-ack "3.0.0")
@@ -462,7 +462,6 @@
   :config
   (setq org-edna-use-inheritance t)
   (org-edna-mode)
-  (setq org-gtd-directory "~/notes/org/org-gtd")
   (leader-def
     "d" '(:ignore t :wk "Org GT[D]")
     "d c" '(org-gtd-capture :wk "Capture")
@@ -470,7 +469,13 @@
     "d p" '(org-gtd-process-inbox :wk "Process Inbox")
     "d n" '(org-gtd-show-all-next :wk "Show all next")
     "d s" '(org-gtd-review-stuck-projects :wk "Stuck Projects"))
-  (define-key org-gtd-clarify-map (kbd "C-c c") #'org-gtd-organize))
+  (define-key org-gtd-clarify-map (kbd "C-c c") #'org-gtd-organize)
+  (org-gtd-mode t))
+
+(use-package org-habit-stats
+  :config
+  (define-key org-mode-map (kbd "C-c h") 'org-habit-stats-view-habit-at-point)
+  (define-key org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda))
 
 ;; ORG ROAM FOR ZETTELKASTEN
 (use-package org-roam :after org)
@@ -479,8 +484,6 @@
 (use-package calfw)
 (use-package calfw-org
   :after calfw)
-
-
 
 ;;; CREDENTIAL MANAGEMENT
 
@@ -510,7 +513,7 @@
         mu4e-compose-signature-auto-include nil   ; I don't want a message signature
         mu4e-use-fancy-chars t)                   ; allow fancy icons for mail threads
   
-  (setq mu4e-inbox-folder "/INBOX")
+  (setq mu4e-inbox-folder "/inbox")
   (setq mu4e-drafts-folder "/Drafts")
   (setq mu4e-sent-folder   "/Sent Mail")
   (setq mu4e-refile-folder "/All Mail")
@@ -518,16 +521,17 @@
   
   (setq user-full-name "Thomas Laich")
   (setq user-mail-address "thomaslaich@gmail.com")
+  
 
   (setq mu4e-maildir-shortcuts
-        '(("/INBOX"     . ?i)
-          ("/Primary"   . ?p)
-          ("/Updates"   . ?u)
-          ("/Starred"   . ?r)
-          ("/All Mail"  . ?a)
-          ("/Sent Mail" . ?s)
-          ("/Drafts"    . ?d)
-          ("/Trash"     . ?t)))
+            '(("/inbox"     . ?i)
+              ("/CatPrimary"   . ?p)
+              ("/CatUpdates"   . ?u)
+              ("/Starred"   . ?r)
+              ("/All Mail"  . ?a)
+              ("/Sent Mail" . ?s)
+              ("/Drafts"    . ?d)
+              ("/Trash"     . ?t)))
   
   ;; Display options
   (setq mu4e-view-show-images t)
@@ -563,12 +567,11 @@
   (setq mu4e-headers-seen-mark      '("S" . " "))
   (setq mu4e-headers-trashed-mark   '("T" . "🗑️"))
   (setq mu4e-headers-attach-mark    '("a" . "📎 "))
-  (setq mu4e-headers-encrypted-mark '("x" . "🔑 "))
-  (setq mu4e-headers-signed-mark    '("s" . "🔏 "))
-  (setq mu4e-headers-calendar-mark  '("c" . "📅 "))
-  (setq mu4e-headers-personal-mark '("p" . "👤 "))
-  (setq mu4e-headers-mailing-list-mark '("l" . "📧 "))
-  )
+  (setq mu4e-headers-encrypted-mark '("x" . "🔑 ")))
+(setq mu4e-headers-signed-mark    '("s" . "🔏 "))
+(setq mu4e-headers-calendar-mark  '("c" . "📅 "))
+(setq mu4e-headers-personal-mark '("p" . "👤 "))
+(setq mu4e-headers-mailing-list-mark '("l" . "📧 "))
 
 ;; allow mu4e functions in org-mode
 ;; (use-package mu4e-dashboard)
@@ -589,6 +592,9 @@
 (setq notmuch-search-oldest-first nil)
 
 
+;; Google calendar sync
+;; NOTE: I do not mix GTD calendar appointments with gcal appointments
+;; On my phone everything is synched to apple calendar through beorg
 (with-temp-buffer
   (insert-file-contents "~/.emacs.d/gcal-clientid")
   (setq org-gcal-client-id (replace-regexp-in-string "\n$" "" (buffer-string))))
@@ -596,10 +602,9 @@
   (insert-file-contents "~/.emacs.d/gcal-clientsecret")
   (setq org-gcal-client-secret (replace-regexp-in-string "\n$" "" (buffer-string))))
 
-;; Google calendar sync
 (use-package org-gcal
   :config
-  (setq org-gcal-fetch-file-alist '(("thomaslaich@gmail.com" .  "~/notes/org/gtd/appointments.org")))
+  (setq org-gcal-fetch-file-alist '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")))
   (org-gcal-reload-client-id-secret))
 
 ;; enter pinentry password directly from emacs (no popup)
@@ -861,3 +866,5 @@
           ("https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" news)
           ("https://www.nzz.ch/startseite.rss" news))))
 
+;;; Allow editing of age files directly
+(use-package agenix)

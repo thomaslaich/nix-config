@@ -51,6 +51,7 @@
           # TODO can I just move them into config.el?
           treesit-grammars.with-all-grammars
           nerd-icons
+          emacsql-sqlite
 
           # custom built packages
           lsp-install-servers # TODO <- this does not seem to work
