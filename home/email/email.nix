@@ -21,7 +21,6 @@
       notmuch.enable = true;
       primary = true;
       realName = "Thomas Laich";
-      passwordCommand = "op item get smtp.gmail.com --fields password";
       smtp = {
         tls.useStartTls = true;
         host = "smtp.gmail.com";

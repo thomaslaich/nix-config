@@ -1,11 +1,10 @@
 # mbsyncrc based on
 # http://www.ict4g.net/adolfo/notes/2014/12/27/EmacsIMAP.html
 # ACCOUNT INFORMATION
-IMAPAccount personal
+IMAPAccount gmail
 # Address to connect to
 Host imap.gmail.com
 User thomaslaich@gmail.com
-# PassCmd "op item get smtp.gmail.com --fields password"
 PassCmd "cat ~/.authinfo | grep imap.gmail.com | grep thomaslaich | grep password | cut -d\\' -f 2"
 AuthMechs LOGIN
 SSLType IMAPS
@@ -18,15 +17,15 @@ CertificateFile /etc/ssl/certs/ca-certificates.crt
 # - THE LOCAL STORAGE IS WHERE WE STORE THE EMAIL ON OUR COMPUTER
 
 # REMOTE STORAGE (USE THE IMAP ACCOUNT SPECIFIED ABOVE)
-IMAPStore personal-remote
-Account personal
+IMAPStore gmail-remote
+Account gmail
 
 # LOCAL STORAGE (CREATE DIRECTORIES with mkdir -p ~/Maildir/gmail)
-MaildirStore personal-local
-Path ~/Maildir/personal/
-Inbox ~/Maildir/personal/inbox
+MaildirStore gmail-local
+Path ~/Maildir/gmail/
+Inbox ~/Maildir/gmail/INBOX
 # REQUIRED ONLY IF YOU WANT TO DOWNLOAD ALL SUBFOLDERS; SYNCING SLOWS DOWN
-SubFolders Verbatim
+# SubFolders Verbatim
 
 # CONNECTIONS SPECIFY LINKS BETWEEN REMOTE AND LOCAL FOLDERS
 #
@@ -36,22 +35,74 @@ SubFolders Verbatim
 # 1 "*" TO MATCH EVERYTHING
 # 2 "!DIR" TO EXCLUDE "DIR"
 # 3 "DIR" TO MATCH DIR
-Channel personal-default
-Far :personal-remote:
-Near :personal-local:
-Patterns * ![Gmail]* "[Gmail]/Starred" "[Gmail]/Sent Mail" "[Gmail]/All Mail" "[Gmail]/Drafts" "CatPrimary" "CatUpdates"
+
+Channel gmail-inbox
+Far :gmail-remote:
+Near :gmail-local:
+Patterns "INBOX"
 Create Both
 Expunge Both
 SyncState *
-Sync All
+
+Channel gmail-primary
+Far :gmail-remote:"CatPrimary"
+Near :gmail-local:"Primary"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-updates
+Far :gmail-remote:"CatUpdates"
+Near :gmail-local:"Updates"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-sent
+Far :gmail-remote:"[Gmail]/Sent Mail"
+Near :gmail-local:"Sent Mail"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-all
+Far :gmail-remote:"[Gmail]/All Mail"
+Near :gmail-local:"All Mail"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-starred
+Far :gmail-remote:"[Gmail]/Starred"
+Near :gmail-local:"Starred"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-drafts
+Far :gmail-remote:"[Gmail]/Drafts"
+Near :gmail-local:"Drafts"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-trash
+Far :gmail-remote:"[Gmail]/Trash"
+Near :gmail-local:"Trash"
+Create Both
+Expunge Both
+SyncState *
 
 # GROUPS PUT TOGETHER CHANNELS, SO THAT WE CAN INVOKE
 # MBSYNC ON A GROUP TO SYNC ALL CHANNELS
 #
-# FOR INSTANCE: "mbsync personal" GETS MAIL FROM
-# "personal-inbox", personal-updates", "personal-sent", and "personal-trash"
+# FOR INSTANCE: "mbsync gmail" GETS MAIL FROM
+# "gmail-inbox", gmail-updates", "gmail-sent", and "gmail-trash"
 #
-Group personal
-Channel personal-default
-Channel personal-sent
-Channel personal-trash
+Group gmail
+Channel gmail-inbox
+Channel gmail-updates
+Channel gmail-sent
+Channel gmail-trash
+Channel gmail-all
+Channel gmail-starred
