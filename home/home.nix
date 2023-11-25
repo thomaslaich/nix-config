@@ -61,7 +61,6 @@
     scc # analyse codebases
     shellcheck # shell linter
     tldr # simpler manpages
-    vagrant
     vifm
     wget
     yarn
