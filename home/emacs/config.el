@@ -452,13 +452,14 @@
 
 ;; (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
-;; Directories
-(setq org-agenda-files '("~/Dropbox/notes/gcal-appointments.org"))
-(setq org-gtd-directory "~/Dropbox/notes/org-gtd")
 
 ;; ORG GTD
 (setq org-gtd-update-ack "3.0.0")
 (use-package org-gtd :after org
+  :init
+  ;; Directories
+  (setq org-agenda-files '("~/Dropbox/notes/gcal-appointments.org"))
+  (setq org-gtd-directory "~/Dropbox/notes/org-gtd")
   :config
   (setq org-edna-use-inheritance t)
   (org-edna-mode)
@@ -470,7 +471,15 @@
     "d n" '(org-gtd-show-all-next :wk "Show all next")
     "d s" '(org-gtd-review-stuck-projects :wk "Stuck Projects"))
   (define-key org-gtd-clarify-map (kbd "C-c c") #'org-gtd-organize)
+  ;; set area of focus
+  (setq org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Social"))
+  (setq org-gtd-organize-hooks '(org-gtd-set-area-of-focus org-set-tags-command))
   (org-gtd-mode t))
+
+;; set area of focus and autosave org-gtd files when organizing (otherwise they frequently conflict with Beorg)
+(setq auto-save-default nil) ;; disable by default
+(add-hook 'org-mode-hook #'auto-save-mode) ;; enable in org-mode
+(add-hook 'auto-save-hook #'org-save-all-org-buffers) ;; autosave org buffers
 
 (use-package org-habit-stats
   :config
@@ -478,7 +487,16 @@
   (define-key org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda))
 
 ;; ORG ROAM FOR ZETTELKASTEN
-(use-package org-roam :after org)
+(use-package org-roam :after org
+  :custom
+  (org-roam-directory "~/Dropbox/notes/org-roam")
+  :bind (("C-c n l" . org-roam)
+         ("C-c n f" . org-roam-find-file)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-insert)
+         ("C-c n I" . org-roam-insert-immediate))
+  :config
+  (org-roam-setup))
 
 ;; nice calendars
 (use-package calfw)
