@@ -108,6 +108,8 @@
         }
         # heuristically set options for buffer (e.g. indentation)
         { plugin = pkgs.vimPlugins.vim-sleuth; }
+
+        { plugin = pkgs.vimPlugins.vim-tmux-navigator; }
       ];
 
       ui-plugins = let

@@ -45,15 +45,6 @@ opt.swapfile = false
 
 opt.conceallevel = 2 -- Hide * markup for bold and italic (Neorg)
 
-map("n", "<C-j>", "<C-W><C-J>")
-map("n", "<C-k>", "<C-W><C-K>")
-map("n", "<C-l>", "<C-W><C-L>")
-map("n", "<C-h>", "<C-W><C-H>")
-
--- for reference (use "better-escape.nvim" instead)
--- map("i", "jk", "<Esc>")
--- map("i", "jj", "<Esc>")
-
 map("n", "<leader>cf", "<cmd>edit $MYVIMRC<CR>", { desc = "open init.lua" })
 
 -- leaving this for reference, but adjusting this to conform to lsp-zero standards
