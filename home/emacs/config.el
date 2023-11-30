@@ -62,7 +62,7 @@
 ;;; FONTS AND THEMES
 
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
-(set-face-attribute 'variable-pitch nil :font "Ubuntu Nerd Font" :height 140)
+(set-face-attribute 'variable-pitch nil :font "EtBembo" :height 140)
 (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 140)
 ;; Make commented text and keywords italics.
 (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
@@ -423,6 +423,50 @@
 (use-package org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
+;; prettify org
+;; hide emphasis markers like italics or bold
+(setq org-hide-emphasis-markers t)
+;; replace list markers
+;; (font-lock-add-keywords 'org-mode
+;;                         '(("^ *\\([-]\\) "
+;;                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+
+;; Custom org-mode fonts
+ (let* ((variable-tuple
+          (cond ((x-list-fonts "JetBrainsMono Nerd Font") '(:font "JetBrainsMono Nerd Font"))
+                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
+                (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+         (base-font-color     (face-foreground 'default nil 'default))
+         (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+
+    (custom-theme-set-faces
+     'user
+     `(org-level-8 ((t (,@headline ,@variable-tuple))))
+     `(org-level-7 ((t (,@headline ,@variable-tuple))))
+     `(org-level-6 ((t (,@headline ,@variable-tuple))))
+     `(org-level-5 ((t (,@headline ,@variable-tuple))))
+     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.05))))
+     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
+     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
+     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.6))))
+     `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit variable-pitch))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
+   ;; '(org-document-info ((t (:foreground "dark orange"))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+   ;; '(org-link ((t (:foreground "royal blue" :underline t))))
+   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-property-value ((t (:inherit fixed-pitch))) t)
+   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+   '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+
 ;; evil org mode
 (use-package evil-org
   :after org
@@ -526,10 +570,10 @@
   
   ;; Further customization:
   (setq mu4e-html2text-command "w3m -T text/html" ; how to hanfle html-formatted emails
-        mu4e-headers-auto-update t                ; avoid to type `g' to update
-        mu4e-view-show-images t                   ; show images in the view buffer
-        mu4e-compose-signature-auto-include nil   ; I don't want a message signature
-        mu4e-use-fancy-chars t)                   ; allow fancy icons for mail threads
+        mu4e-headers-auto-update t    ; avoid to type `g' to update
+        mu4e-view-show-images t       ; show images in the view buffer
+        mu4e-compose-signature-auto-include nil ; I don't want a message signature
+        mu4e-use-fancy-chars t)   ; allow fancy icons for mail threads
   
   (setq mu4e-inbox-folder "/inbox")
   (setq mu4e-drafts-folder "/Drafts")
@@ -542,14 +586,14 @@
   
 
   (setq mu4e-maildir-shortcuts
-            '(("/inbox"     . ?i)
-              ("/CatPrimary"   . ?p)
-              ("/CatUpdates"   . ?u)
-              ("/Starred"   . ?r)
-              ("/All Mail"  . ?a)
-              ("/Sent Mail" . ?s)
-              ("/Drafts"    . ?d)
-              ("/Trash"     . ?t)))
+        '(("/inbox"     . ?i)
+          ("/CatPrimary"   . ?p)
+          ("/CatUpdates"   . ?u)
+          ("/Starred"   . ?r)
+          ("/All Mail"  . ?a)
+          ("/Sent Mail" . ?s)
+          ("/Drafts"    . ?d)
+          ("/Trash"     . ?t)))
   
   ;; Display options
   (setq mu4e-view-show-images t)
@@ -567,9 +611,9 @@
 
   ;; Some styling
   (add-to-list 'mu4e-header-info-custom
-              '(:empty . (:name "Empty"
-                          :shortname ""
-                          :function (lambda (msg) "  "))))
+               '(:empty . (:name "Empty"
+                                 :shortname ""
+                                 :function (lambda (msg) "  "))))
   (setq mu4e-headers-fields '((:empty         .   10)
                               (:human-date    .   12)
                               (:flags         .    6)
@@ -585,11 +629,11 @@
   (setq mu4e-headers-seen-mark      '("S" . " "))
   (setq mu4e-headers-trashed-mark   '("T" . "🗑️"))
   (setq mu4e-headers-attach-mark    '("a" . "📎 "))
-  (setq mu4e-headers-encrypted-mark '("x" . "🔑 ")))
-(setq mu4e-headers-signed-mark    '("s" . "🔏 "))
-(setq mu4e-headers-calendar-mark  '("c" . "📅 "))
-(setq mu4e-headers-personal-mark '("p" . "👤 "))
-(setq mu4e-headers-mailing-list-mark '("l" . "📧 "))
+  (setq mu4e-headers-encrypted-mark '("x" . "🔑 "))
+  (setq mu4e-headers-signed-mark    '("s" . "🔏 "))
+  (setq mu4e-headers-calendar-mark  '("c" . "📅 "))
+  (setq mu4e-headers-personal-mark '("p" . "👤 "))
+  (setq mu4e-headers-mailing-list-mark '("l" . "📧 ")))
 
 ;; allow mu4e functions in org-mode
 ;; (use-package mu4e-dashboard)
@@ -716,17 +760,16 @@
 (use-package vterm
   :commands vterm
   :config
-  (setq shell-file-name (getenv "$SHELL")
+  (setq shell-file-name (getenv "SHELL")
         vterm-max-scrollback 5000))
 
 (use-package vterm-toggle
   :after vterm
-  ;; ;; :config
-  ;; (setq vterm-toggle-fullscreen-p nil
-  ;;       vterm-toggle-scope 'project
-  ;;       vterm-toggle-cd-auto-create-buffer nil
-  ;;       vterm-toggle-cd-auto-run-dired nil)
-  )
+  :config
+  (setq vterm-toggle-fullscreen-p nil
+        vterm-toggle-scope 'project
+        vterm-toggle-cd-auto-create-buffer nil
+        vterm-toggle-cd-auto-run-dired nil))
 
 ;;; COPILOT
 
@@ -750,6 +793,9 @@
 
 (use-package lsp-ui
   :after lsp-mode)
+
+;; This is a custom package that installs all lsp servers that require installation otherwise
+(use-package lsp-install-servers)
 
 ;; completion
 ;; (use-package company)

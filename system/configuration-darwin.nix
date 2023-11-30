@@ -29,13 +29,15 @@
   fonts.fontDir.enable = true;
   fonts.fonts = with pkgs;
     [
+      ubuntu_font_family
+      etBook
       (nerdfonts.override {
         fonts = [
           "FiraCode"
           "JetBrainsMono"
           "DroidSansMono"
           "NerdFontsSymbolsOnly"
-          "Ubuntu"
+          # "Ubuntu"
         ];
       })
     ];

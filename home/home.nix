@@ -66,6 +66,10 @@
     yarn
     yazi
     zoxide # better cd (bound to `z` in fish)
+
+    ghc
+    haskell-language-server
+    lua-language-server
   ];
 
   # secrets for emacs 

@@ -66,17 +66,20 @@
             src = pkgs.writeText "lsp-install-servers.el" ''
               (eval-after-load 'lsp-mode
                '(progn
-                 (lsp-dependency 'omnisharp `(:system "${pkgs.omnisharp-roslyn}/bin/omnisharp"))
-                 (lsp-dependency 'lua-language-server `(:system "${pkgs.lua-language-server}/bin/lua-language-server"))))
+                 (lsp-dependency 'omnisharp '(:system "${pkgs.omnisharp-roslyn}/bin/omnisharp"))
+                 (lsp-dependency 'lua-language-server '(:system "${pkgs.lua-language-server}/bin/lua-language-server"))))
+
+              (provide 'lsp-install-servers)
             '';
             packageRequires = [ epkgs.lsp-mode ];
           };
-          
+
           # unfortunately, I have to add the packages from the epkgs-overlay
           # here manually. Apparently, emacs-overlay does not take them
           # into account on its own.
           copilot = pkgs.emacsPackages.copilot;
         };
     });
+
   };
 }
