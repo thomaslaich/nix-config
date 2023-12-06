@@ -240,6 +240,11 @@
         }
       ];
 
+      lush = {
+        plugin = pkgs.vimPlugins.lush-nvim;
+        type = "lua";
+      };
+
       # TODO remove once I move to https://github.com/jmederosalvarado/roslyn.nvim
       omnisharp-extended-lsp = {
         plugin = pkgs.vimPlugins.omnisharp-extended-lsp-nvim;
@@ -260,7 +265,9 @@
       copilot
       core-motion-plugins
       git-plugins
+      haskell-tools
       lspconfig
+      lush
       metals
       neorg
       nvim-lint
@@ -270,7 +277,6 @@
       telescope
       treesitter
       ui-plugins
-      haskell-tools
     ];
 
     extraPackages = with pkgs; [

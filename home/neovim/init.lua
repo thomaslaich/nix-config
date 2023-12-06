@@ -208,7 +208,7 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 vim.keymap.set('n', '<leader>ff', telescope_builtin.find_files, { desc = 'Search Files' })
 
 vim.keymap.set("n", "<leader>fa", function() telescope_builtin.find_files({ no_ignore = true, hidden = true }) end,
-  { desc = "[S]earch [a]ll Files" })
+  { desc = "Find all Files" })
 vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, { desc = 'Search Help' })
 vim.keymap.set('n', '<leader>fw', telescope_builtin.grep_string, { desc = 'Search current Word' })
 vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, { desc = 'Search by Grep' })
