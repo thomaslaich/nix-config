@@ -40,12 +40,15 @@
     fd
     fzf
     gh # github CLI
+    ghc
+    haskell-language-server
     httpie
     jq # json parser
     killall
     kubernetes-helm
     lazydocker
     lua
+    lua-language-server
     mu # maildir indexer
     ncdu
     nil # TODO <- is this needed?
@@ -60,16 +63,14 @@
     scala-cli
     scc # analyse codebases
     shellcheck # shell linter
+    statix
+    stylua
     tldr # simpler manpages
     vifm
     wget
     yarn
     yazi
     zoxide # better cd (bound to `z` in fish)
-
-    ghc
-    haskell-language-server
-    lua-language-server
   ];
 
   # secrets for emacs 

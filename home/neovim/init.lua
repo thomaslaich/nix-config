@@ -114,10 +114,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     nmap("<localleader>m", vim.lsp.buf.rename, "Rename")
 
     -- formatting
-    map({ "n", "v" }, "<localleader>f", vim.lsp.buf.format, { desc = "Format" })
-    -- alternative formatter with conform (TODO: can we combine the 2 somehow?)
-    map({ "n", "v" }, "<localleader>g", function() require("conform").format({ async = true, lsp_fallback = true }) end,
-      { desc = "Conform: Format" })
+    map({ "n", "v" }, "<localleader>f", function()
+      require("conform").format({ async = true, lsp_fallback = true })
+    end, { desc = "format" })
 
     -- F-keys
     nmap("<F2>", vim.lsp.buf.rename, "Rename")
