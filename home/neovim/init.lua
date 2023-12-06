@@ -233,4 +233,17 @@ vim.keymap.set("n", "<leader>gs", telescope_builtin.git_status, { desc = "Git St
 vim.keymap.set("n", "<leader>tb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
 
 -- MISC
+map("n", "<leader>cs", function()
+  telescope_builtin.colorscheme({ enable_preview = true })
+end, { desc = "Change colorscheme" })
 vim.keymap.set("n", "<leader>mc", require "telescope".extensions.metals.commands, { desc = "metals commands" })
+
+-- enable spell checking for text files
+local spell_augroup = vim.api.nvim_create_augroup("spell", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown", "gitcommit", "text", "neorg" },
+  callback = function()
+    vim.opt.spell = true
+  end,
+  group = spell_augroup,
+})
