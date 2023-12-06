@@ -27,20 +27,19 @@
 
   # Fonts
   fonts.fontDir.enable = true;
-  fonts.fonts = with pkgs;
-    [
-      ubuntu_font_family
-      etBook
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-          "DroidSansMono"
-          "NerdFontsSymbolsOnly"
-          # "Ubuntu"
-        ];
-      })
-    ];
+  fonts.fonts = with pkgs; [
+    ubuntu_font_family
+    etBook
+    (nerdfonts.override {
+      fonts = [
+        "FiraCode"
+        "JetBrainsMono"
+        "DroidSansMono"
+        "NerdFontsSymbolsOnly"
+        # "Ubuntu"
+      ];
+    })
+  ];
 
   # some GUI apps need to be installed with homebrew (but not all!)
   homebrew = {

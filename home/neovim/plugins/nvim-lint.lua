@@ -1,6 +1,6 @@
-require('lint').linters_by_ft = {
-  markdown = { 'vale', },
-  nix = { 'statix', },
+require("lint").linters_by_ft = {
+  markdown = { "vale" },
+  nix = { "statix" },
 }
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {

@@ -1,5 +1,5 @@
-require("ibl").setup {
+require("ibl").setup({
   exclude = {
     filetypes = { "help", "dashboard", "startup", "Trouble" },
-  }
-}
+  },
+})

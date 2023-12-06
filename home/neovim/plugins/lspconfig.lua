@@ -2,33 +2,34 @@ local lsp_config = require("lspconfig")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-lsp_config.util.default_config = vim.tbl_extend("force", lsp_config.util.default_config,
-  { capabilities = capabilities, })
+lsp_config.util.default_config =
+  vim.tbl_extend("force", lsp_config.util.default_config, { capabilities = capabilities })
 
 lsp_config.smithy_ls.setup({
-  cmd = { "cs", "launch", "com.disneystreaming.smithy:smithy-language-server:latest.stable", "--", "0", }, })
+  cmd = { "cs", "launch", "com.disneystreaming.smithy:smithy-language-server:latest.stable", "--", "0" },
+})
 
 -- don't need this -> haskell-tools.nvim instead
 -- lsp_config.hls.setup {}
 
-lsp_config.bashls.setup {}
+lsp_config.bashls.setup({})
 
-lsp_config.pylsp.setup {}
+lsp_config.pylsp.setup({})
 
-lsp_config.gopls.setup {}
+lsp_config.gopls.setup({})
 
-lsp_config.html.setup {}
+lsp_config.html.setup({})
 
-lsp_config.tsserver.setup {}
+lsp_config.tsserver.setup({})
 
 -- waiting for https://github.com/jmederosalvarado/roslyn.nvim to move the lsp server installation
 -- outside the module. Until then, let's use omnisharp-roslyn for .NET
-lsp_config.omnisharp.setup {
+lsp_config.omnisharp.setup({
   handlers = {
-    ["textDocument/definition"] = require('omnisharp_extended').handler,
+    ["textDocument/definition"] = require("omnisharp_extended").handler,
   },
-  cmd = { omnisharpBin }
-}
+  cmd = { omnisharpBin },
+})
 
 lsp_config.eslint.setup({
   on_attach = function(client, bufnr)
@@ -42,12 +43,12 @@ lsp_config.eslint.setup({
   settings = {
     format = true,
     workingDirectory = {
-      mode = "auto"
-    }
-  }
+      mode = "auto",
+    },
+  },
 })
 
-lsp_config.svelte.setup {}
+lsp_config.svelte.setup({})
 
 lsp_config.nil_ls.setup({
   settings = {
@@ -74,7 +75,7 @@ lsp_config.lua_ls.setup({
       workspace = {
         -- Make the server aware of Neovim runtime files
         library = vim.api.nvim_get_runtime_file("", true),
-        checkThirdParty = false,   -- do not ask for third party on every startup
+        checkThirdParty = false, -- do not ask for third party on every startup
       },
       -- Do not send telemetry data containing a randomized but unique identifier
       telemetry = {

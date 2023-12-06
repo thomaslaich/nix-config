@@ -3,7 +3,7 @@ oil.setup({
   view_options = {
     -- Show files and directories that start with "."
     show_hidden = true,
-  }
+  },
 })
 
 vim.keymap.set("n", "<leader>-", oil.open, { desc = "Browse parent directory" })

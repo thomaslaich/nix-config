@@ -1,31 +1,31 @@
-require('neorg').setup {
+require("neorg").setup({
   load = {
     -- core defaults
-    ['core.defaults'] = {},
+    ["core.defaults"] = {},
     -- workspace definitions
-    ['core.dirman'] = {
+    ["core.dirman"] = {
       config = {
         workspaces = {
           -- TODO move this to dropbox maybe?
-          work = '~/notes/work',
-          home = '~/notes/home',
-          sabbatical = '~/notes/sabbatical',
-          personal = '~/notes/personal',
+          work = "~/notes/work",
+          home = "~/notes/home",
+          sabbatical = "~/notes/sabbatical",
+          personal = "~/notes/personal",
         },
-        default_workspace = 'work'
-      }
+        default_workspace = "work",
+      },
     },
     -- completion
-    ['core.completion'] = {
+    ["core.completion"] = {
       config = {
-        engine = 'nvim-cmp'
-      }
+        engine = "nvim-cmp",
+      },
     },
     -- nice icons, and folding
-    ['core.concealer'] = {},
+    ["core.concealer"] = {},
     -- automtatically summarize workspaces
-    ['core.summary'] = {},
+    ["core.summary"] = {},
     -- activate this once we upgrade to nvim 0.10.x
     -- ['core.ui.calendar'] = {}
-  }
-}
+  },
+})
