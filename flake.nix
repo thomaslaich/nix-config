@@ -23,12 +23,13 @@
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
 
     # themes
-    colorscheme.url = "github:buntec/nix-colorscheme";
+    # colorscheme.url = "github:buntec/nix-colorscheme";
+    kauz.url = "github:buntec/kauz";
   };
 
   outputs = { self, darwin, nixpkgs, home-manager, flake-utils, treefmt-nix
     , agenix, nix-vscode-extensions, neorg-overlay, vimplugins-overlay
-    , epkgs-overlay, emacs-overlay, colorscheme, ... }@attrs:
+    , epkgs-overlay, emacs-overlay, kauz, ... }@attrs:
     let
       inherit (nixpkgs) lib;
       inherit (lib) genAttrs;
@@ -54,17 +55,17 @@
       eachSystem = genAttrs systems;
 
       overlays = [
-        # Nix VSCode Extensions Overlay
+        # Kauz colorscheme overlay
+        kauz.overlays.default
+        # Nix VSCode extensions overlay
         nix-vscode-extensions.overlays.default
-        # Neovim Nightly Overlay
-        # neovim-nightly-overlay.overlays.default
         # Neorg Overlay
         neorg-overlay.overlays.default
         # this adds a few vimplugins unavailable in nixpkgs
         vimplugins-overlay.overlays.default
         # this adds a few emacs packages unavailable in nixpkgs
         epkgs-overlay.overlays.default
-        # Emacs Overlay
+        # Emacs overlay
         emacs-overlay.overlays.default
       ];
 
@@ -138,12 +139,16 @@
                   imports = [
                     agenix.homeManagerModules.default
                     {
-                      imports = [ colorscheme.homeModules.colorscheme ];
-                      colorscheme = {
-                        enable = true;
-                        name = "tokyonight-storm";
-                      };
+                      imports = [ kauz.homeModules.default ];
+                      colorschemes.kauz.enable = true;
                     }
+                    # {
+                    #   imports = [ colorscheme.homeModules.colorscheme ];
+                    #   colorscheme = {
+                    #     enable = true;
+                    #     name = "catppuccin-macchiato";
+                    #   };
+                    # }
                     ./home/home.nix
                     ./home/home-darwin.nix
                     ./home/home-${machine.name}.nix
