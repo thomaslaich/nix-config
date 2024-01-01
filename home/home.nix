@@ -41,17 +41,14 @@
     fzf
     gh # github CLI
     ghc
-    haskell-language-server
     httpie
     jq # json parser
     killall
     kubernetes-helm
     lazydocker
     lua
-    lua-language-server
     mu # maildir indexer
     ncdu
-    nil # TODO <- is this needed?
     nixfmt
     nixpkgs-fmt
     nodejs
@@ -62,15 +59,26 @@
     ripgrep # better grep
     scala-cli
     scc # analyse codebases
-    shellcheck # shell linter
-    statix
-    stylua
     tldr # simpler manpages
     vifm
     wget
     yarn
     yazi
     zoxide # better cd (bound to `z` in fish)
+
+    # lsps and formatters
+    gopls
+    haskell-language-server
+    haskellPackages.fourmolu # haskell formatter
+    lua-language-server
+    nil
+    nodePackages.bash-language-server
+    nodePackages.typescript-language-server
+    omnisharp-roslyn
+    statix
+    stylua
+    vale
+    vscode-langservers-extracted
   ];
 
   # secrets for emacs 
@@ -97,6 +105,18 @@
     userEmail = "thomaslaich@gmail.com";
     userName = "Thomas Laich";
     diff-so-fancy.enable = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  programs.starship = {
+    enable = true;
+    # promptInit = ''
+    #   eval "$(starship init zsh)"
+    # '';
   };
 
   programs.zsh = { enable = true; };
