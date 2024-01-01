@@ -108,7 +108,6 @@
   (doom-themes-org-config))
 
 (use-package dashboard
-  :ensure t 
   :init
   (setq initial-buffer-choice 'dashboard-open)
   (setq dashboard-set-heading-icons t)
@@ -121,7 +120,7 @@
                           (bookmarks . 3)
                           (projects . 3)
                           (registers . 3)))
-  :custom 
+  :custom
   (dashboard-modify-heading-icons '((recents . "file-text")
                                     (bookmarks . "book")))
   :config
@@ -238,7 +237,9 @@
   :after evil
   :config
   (general-evil-setup))
-  
+
+;; We first start with defining leader and localleader (like vim)
+
 ;; set up 'SPC' as the leader key
 (general-create-definer leader-def
   :states '(normal visual insert emacs)
@@ -252,6 +253,8 @@
   :keymaps 'override
   :prefix "," ; set leader
   :global-prefix "M-,") ; access leader in insert mode (do we need this?)
+
+;; next we define global keybindings (local keybindings we define at point where we import the package)
 
 ;; zoom keybindings
 (global-set-key (kbd "C-=") 'text-scale-increase)
@@ -294,11 +297,11 @@
   "h m" '(describe-mode :wk "Mode")
   "h p" '(describe-package :wk "Package")
   "h v" '(describe-variable :wk "Variable"))
-  ;; need to add "h r r" for reloading config as well?
+;; need to add "h r r" for reloading config as well?
 
 ;; search
 (leader-def
-  "f" '(:ignore t :wk "[F]earch")
+  "f" '(:ignore t :wk "[F]ind")
   "f f" '(consult-find :wk "Find Files")
   "f b" '(consult-buffer :wk "Find Buffer")
   "f /" '(consult-buffer :wk "Find Buffer")
@@ -386,8 +389,8 @@
 
 ;; Code keybindings
 (leader-def
-"c" '(:ignore t :wk "[C]ode")
-"c c" '(compile :wk "Compile"))
+  "c" '(:ignore t :wk "[C]ode")
+  "c c" '(compile :wk "Compile"))
 
 ;; local leader shorts
 
@@ -433,39 +436,39 @@
 
 
 ;; Custom org-mode fonts
- (let* ((variable-tuple
-          (cond ((x-list-fonts "JetBrainsMono Nerd Font") '(:font "JetBrainsMono Nerd Font"))
-                ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
-                (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-         (base-font-color     (face-foreground 'default nil 'default))
-         (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
-
-    (custom-theme-set-faces
-     'user
-     `(org-level-8 ((t (,@headline ,@variable-tuple))))
-     `(org-level-7 ((t (,@headline ,@variable-tuple))))
-     `(org-level-6 ((t (,@headline ,@variable-tuple))))
-     `(org-level-5 ((t (,@headline ,@variable-tuple))))
-     `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.05))))
-     `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
-     `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
-     `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.6))))
-     `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+(let* ((variable-tuple
+        (cond ((x-list-fonts "JetBrainsMono Nerd Font") '(:font "JetBrainsMono Nerd Font"))
+              ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
+              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+       (base-font-color     (face-foreground 'default nil 'default))
+       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
 
   (custom-theme-set-faces
    'user
-   '(org-block ((t (:inherit variable-pitch))))
-   '(org-code ((t (:inherit (shadow fixed-pitch)))))
-   ;; '(org-document-info ((t (:foreground "dark orange"))))
-   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-   ;; '(org-link ((t (:foreground "royal blue" :underline t))))
-   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-   '(org-property-value ((t (:inherit fixed-pitch))) t)
-   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-   ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-   '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+   `(org-level-8 ((t (,@headline ,@variable-tuple))))
+   `(org-level-7 ((t (,@headline ,@variable-tuple))))
+   `(org-level-6 ((t (,@headline ,@variable-tuple))))
+   `(org-level-5 ((t (,@headline ,@variable-tuple))))
+   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.05))))
+   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
+   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
+   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.6))))
+   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+
+(custom-theme-set-faces
+ 'user
+ '(org-block ((t (:inherit variable-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ ;; '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ ;; '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
 ;; evil org mode
 (use-package evil-org
@@ -528,7 +531,7 @@
 (use-package org-habit-stats
   :config
   (define-key org-mode-map (kbd "C-c h") 'org-habit-stats-view-habit-at-point)
-  (define-key org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda))
+  (evil-define-key 'normal 'org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda))
 
 ;; ORG ROAM FOR ZETTELKASTEN
 (use-package org-roam :after org
@@ -567,23 +570,22 @@
   (setq mu4e-update-interval (* 10 60))
   (setq mu4e-get-mail-command "mbsync -a")
   (setq mu4e-maildir "~/Maildir/gmail")
-  
+
   ;; Further customization:
   (setq mu4e-html2text-command "w3m -T text/html" ; how to hanfle html-formatted emails
         mu4e-headers-auto-update t    ; avoid to type `g' to update
         mu4e-view-show-images t       ; show images in the view buffer
         mu4e-compose-signature-auto-include nil ; I don't want a message signature
         mu4e-use-fancy-chars t)   ; allow fancy icons for mail threads
-  
+
   (setq mu4e-inbox-folder "/inbox")
   (setq mu4e-drafts-folder "/Drafts")
   (setq mu4e-sent-folder   "/Sent Mail")
   (setq mu4e-refile-folder "/All Mail")
   (setq mu4e-trash-folder  "/Trash")
-  
+
   (setq user-full-name "Thomas Laich")
   (setq user-mail-address "thomaslaich@gmail.com")
-  
 
   (setq mu4e-maildir-shortcuts
         '(("/inbox"     . ?i)
@@ -594,7 +596,7 @@
           ("/Sent Mail" . ?s)
           ("/Drafts"    . ?d)
           ("/Trash"     . ?t)))
-  
+
   ;; Display options
   (setq mu4e-view-show-images t)
   (setq mu4e-view-show-addresses 't)
@@ -645,7 +647,7 @@
   (mu4e-alert-set-default-style 'libnotify)
   (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
 
-;; Notmuch 
+;; Notmuch
 ;; TODO maybe remove this?
 (use-package notmuch)
 (use-package consult-notmuch
@@ -691,7 +693,7 @@
   :config
   (setq consult-narrow-key "<") ;; "C-+"
   )
-  
+
 
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
@@ -707,7 +709,7 @@
   :bind
   (("C-." . embark-act)         ;; pick some comfortable binding
    ("C-;" . embark-dwim))        ;; good alternative: M-.
-   ;; ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  ;; ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init
 
@@ -771,6 +773,11 @@
         vterm-toggle-cd-auto-create-buffer nil
         vterm-toggle-cd-auto-run-dired nil))
 
+;;; DEVELOPMENT TOOLS
+(use-package direnv
+  :config
+  (direnv-mode)) ;; direnv integration for emacs
+
 ;;; COPILOT
 
 (use-package copilot)
@@ -794,8 +801,35 @@
 (use-package lsp-ui
   :after lsp-mode)
 
+;; LSP keybindings
+(local-leader-def lsp-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
+(local-leader-def lsp-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
+;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
+;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
+(evil-define-key 'normal 'lsp-mode-map "gd" 'lsp-goto-type-definition)
+(evil-define-key 'normal 'lsp-mode-map "gD" 'lsp-goto-implementation)
+(evil-define-key 'normal 'lsp-mode-map "gr" 'lsp-ui-peek-find-references)
+(evil-define-key 'normal 'lsp-mode-map "gm" 'lsp-rename)
+(evil-define-key 'normal 'lsp-mode-map "K" 'lsp-ui-doc-show)
+;; "g d" 'lsp-describe-thing-at-point
+;; "g d" 'lsp-go-to-definition
+;; "K" 'lsp-ui-doc-show
+;; "g r" 'lsp-rename
+;; ", a" 'lsp-execute-code-action)
+
+
 ;; This is a custom package that installs all lsp servers that require installation otherwise
 (use-package lsp-install-servers)
+
+;;; FORMATTING
+(use-package format-all
+  :commands format-all-mode
+  :hook (prog-mode . format-all-mode)
+  )
+;; If you ever want to set different formatters, uncomment this
+;; :config
+;; (setq-default format-all-formatters '(("C"     (astyle "--mode=c"))
+;;                                       ("Shell" (shfmt "-i" "4" "-ci")))))
 
 ;; completion
 ;; (use-package company)
@@ -867,17 +901,17 @@
   :config
   (setq typescript-indent-level 2))
 
-  ;; optionally
-  (use-package lsp-ui :commands lsp-ui-mode)
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
 
-  ;; optionally if you want to use debugger
-  ;; (use-package dap-mode)
-  ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+;; optionally if you want to use debugger
+;; (use-package dap-mode)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
-  ;; optional if you want which-key integration
-  (use-package which-key
-      :config
-      (which-key-mode))
+;; optional if you want which-key integration
+(use-package which-key
+  :config
+  (which-key-mode))
 
 ;;; PROJECTS AND GIT INTEGRATION
 
@@ -915,7 +949,7 @@
   (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-file) ;; replace with dired-find-file once we install dired-open
   (evil-define-key 'normal peep-dired-mode-map (kbd "h") 'peep-dired-prev-file)
   (evil-define-key 'normal peep-dired-mode-map (kbd "l") 'peep-dired-next-file)
-)
+  )
 
 
 ;; RSS feeds
