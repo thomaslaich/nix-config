@@ -59,6 +59,7 @@
       "kitty"
       "mos" # mos allows that mouse scrolling and trackpad scrolling is inverted
       "nordvpn"
+      "pritunl"
       "skype"
       "spotify"
       "studio-3t"
