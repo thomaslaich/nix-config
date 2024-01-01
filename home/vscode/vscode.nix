@@ -9,22 +9,22 @@
         "args" = "j";
         "command" = "vscode-neovim.compositeEscape1";
         "key" = "j";
-        "when" = "neovim.mode == insert && editorTextFocus";
+        "when" = "editorTextFocus && neovim.mode == insert";
       }
       {
         "key" = "space f f";
         "command" = "workbench.action.quickOpen";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space space";
         "command" = "workbench.action.quickOpen";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space f g";
         "command" = "workbench.action.findInFiles";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space /";
@@ -34,7 +34,7 @@
       {
         "key" = "space g s";
         "command" = "workbench.view.scm";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space n";
@@ -94,42 +94,42 @@
       {
         "key" = "space w h";
         "command" = "workbench.action.navigateLeft";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space w j";
         "command" = "workbench.action.navigateDown";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space w k";
         "command" = "workbench.action.navigateUp";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space w l";
         "command" = "workbench.action.navigateRight";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space w c";
         "command" = "workbench.action.closeActiveEditor";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space w o";
         "command" = "workbench.action.closeOtherEditors";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space w s";
         "command" = "workbench.action.splitEditorOrthogonal";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space w v";
         "command" = "workbench.action.splitEditor";
-        "when" = "neovim.mode != insert";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space .";
@@ -180,10 +180,6 @@
         "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
       };
       "extensions.ignoreRecommendations" = true;
-
-      # dired
-      "dired.ask_directory" = false;
-
     };
 
     extensions = with pkgs.vscode-marketplace; [
@@ -199,6 +195,7 @@
       github.copilot-chat
       postman.postman-for-vscode
       rrudi.vscode-dired
+      mkhl.direnv
 
       # JS/TS
       ms-vscode.vscode-typescript-next
