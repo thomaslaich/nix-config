@@ -57,6 +57,7 @@
       "firefox"
       "google-chrome"
       "kitty"
+      "microsoft-teams"
       "mos" # mos allows that mouse scrolling and trackpad scrolling is inverted
       "nordvpn"
       "pritunl"
