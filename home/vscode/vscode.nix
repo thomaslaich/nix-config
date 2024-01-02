@@ -184,6 +184,8 @@
         "Endpoint=https://claptrapconf001.azconfig.io;Id=rE9z-l9-s0:+PsheyeewoD73LU9ZEP5;Secret=AoXayNNVkizF77PkJL5TyF3AuD7rAlDeUHzlop/26vU=";
       "claptrap.modules.isomorph.projectPath" =
         "/Users/thomaslaich/repos/galaxus/isomorph";
+      "claptrap.modules.graphql.projectPath" =
+        "/Users/thomaslaich/repos/galaxus/GraphQL";
     };
 
     extensions = with pkgs.vscode-marketplace; [
