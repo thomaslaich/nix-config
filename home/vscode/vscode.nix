@@ -184,6 +184,8 @@
         "***REMOVED***";
       "claptrap.modules.isomorph.projectPath" =
         "/Users/thomaslaich/repos/galaxus/isomorph";
+      "claptrap.modules.graphql.projectPath" =
+        "/Users/thomaslaich/repos/galaxus/GraphQL";
     };
 
     extensions = with pkgs.vscode-marketplace; [
