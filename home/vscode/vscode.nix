@@ -29,7 +29,7 @@
       {
         "key" = "space /";
         "command" = "actions.find";
-        "when" = "neovim.mode != insert && (editorFocus || editorIsOpen)";
+        "when" = "editorTextFocus && neovim.mode != insert";
       }
       {
         "key" = "space g s";
@@ -180,6 +180,10 @@
         "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
       };
       "extensions.ignoreRecommendations" = true;
+      "claptrap.configEndpoint" =
+        "Endpoint=https://claptrapconf001.azconfig.io;Id=rE9z-l9-s0:+PsheyeewoD73LU9ZEP5;Secret=AoXayNNVkizF77PkJL5TyF3AuD7rAlDeUHzlop/26vU=";
+      "claptrap.modules.isomorph.projectPath" =
+        "/Users/thomaslaich/repos/galaxus/isomorph";
     };
 
     extensions = with pkgs.vscode-marketplace; [
@@ -251,6 +255,10 @@
       # Haskell
       haskell.haskell
       justusadam.language-haskell
+
+      # Galaxus
+      ms-vscode.azure-account
+      dg-infinity.claptrap
     ];
   };
 }
