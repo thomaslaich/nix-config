@@ -494,7 +494,8 @@
 (use-package org-gtd :after org
   :init
   ;; Directories
-  (setq org-agenda-files '("~/Dropbox/notes/gcal-appointments.org"))
+  (setq org-agenda-files '("~/Dropbox/notes/gcal-appointments.org"
+                           "~/Dropbox/notes/digitec-appointments.org"))
   (setq org-gtd-directory "~/Dropbox/notes/org-gtd")
   :config
   (setq org-edna-use-inheritance t)
