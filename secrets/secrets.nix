@@ -6,4 +6,5 @@ in {
   "gcal-clientid.age".publicKeys = [ user1 ];
   "gcal-clientsecret.age".publicKeys = [ user1 ];
   "authinfo.age".publicKeys = [ user1 ];
+  "netrc.age".publicKeys = [ user1 ];
 }

@@ -287,17 +287,12 @@
   "e l" '(eval-last-sexp :wk "Evaluate elisp in last sexp")
   "e r" '(eval-region :wk "Evaluate elisp in region"))
 
-;; help keybindings
+;; dired keybindings
 (leader-def
-  "h" '(:ignore t :wk "[H]elp")
-  "h a" '(apropos :wk "Apropos")
-  "h c" '(describe-char :wk "Character")
-  "h f" '(describe-function :wk "Function")
-  "h k" '(describe-key :wk "Key")
-  "h m" '(describe-mode :wk "Mode")
-  "h p" '(describe-package :wk "Package")
-  "h v" '(describe-variable :wk "Variable"))
-;; need to add "h r r" for reloading config as well?
+  "d" '(:ignore t :wk "[D]ired")
+  "d d" '(dired :wk "Open Dired")
+  "d j" '(dired-jump :wk "Jump to Current")
+  "d p" '(peep-dired :wk "Peep Dired"))
 
 ;; search
 (leader-def
@@ -310,7 +305,8 @@
   "f h" '(consult-man :wk "Find Help")
   "f i" '(info :wk "Find Info")
   "f r" '(consult-recent-file :wk "Find Recent Files")
-  "f m" '(consult-notmuch-tree :wk "Find Mail"))
+  "f m" '(consult-notmuch-tree :wk "Find Mail")
+  "f n" '(org-roam-node-find :wk "Find Org Roam Node"))
 
 ;; Git
 (leader-def
@@ -319,13 +315,32 @@
   ;; TODO maybe at "g c" and "g b" as in neovim?
   "g g" '(magit-status :wk "Magit"))
 
-
-;; toggle keybindings
+;; help keybindings
 (leader-def
-  "t" '(:ignore t :wk "[T]oggle")
-  "t l" '(display-line-numbers-mode :wk "Toggle Line Numbers")
-  "t t" '(global-visual-line-mode :wk "Toggle Truncate Lines")
-  "t v" '(vterm-toggle :wk "Toggle Vterm"))
+  "h" '(:ignore t :wk "[H]elp")
+  "h a" '(apropos :wk "Apropos")
+  "h c" '(describe-char :wk "Character")
+  "h f" '(describe-function :wk "Function")
+  "h k" '(describe-key :wk "Key")
+  "h m" '(describe-mode :wk "Mode")
+  "h p" '(describe-package :wk "Package")
+  "h v" '(describe-variable :wk "Variable"))
+;; need to add "h r r" for reloading config as well?
+
+;; insert keybindings
+(leader-def
+  "i" '(:ignore t :wk "[I]nsert")
+  "i n" '(org-roam-node-insert :wk "Insert Org Roam Node")
+  "i d" '(insert-date :wk "Insert Date")
+  "i t" '(insert-time :wk "Insert Time"))
+
+;; email bindings
+(leader-def
+  "m" '(:ignore t :wk "[M]ail")
+  "m f" '(consult-notmuch-tree :wk "Find Mail")
+  "m n" '(notmuch :wk "Notmuch Mail")
+  "m m" '(mu4e :wk "Mail")
+  "m c" '(mu4e-compose-new :wk "Compose Mail"))
 
 ;; org keybindings
 (leader-def
@@ -340,20 +355,13 @@
   "o m" '(mu4e :wk "Mail")
   "o r" '(elfeed :wk "RSS Feeds"))
 
-;; email bindings
+;; toggle keybindings
 (leader-def
-  "m" '(:ignore t :wk "[M]ail")
-  "m f" '(consult-notmuch-tree :wk "Find Mail")
-  "m n" '(notmuch :wk "Notmuch Mail")
-  "m m" '(mu4e :wk "Mail")
-  "m c" '(mu4e-compose-new :wk "Compose Mail"))
-
-;; dired keybindings
-(leader-def
-  "d" '(:ignore t :wk "[D]ired")
-  "d d" '(dired :wk "Open Dired")
-  "d j" '(dired-jump :wk "Jump to Current")
-  "d p" '(peep-dired :wk "Peep Dired"))
+  "t" '(:ignore t :wk "[T]oggle")
+  "t l" '(display-line-numbers-mode :wk "Toggle Line Numbers")
+  "t t" '(global-visual-line-mode :wk "Toggle Truncate Lines")
+  "t n" '(org-roam-buffer-toggle :wk "Toggle Org Roam Buffer")
+  "t v" '(vterm-toggle :wk "Toggle Vterm"))
 
 ;; Window motions vim mode
 (global-set-key (kbd "C-h") 'evil-window-left)
@@ -435,40 +443,39 @@
 ;;                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 
-;; Custom org-mode fonts
-(let* ((variable-tuple
-        (cond ((x-list-fonts "JetBrainsMono Nerd Font") '(:font "JetBrainsMono Nerd Font"))
-              ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
-              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+;; ;; Custom org-mode fonts
+;; (let* ((variable-tuple
+;;         (cond ((x-list-fonts "JetBrainsMono Nerd Font") '(:font "JetBrainsMono Nerd Font"))
+;;               ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
+;;               (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+;;        (base-font-color     (face-foreground 'default nil 'default))
+;;        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
 
-  (custom-theme-set-faces
-   'user
-   `(org-level-8 ((t (,@headline ,@variable-tuple))))
-   `(org-level-7 ((t (,@headline ,@variable-tuple))))
-   `(org-level-6 ((t (,@headline ,@variable-tuple))))
-   `(org-level-5 ((t (,@headline ,@variable-tuple))))
-   `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.05))))
-   `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
-   `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
-   `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.6))))
-   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+;;   (custom-theme-set-faces
+;;    'user
+;;    `(org-level-8 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-7 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-6 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-5 ((t (,@headline ,@variable-tuple))))
+;;    `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.05))))
+;;    `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
+;;    `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
+;;    `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.6))))
+;;    `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))
+;;    '(org-block ((t (:inherit variable-pitch))))
+;;    '(org-code ((t (:inherit (shadow fixed-pitch)))))
+;;    ;; '(org-document-info ((t (:foreground "dark orange"))))
+;;    '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+;;    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+;;    ;; '(org-link ((t (:foreground "royal blue" :underline t))))
+;;    '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;;    '(org-property-value ((t (:inherit fixed-pitch))) t)
+;;    '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;;    ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+;;    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+;;    '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+;;    ))
 
-(custom-theme-set-faces
- 'user
- '(org-block ((t (:inherit variable-pitch))))
- '(org-code ((t (:inherit (shadow fixed-pitch)))))
- ;; '(org-document-info ((t (:foreground "dark orange"))))
- '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
- '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
- ;; '(org-link ((t (:foreground "royal blue" :underline t))))
- '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-property-value ((t (:inherit fixed-pitch))) t)
- '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
- '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
- '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
 ;; evil org mode
 (use-package evil-org
@@ -481,24 +488,6 @@
 
 ;; disable electric indent
 (electric-indent-mode -1)
-
-;; GTD setup
-
-;; (setq org-capture-templates '(("t" "Todo [inbox]" entry
-;;                                (file+headline "~/notes/org/gtd/inbox.org" "Tasks")
-;;                                "* TODO %i%?")
-;;                               ("T" "Tickler" entry
-;;                                (file+headline "~/notes/org/gtd/tickler.org" "Tickler")
-;;                                "* %i%? \n %U")
-;;                               ("a" "Appointment" entry (file "~/notes/org/gtd/appointments.org") ; ,(concat org-directory "gtd/appointments.org"))
-;;                                "* %?\n:PROPERTIES:\n:calendar-id:\tthomas.laich@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)))
-
-;; (setq org-refile-targets '(("~/notes/org/gtd/gtd.org" :maxlevel . 3)
-;;                            ("~/notes/org/gtd/someday.org" :level . 1)
-;;                            ("~/notes/org/gtd/tickler.org" :maxlevel . 2)))
-
-;; (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
-
 
 ;; ORG GTD
 (setq org-gtd-update-ack "3.0.0")
@@ -537,11 +526,8 @@
 (use-package org-roam :after org
   :custom
   (org-roam-directory "~/Dropbox/notes/org-roam")
-  :bind (("C-c n l" . org-roam)
-         ("C-c n f" . org-roam-find-file)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-insert)
-         ("C-c n I" . org-roam-insert-immediate))
+  :bind (("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
   :config
   (org-roam-setup))
 
@@ -668,7 +654,9 @@
 
 (use-package org-gcal
   :config
-  (setq org-gcal-fetch-file-alist '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")))
+  (setq org-gcal-fetch-file-alist
+        '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
+          ("b3falc4vh1ko8ipvmmqkq3o98db0gefn@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
   (org-gcal-reload-client-id-secret))
 
 ;; enter pinentry password directly from emacs (no popup)
@@ -824,8 +812,7 @@
 ;;; FORMATTING
 (use-package format-all
   :commands format-all-mode
-  :hook (prog-mode . format-all-mode)
-  )
+  :hook (prog-mode . format-all-mode))
 ;; If you ever want to set different formatters, uncomment this
 ;; :config
 ;; (setq-default format-all-formatters '(("C"     (astyle "--mode=c"))
