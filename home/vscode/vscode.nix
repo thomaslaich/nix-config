@@ -201,12 +201,17 @@
       github.copilot-chat
       postman.postman-for-vscode
       rrudi.vscode-dired
-      mkhl.direnv
+      carlosjs23.vscode-yarn-script # run yarn scripts from package.json in vscode
+      editorconfig.editorconfig # get editor config overrides from .editorconfig files
+      mkhl.direnv # direnv support
 
       # JS/TS
       ms-vscode.vscode-typescript-next
       svelte.svelte-vscode
       dbaeumer.vscode-eslint
+      esbenp.prettier-vscode
+      styled-components.vscode-styled-components
+      unifiedjs.vscode-mdx
 
       # Python
       ms-python.python
@@ -246,6 +251,8 @@
       # GraphQL
       graphql.vscode-graphql-syntax
       graphql.vscode-graphql
+      apollographql.vscode-apollo
+      meta.relay
 
       # C/C++
       ms-vscode.makefile-tools

@@ -4,7 +4,7 @@
     ./fish/fish.nix
     ./tmux/tmux.nix
     ./neovim/neovim.nix
-    ./vscode/vscode.nix
+    # ./vscode/vscode.nix
     ./emacs/emacs.nix
     ./email/email.nix
   ];
@@ -15,6 +15,16 @@
     extraOptions = [ ];
   };
 
+  # I use this for pipx installations now
+  # Of course I should not use pipx and instead install all CLI tools from source
+  home.sessionPath =
+    [ "/Users/thomaslaich/.local/bin" "/Users/thomaslaich/.rd/bin" ];
+
+  home.sessionVariables = {
+    DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
+    KRB5_CONFIG = "/Users/thomaslaich/.config/krb5.conf";
+  };
+
   home.stateVersion = "22.11";
 
   home.packages = let
@@ -23,6 +33,7 @@
         jupyter
         numpy
         pandas
+        pipx
         python-lsp-ruff
         python-lsp-server
         requests
@@ -31,11 +42,13 @@
     python-with-packages = pkgs.python3.withPackages python-packages;
   in with pkgs; [
     _1password # pw manager
+    age
     amber
     any-nix-shell
+    azure-cli
     bat # better cat
     curl # http requests from command line
-    dotnet-sdk
+    dotnet-sdk_7
     eza # better ls (bound to `l` and `la` in fish)
     fd
     fzf
@@ -44,6 +57,8 @@
     httpie
     jq # json parser
     killall
+    krb5
+    kubelogin
     kubernetes-helm
     lazydocker
     lua
@@ -94,6 +109,10 @@
     authinfo = {
       file = ../secrets/authinfo.age;
       path = "${config.home.homeDirectory}/.authinfo";
+    };
+    netrc = {
+      file = ../secrets/netrc.age;
+      path = "${config.home.homeDirectory}/.netrc";
     };
   };
 
