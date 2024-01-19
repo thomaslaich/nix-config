@@ -1,13 +1,47 @@
-{ pkgs, config, ... }: {
+{ inputs, outputs, pkgs, config, ... }:
+let
+  dotnet-packages = with pkgs.dotnetCorePackages;
+    combinePackages [ sdk_8_0 sdk_7_0 ];
+  inherit (config.home) homeDirectory;
+
+in {
   imports = [
+    inputs.kauz.homeModules.default
+    inputs.agenix.homeManagerModules.default
     ./kitty/kitty.nix
     ./fish/fish.nix
     ./tmux/tmux.nix
     ./neovim/neovim.nix
-    # ./vscode/vscode.nix
     ./emacs/emacs.nix
     ./email/email.nix
   ];
+
+  home.stateVersion = "22.11";
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  programs.git = {
+    enable = true;
+    userEmail = "thomaslaich@gmail.com";
+    userName = "Thomas Laich";
+    diff-so-fancy.enable = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  programs.zsh = { enable = true; };
+
+  # Kauz colorscheme
+  kauz = {
+    fish.enable = true;
+    kitty.enable = true;
+    neovim.enable = true;
+    tmux.enable = true;
+  };
 
   # private dropbox
   services.syncthing = {
@@ -15,17 +49,32 @@
     extraOptions = [ ];
   };
 
+  nixpkgs = {
+    # You can add overlays here
+    overlays = outputs.overlays;
+    # Configure your nixpkgs instance
+    config = {
+      # Disable if you don't want unfree packages
+      allowUnfree = true;
+      # Workaround for https://github.com/nix-community/home-manager/issues/2942
+      allowUnfreePredicate = _: true;
+
+      # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
+      # in turn gnupg 2.2.x has an insecure dep
+      # TODO remove when gnupg gets upgraded to >= 2.4.3
+      permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
+    };
+  };
+
   # I use this for pipx installations now
   # Of course I should not use pipx and instead install all CLI tools from source
   home.sessionPath =
-    [ "/Users/thomaslaich/.local/bin" "/Users/thomaslaich/.rd/bin" ];
+    [ "${homeDirectory}/.local/bin" "${homeDirectory}/.rd/bin" ];
 
   home.sessionVariables = {
-    DOTNET_ROOT = "${pkgs.dotnet-sdk_7}";
-    KRB5_CONFIG = "/Users/thomaslaich/.config/krb5.conf";
+    DOTNET_ROOT = "${dotnet-packages}";
+    KRB5_CONFIG = "${homeDirectory}/.config/krb5.conf";
   };
-
-  home.stateVersion = "22.11";
 
   home.packages = let
     python-packages = ps:
@@ -40,15 +89,14 @@
         scipy
       ];
     python-with-packages = pkgs.python3.withPackages python-packages;
-  in with pkgs; [
+  in with pkgs;
+  [
     _1password # pw manager
     age
     amber
     any-nix-shell
-    azure-cli
     bat # better cat
     curl # http requests from command line
-    dotnet-sdk_7
     eza # better ls (bound to `l` and `la` in fish)
     fd
     fzf
@@ -67,7 +115,6 @@
     nixfmt
     nixpkgs-fmt
     nodejs
-    pinentry_mac # gpg
     postgresql
     python-with-packages
     restic
@@ -94,51 +141,33 @@
     stylua
     vale
     vscode-langservers-extracted
-  ];
+  ] ++
 
-  # secrets for emacs 
+  # stable packages
+  (with pkgs.stable; [
+    azure-cli
+    pinentry_mac # gpg
+  ]) ++ [ dotnet-packages ];
+
+  # secrets for from agenix 
   age.secrets = {
     gcal-clientid = {
       file = ../secrets/gcal-clientid.age;
-      path = "${config.home.homeDirectory}/.emacs.d/gcal-clientid";
+      path = "${homeDirectory}/.emacs.d/gcal-clientid";
     };
     gcal-clientsecret = {
       file = ../secrets/gcal-clientsecret.age;
-      path = "${config.home.homeDirectory}/.emacs.d/gcal-clientsecret";
+      path = "${homeDirectory}/.emacs.d/gcal-clientsecret";
     };
     authinfo = {
       file = ../secrets/authinfo.age;
-      path = "${config.home.homeDirectory}/.authinfo";
+      path = "${homeDirectory}/.authinfo";
     };
     netrc = {
       file = ../secrets/netrc.age;
-      path = "${config.home.homeDirectory}/.netrc";
+      path = "${homeDirectory}/.netrc";
     };
   };
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-
-  programs.git = {
-    enable = true;
-    userEmail = "thomaslaich@gmail.com";
-    userName = "Thomas Laich";
-    diff-so-fancy.enable = true;
-  };
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
-  programs.starship = {
-    enable = true;
-    # promptInit = ''
-    #   eval "$(starship init zsh)"
-    # '';
-  };
-
-  programs.zsh = { enable = true; };
 
   programs.htop.enable = true;
   programs.htop.settings.show_program_path = true;

@@ -2,20 +2,25 @@
   description = "My Nix configs";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    darwin.url = "github:lnl7/nix-darwin";
-    darwin.inputs.nixpkgs.follows = "nixpkgs";
+    # utils 
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+
+    # Nixpkgs
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+
+    # home manager
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # nix darwin
+    darwin.url = "github:lnl7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     # overlays
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    # neovim-nightly-overlay.inputs.nixpkgs.follows = "nixpkgs";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
@@ -23,14 +28,14 @@
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
 
     # themes
-    # colorscheme.url = "github:buntec/nix-colorscheme";
     kauz.url = "github:buntec/kauz";
   };
 
   outputs = { self, darwin, nixpkgs, home-manager, flake-utils, treefmt-nix
-    , agenix, nix-vscode-extensions, neorg-overlay, vimplugins-overlay
-    , epkgs-overlay, emacs-overlay, kauz, ... }@attrs:
+    , agenix, neorg-overlay, vimplugins-overlay, epkgs-overlay, emacs-overlay
+    , kauz, ... }@inputs:
     let
+      inherit (self) outputs;
       inherit (nixpkgs) lib;
       inherit (lib) genAttrs;
 
@@ -54,26 +59,15 @@
 
       eachSystem = genAttrs systems;
 
-      overlays = [
-        # Kauz colorscheme overlay
-        kauz.overlays.default
-        # Nix VSCode extensions overlay
-        nix-vscode-extensions.overlays.default
-        # Neorg Overlay
-        neorg-overlay.overlays.default
-        # this adds a few vimplugins unavailable in nixpkgs
-        vimplugins-overlay.overlays.default
-        # this adds a few emacs packages unavailable in nixpkgs
-        epkgs-overlay.overlays.default
-        # Emacs overlay
-        emacs-overlay.overlays.default
-      ];
+      overlays = import ./overlays { inherit inputs; };
 
       treefmtEval = eachSystem (system:
         let pkgs = import nixpkgs { inherit system overlays; };
         in treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
     in rec {
+      inherit overlays;
+
       formatter = eachSystem (system:
         let pkgs = import nixpkgs { inherit system overlays; };
         in treefmtEval.${pkgs.system}.config.build.wrapper);
@@ -82,33 +76,10 @@
         inherit (machine) name;
         value = nixpkgs.lib.nixosSystem {
           inherit (machine) system;
-          specialArgs = attrs;
+          specialArgs = { inherit inputs outputs; };
           modules = [
-            {
-              nixpkgs.overlays = overlays;
-              nixpkgs.config.allowUnfree = true;
-              # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
-              # in turn gnupg 2.2.x has an insecure dep
-              # TODO remove when gnupg gets upgraded to >= 2.4.3
-              nixpkgs.config.permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
-            }
             ./system/configuration-nixos.nix
             ./system/configuration-${machine.name}.nix
-            agenix.homeManagerModules.default # user secrets
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.${machine.user} = {
-                  imports = [
-                    ./home/home.nix
-                    ./home/home-nixos.nix
-                    ./home/home-${machine.name}.nix
-                  ];
-                };
-              };
-            }
           ];
         };
       }) nixosMachines);
@@ -117,67 +88,71 @@
         inherit (machine) name;
         value = darwin.lib.darwinSystem {
           inherit (machine) system;
-          specialArgs = attrs;
+          specialArgs = { inherit inputs outputs; };
           modules = [
-            {
-              nixpkgs.overlays = overlays;
-              nixpkgs.config.allowUnfree = true;
-              # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
-              # in turn gnupg 2.2.x has an insecure dep
-              # TODO remove when gnupg gets upgraded to >= 2.4.3
-              nixpkgs.config.permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
-            }
             ./system/configuration-darwin.nix
             ./system/configuration-${machine.name}.nix
             agenix.darwinModules.default
-            home-manager.darwinModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                users.${machine.user} = {
-                  imports = [
-                    agenix.homeManagerModules.default
-                    {
-                      imports = [ kauz.homeModules.default ];
-                      colorschemes.kauz.enable = true;
-                    }
-                    # {
-                    #   imports = [ colorscheme.homeModules.colorscheme ];
-                    #   colorscheme = {
-                    #     enable = true;
-                    #     name = "catppuccin-macchiato";
-                    #   };
-                    # }
-                    ./home/home.nix
-                    ./home/home-darwin.nix
-                    ./home/home-${machine.name}.nix
-                  ];
-                };
-              };
-            }
           ];
         };
       }) darwinMachines);
 
+      homeConfigurations = builtins.listToAttrs (builtins.map (machine:
+        let pkgs = import nixpkgs { inherit (machine) system; };
+        in {
+          inherit (machine) name;
+          value = home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            extraSpecialArgs = { inherit inputs outputs; };
+            modules = [
+              {
+                home.username = machine.user;
+                home.homeDirectory = if (isDarwin machine) then
+                  "/Users/${machine.user}"
+                else
+                  "/home/${machine.user}";
+              }
+              ./home/home.nix
+              ./home/home-${
+                if (isDarwin machine) then "darwin" else "nixos"
+              }.nix
+              ./home/home-${machine.name}.nix
+            ];
+          };
+        }) machines);
+
+
       apps = builtins.mapAttrs (system: machines:
-        builtins.listToAttrs (builtins.map (machine:
+        builtins.listToAttrs (lib.flatten (builtins.map (machine:
           let
             pkgs = import nixpkgs { inherit system; };
-            script = pkgs.writeShellScript "rebuild-${machine.name}"
+            rebuildScript = pkgs.writeShellScript "rebuild-${machine.name}"
               (if (isDarwin machine) then
                 "${
-                  darwinConfigurations.${machine.name}.system
-                }/sw/bin/darwin-rebuild switch --flake .#${machine.name}"
+                  self.darwinConfigurations.${machine.name}.system
+                }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}"
               else
-                "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake .#${machine.name}");
-          in {
+                "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}");
+            hmSwitchScript = pkgs.writeShellScript "hm-switch-${machine.name}"
+              "${
+                inputs.home-manager.packages.${system}.home-manager
+              }/bin/home-manager switch --flake ${self}#${machine.name}";
+          in [
+            {
             name = "rebuild-${machine.name}";
             value = {
               type = "app";
-              program = "${script}";
-            };
-          }) machines)) machinesBySystem;
+                program = "${rebuildScript}";
+              };
+            }
+            {
+              name = "hm-switch-${machine.name}";
+              value = {
+                type = "app";
+                program = "${hmSwitchScript}";
+              };
+            }
+          ]) machines))) machinesBySystem;
 
       # add all nixos and darwin configs to checks
       checks = (builtins.mapAttrs (system: machines:
