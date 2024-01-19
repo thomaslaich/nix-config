@@ -125,35 +125,15 @@
 
         web-devicons = { plugin = pkgs.vimPlugins.nvim-web-devicons; };
 
-        # make code blocks collapsible
-        # nvim-ufo = [
-        #   { plugin = pkgs.vimPlugins.promise-async; }
-        #   {
-        #     plugin = pkgs.vimPlugins.nvim-ufo;
-        #     type = "lua";
-        #     config = builtins.readFile ./plugins/nvim-ufo.lua;
-        #   }
-        # ];
-
         lsp-kind = {
           plugin = pkgs.vimPlugins.lspkind-nvim;
           type = "lua";
-        };
-
-        # fancy notifications
-        nvim-notify = {
-          plugin = pkgs.vimPlugins.nvim-notify;
-          type = "lua";
-          config = ''
-            vim.notify = require("notify")
-          '';
         };
 
         indent-blank-line = {
           plugin = pkgs.vimPlugins.indent-blankline-nvim;
           type = "lua";
           config = builtins.readFile ./plugins/indent-blankline.lua;
-
         };
 
         which-key = {
@@ -191,8 +171,6 @@
         lsp-kind
         lsp-progress
         lualine
-        nvim-notify
-        # nvim-ufo
         trouble
         web-devicons
         which-key

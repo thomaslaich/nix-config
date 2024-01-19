@@ -657,7 +657,7 @@
   :config
   (setq org-gcal-fetch-file-alist
         '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
-          ("b3falc4vh1ko8ipvmmqkq3o98db0gefn@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
+          ("ca7720dkstvtckbn76ni9s73mg8fu9fd@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
   (org-gcal-reload-client-id-secret))
 
 ;; enter pinentry password directly from emacs (no popup)
