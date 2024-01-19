@@ -62,14 +62,14 @@
       overlays = import ./overlays { inherit inputs; };
 
       treefmtEval = eachSystem (system:
-        let pkgs = import nixpkgs { inherit system overlays; };
+        let pkgs = import nixpkgs { inherit system; };
         in treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
 
     in rec {
       inherit overlays;
 
       formatter = eachSystem (system:
-        let pkgs = import nixpkgs { inherit system overlays; };
+        let pkgs = import nixpkgs { inherit system; };
         in treefmtEval.${pkgs.system}.config.build.wrapper);
 
       nixosConfigurations = builtins.listToAttrs (builtins.map (machine: {
@@ -121,7 +121,6 @@
           };
         }) machines);
 
-
       apps = builtins.mapAttrs (system: machines:
         builtins.listToAttrs (lib.flatten (builtins.map (machine:
           let
@@ -139,9 +138,9 @@
               }/bin/home-manager switch --flake ${self}#${machine.name}";
           in [
             {
-            name = "rebuild-${machine.name}";
-            value = {
-              type = "app";
+              name = "rebuild-${machine.name}";
+              value = {
+                type = "app";
                 program = "${rebuildScript}";
               };
             }
