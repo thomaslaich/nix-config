@@ -1,7 +1,7 @@
 # This file defines overlays
 { inputs, ... }:
 
-let
+{
   # # This one brings our custom packages from the 'pkgs' directory
   # additions = final: _prev: import ../pkgs { pkgs = final; };
 
@@ -21,23 +21,5 @@ let
       config.allowUnfree = true;
     };
   };
-
-  from-inputs = with inputs; [
-    # Kauz colorscheme overlay
-    kauz.overlays.default
-    # Neorg Overlay
-    neorg-overlay.overlays.default
-    # this adds a few vimplugins unavailable in nixpkgs
-    vimplugins-overlay.overlays.default
-    # this adds a few emacs packages unavailable in nixpkgs
-    epkgs-overlay.overlays.default
-    # Emacs overlay
-    emacs-overlay.overlays.default
-  ];
-
-in [
-  # additions
-  modifications
-  stable-packages
-] ++ from-inputs
+}
 

@@ -51,7 +51,32 @@ in {
 
   nixpkgs = {
     # You can add overlays here
-    overlays = outputs.overlays;
+    overlays = [
+      # Add overlays your own flake exports (from overlays and pkgs dir):
+      # outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.stable-packages
+
+      # from inputs
+
+      # Kauz colorscheme overlay
+      inputs.kauz.overlays.default
+      # Neorg Overlay
+      inputs.neorg-overlay.overlays.default
+      # this adds a few vimplugins unavailable in nixpkgs
+      inputs.vimplugins-overlay.overlays.default
+      # this adds a few emacs packages unavailable in nixpkgs
+      inputs.epkgs-overlay.overlays.default
+      # Emacs overlay
+      inputs.emacs-overlay.overlays.default
+
+      # Or define it inline, for example:
+      # (final: prev: {
+      #   hi = final.hello.overrideAttrs (oldAttrs: {
+      #     patches = [ ./change-hello-to-hi.patch ];
+      #   });
+      # })
+    ];
     # Configure your nixpkgs instance
     config = {
       # Disable if you don't want unfree packages
