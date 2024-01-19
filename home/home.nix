@@ -58,6 +58,11 @@ in {
       allowUnfree = true;
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = _: true;
+
+      # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
+      # in turn gnupg 2.2.x has an insecure dep
+      # TODO remove when gnupg gets upgraded to >= 2.4.3
+      permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
     };
   };
 
@@ -169,7 +174,7 @@ in {
 
   programs.gpg = {
     enable = true;
-    package = pkgs.stable.gnupg;
+    package = pkgs.gnupg22;
     settings = {
       # allow pw fill in applications like emacs without popups
       pinentry-mode = "loopback";
