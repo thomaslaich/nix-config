@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ inputs, outputs, pkgs, ... }: {
   nix.extraOptions = ''
     experimental-features = nix-command flakes
 
@@ -8,14 +8,50 @@
     extra-substituters = https://nix-community.cachix.org https://devenv.cachix.org https://cache.iog.io 
   '';
 
+  # imports = [ inputs.agenix.darwinModules.default ];
+
+  nixpkgs = {
+    # You can add overlays here
+    overlays = outputs.overlays;
+    # Configure your nixpkgs instance
+    config = {
+      # Disable if you don't want unfree packages
+      allowUnfree = true;
+    };
+  };
+
   services.emacs.enable = true;
 
   # Add ability to used TouchID for sudo authentication
   security.pam.enableSudoTouchIdAuth = true;
   system = {
-
     keyboard.enableKeyMapping = true;
     keyboard.remapCapsLockToControl = true;
+
+    defaults = {
+      dock = {
+        autohide = true;
+        static-only = true; # show only running apps
+      };
+
+      finder = {
+        AppleShowAllExtensions = true;
+        AppleShowAllFiles = true;
+      };
+
+      NSGlobalDomain = {
+        "com.apple.swipescrolldirection" = false; # disable "natural" scroll
+
+        # key repeat: lower is faster
+        InitialKeyRepeat = 15;
+        KeyRepeat = 2;
+
+        NSAutomaticCapitalizationEnabled = false;
+        NSAutomaticSpellingCorrectionEnabled = false;
+        NSAutomaticPeriodSubstitutionEnabled = false;
+        NSAutomaticQuoteSubstitutionEnabled = false;
+      };
+    };
 
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
@@ -52,6 +88,7 @@
     casks = [
       "1password"
       "amethyst"
+      "azure-data-studio"
       "discord"
       "dropbox"
       "firefox"
@@ -71,15 +108,15 @@
     ];
   };
 
+  # TODO add rancher to path
+  # "${home.homeDirectory}/.rd/bin"
+
   # environment.shells = [ pkgs.fish ];
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
   nix.package = pkgs.nix; # this is the default
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
