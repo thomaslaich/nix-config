@@ -476,7 +476,6 @@
 ;;    '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
 ;;    ))
 
-
 ;; evil org mode
 (use-package evil-org
   :after org
