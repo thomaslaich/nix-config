@@ -1,8 +1,8 @@
 # My personal Nix configuration flake
 
-This is my clumsy attempt at using Nix for configuring my personal machines (both macOS and NixOS). 
+Configuration for my personal machines (both macOS and NixOS). 
 
-DISCLAIMER: I'm a complete Nix beginner so please don't blindly copy-paste things from this repo.
+Credits to [buntec/nix-config](https://github.com/buntec/nix-config); my config started as a clone of that repo.
 
 If you spot any errors or mistakes, feel free to open a pull request!
 
@@ -13,13 +13,18 @@ After installing NixOS from a USB drive, follow these steps:
 
 2. Copy `/etc/nixos/hardware-configuration.nix` into `./system` (OK to overwrite existing dummy file).
 
-3. Finally, to build and activate in one step,
+3. Build and activate NixOS config:
 ```bash
 sudo nixos-rebuild switch --flake .#thinkpad-x1 # the fragment can be dropped if it matches your current host name
+
+# alternatively, using the `apps` provided by the flake:
+sudo nix run .#rebuild-thinkpad-x1
 ```
-Alternatively, using the `apps` provided by the flake
+
+4. Activate home-manager:
+
 ```bash
-sudo nix run .#thinkpad-x1
+sudo nix run .#hm-switch-thinkpad-x1
 ```
 
 ### Notes: 
@@ -60,7 +65,8 @@ sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
 
 5. Clone this repo, `cd` into it, then build and activate with one command:
 ```bash
-nix run .#rebuild-macbook-pro-m1
+nix run .#rebuild-macbook-pro-m1 # nix-darwin
+nix run .#hm-switch-macbook-pro-m1 # home-manager
 ```
 
 ## Migrating an existing macOS install to Nix

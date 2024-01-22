@@ -6,8 +6,11 @@
 
 * General Info
 
-This is my rather clumsy attempt at setting up Emacs from scratch. Note that I do not use Emacs other than for personal curiosity; I do most of my programming in Neovim instead.
+This is my rather clumsy attempt at setting up Emacs from scratch.
+
+Disclaimer: I use emacs mainly for orgmode, elisp, and Haskell development (not professionally).
+I use vscode for C#/F# development, and neovim for developing in nix.
 
 I let Nix manage my Emacs installation (including downloading, compiling, and pinning packages) using the [[https://github.com/nix-community/emacs-overlay][emacs-overlay]]. This has 2 important consequences:
-- I do not actually need the provided `init.el` file for my installation. It is included so that this config can be used outside of Nix.
-- I unfortunately as of now cannot use org-babel for my config. Thus, all configuration currently resides in `config.el`
+- I do not actually need the provided ~init.el~ file for my installation. It is included so that this config can be used outside of Nix.
+- I unfortunately as of now cannot use org-babel for my config. Thus, all configuration currently resides in ~config.el~.
