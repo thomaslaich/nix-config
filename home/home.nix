@@ -1,7 +1,7 @@
 { inputs, outputs, pkgs, config, ... }:
 let
   dotnet-packages = with pkgs.dotnetCorePackages;
-    combinePackages [ sdk_8_0 sdk_7_0 ];
+    combinePackages [ sdk_8_0 sdk_7_0 sdk_6_0 ];
   inherit (config.home) homeDirectory;
 
 in {
@@ -154,6 +154,7 @@ in {
     zoxide # better cd (bound to `z` in fish)
 
     # lsps and formatters
+    csharpier # needed for emacs (format-all-the-code and neoformat)
     gopls
     haskell-language-server
     haskellPackages.fourmolu # haskell formatter
