@@ -140,6 +140,8 @@ in {
     nixfmt
     nixpkgs-fmt
     nodejs
+    openssl
+    poetry
     postgresql
     python-with-packages
     restic

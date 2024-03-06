@@ -31,6 +31,8 @@ lsp_config.omnisharp.setup({
   cmd = { omnisharpBin },
 })
 
+lsp_config.fsautocomplete.setup{}
+
 lsp_config.eslint.setup({
   on_attach = function(client, bufnr)
     -- Uncomment this to run eslint --fix on save

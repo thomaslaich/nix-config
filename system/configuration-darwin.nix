@@ -95,6 +95,7 @@
       "1password"
       "amethyst"
       "azure-data-studio"
+      "banana-cake-pop"
       "discord"
       "dropbox"
       "firefox"
