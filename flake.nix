@@ -5,10 +5,12 @@
     # utils 
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    devenv.url = "github:cachix/devenv";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
 
-    # nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
+    # nixpkgs (note i currently don't have a linux machine, so I'm only using unstable and darwin channels)
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
 
     # home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -33,9 +35,15 @@
     kauz.url = "github:buntec/kauz";
   };
 
-  outputs = { self, darwin, nixpkgs, home-manager, flake-utils, treefmt-nix
-    , agenix, neorg-overlay, vimplugins-overlay, epkgs-overlay, emacs-overlay
-    , kauz, ... }@inputs:
+  nixConfig = {
+    extra-trusted-public-keys =
+      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
+    extra-substituters = "https://devenv.cachix.org";
+  };
+
+  outputs = { self, darwin, nixpkgs, home-manager, devenv, flake-utils
+    , treefmt-nix, agenix, neorg-overlay, vimplugins-overlay, epkgs-overlay
+    , emacs-overlay, kauz, ... }@inputs:
     let
       inherit (self) outputs;
       inherit (nixpkgs) lib;
@@ -69,6 +77,20 @@
 
     in rec {
       inherit overlays;
+
+      devShells = eachSystem (system:
+        let pkgs = import nixpkgs { inherit system; };
+        in {
+          default = devenv.lib.mkShell {
+            inherit inputs pkgs;
+            modules = [
+              ({ pkgs, config, ... }: {
+                languages.lua.enable = true;
+                languages.nix.enable = true;
+              })
+            ];
+          };
+        });
 
       formatter = eachSystem (system:
         let pkgs = import nixpkgs { inherit system; };

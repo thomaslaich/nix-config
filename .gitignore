@@ -1,2 +1,6 @@
 .luarc.json
 .DS_Store
+
+# direnv / devenv
+.direnv
+.devenv
