@@ -69,6 +69,8 @@ in {
       inputs.epkgs-overlay.overlays.default
       # Emacs overlay
       inputs.emacs-overlay.overlays.default
+      # dg-cli overlay
+      inputs.dg-nix.overlays.default
 
       # Or define it inline, for example:
       # (final: prev: {
@@ -107,13 +109,30 @@ in {
         jupyter
         numpy
         pandas
-        pipx
+        # pipx
         python-lsp-ruff
         python-lsp-server
         requests
         scipy
       ];
     python-with-packages = pkgs.python3.withPackages python-packages;
+    dg-cli-with-plugins = pkgs.dg-cli.withPlugins (plugins:
+      with plugins; [
+        dg-cli-plugin-azure-devops
+        # dg-cli-plugin-digidog
+        dg-cli-plugin-graphql
+        dg-cli-plugin-kafka
+        # dg-cli-plugin-kube
+        dg-cli-plugin-mongodb
+        # dg-cli-plugin-ravendb
+        dg-cli-plugin-sql
+        dg-cli-plugin-templates
+        # dg-cli-plugin-topiccompare
+        # dg-cli-plugin-statictranslations
+        # dg-cli-plugin-github
+        # dg-cli-plugin-devcontainer
+        # dg-cli-plugin-keyringdevcontainer
+      ]);
   in with pkgs;
   [
     _1password # pw manager
@@ -170,12 +189,16 @@ in {
     stylua
     vale
     vscode-langservers-extracted
+
+    # dg-cli
+    dg-cli-with-plugins
   ] ++
 
   # stable packages
-  (with pkgs.stable; [
-    pinentry_mac # gpg
-  ]) ++ [ dotnet-packages ];
+  (with pkgs.stable;
+    [
+      pinentry_mac # gpg
+    ]) ++ [ dotnet-packages ];
 
   # secrets for from agenix 
   age.secrets = {
