@@ -33,6 +33,11 @@
 
     # themes
     kauz.url = "github:buntec/kauz";
+
+    # dg-cli, etc.
+    dg-nix.url =
+      "git+ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/Playground/Dg.Nix";
+    dg-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
