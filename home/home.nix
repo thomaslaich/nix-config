@@ -190,8 +190,9 @@ in {
     vale
     vscode-langservers-extracted
 
-    # dg-cli
+    # Galaxus
     dg-cli-with-plugins
+    watchman # relay GQL incremental compilation
   ] ++
 
   # stable packages
