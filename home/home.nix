@@ -176,6 +176,7 @@ in {
     zoxide # better cd (bound to `z` in fish)
 
     # lsps and formatters
+    clang-tools
     csharpier # needed for emacs (format-all-the-code and neoformat)
     gopls
     haskell-language-server
@@ -183,12 +184,17 @@ in {
     lua-language-server
     nil
     nodePackages.bash-language-server
+    nodePackages.prettier
     nodePackages.typescript-language-server
     omnisharp-roslyn
+    prettierd
+    ruff
+    ruff-lsp
     statix
     stylua
     vale
     vscode-langservers-extracted
+    yamlfmt
 
     # Galaxus
     dg-cli-with-plugins
