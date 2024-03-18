@@ -792,6 +792,9 @@
 ;; LSP keybindings
 (local-leader-def lsp-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
 (local-leader-def lsp-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
+(local-leader-def c-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
+(local-leader-def c-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
+
 ;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
 ;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
 (evil-define-key 'normal 'lsp-mode-map "gd" 'lsp-goto-type-definition)
