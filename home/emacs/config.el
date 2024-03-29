@@ -884,6 +884,10 @@
 ;; note that csharp-mode is built-in for Emacs 29+
 (add-hook 'csharp-mode-hook 'lsp-deferred)
 
+;; Python LSP
+;; Python just like C# is builtin
+(add-hook 'python-mode-hook 'lsp-deferred)
+
 ;; TypeScript
 (use-package typescript-mode
   :mode "\\.ts\\'"
