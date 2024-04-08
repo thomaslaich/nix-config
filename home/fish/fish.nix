@@ -17,7 +17,6 @@
       gd = "git diff";
       gf = "git fetch";
       gl = "git log";
-      lg = "lazygit";
 
       # vim
       v = "nvim";
@@ -41,6 +40,9 @@
 
       # cd
       z = "zoxide";
+
+      # just for testing dg-cli installation using shell alias
+      dg-alt = "nix run git+ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/Playground/Dg.Nix#dg-cli-full";
     };
   };
 }

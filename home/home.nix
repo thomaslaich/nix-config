@@ -89,7 +89,7 @@ in {
       # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
       # in turn gnupg 2.2.x has an insecure dep
       # TODO remove when gnupg gets upgraded to >= 2.4.3
-      permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
+      # permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
     };
   };
 
@@ -109,11 +109,20 @@ in {
         jupyter
         numpy
         pandas
-        # pipx
+        pyarrow
         python-lsp-ruff
         python-lsp-server
         requests
         scipy
+        (pyodbc.overridePythonAttrs (old: {
+          format = "setuptools";
+          nativeBuildInputs = with pkgs; [ unixODBC ];
+          buildInputs = with pkgs; [ unixODBC ];
+
+          # Tests require a database server
+          doCheck = false;
+          pythonImportsCheck = [ "pyodbc" ];
+        }))
       ];
     python-with-packages = pkgs.python3.withPackages python-packages;
     dg-cli-with-plugins = pkgs.dg-cli.withPlugins (plugins:
@@ -140,6 +149,7 @@ in {
     amber
     any-nix-shell
     azure-cli
+    azure-functions-core-tools
     bat # better cat
     curl # http requests from command line
     eza # better ls (bound to `l` and `la` in fish)
@@ -195,17 +205,19 @@ in {
     vale
     vscode-langservers-extracted
     yamlfmt
+    pinentry_mac # gpg
 
     # Galaxus
     dg-cli-with-plugins
     watchman # relay GQL incremental compilation
   ] ++
 
-  # stable packages
-  (with pkgs.stable;
-    [
-      pinentry_mac # gpg
-    ]) ++ [ dotnet-packages ];
+  # # stable packages
+  # (with pkgs.stable;
+  #   [
+  #     # pinentry_mac # gpg
+  #   ]) ++ 
+  [ dotnet-packages ];
 
   # secrets for from agenix 
   age.secrets = {
@@ -232,7 +244,7 @@ in {
 
   programs.gpg = {
     enable = true;
-    package = pkgs.gnupg22;
+    # package = pkgs.gnupg22;
     settings = {
       # allow pw fill in applications like emacs without popups
       pinentry-mode = "loopback";

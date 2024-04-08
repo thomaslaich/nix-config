@@ -79,7 +79,7 @@
         "JetBrainsMono"
         "DroidSansMono"
         "NerdFontsSymbolsOnly"
-        # "Ubuntu"
+        "Ubuntu"
       ];
     })
   ];
