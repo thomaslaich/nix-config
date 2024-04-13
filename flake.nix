@@ -92,6 +92,15 @@
               ({ pkgs, config, ... }: {
                 languages.lua.enable = true;
                 languages.nix.enable = true;
+                packages = with pkgs; [ just ];
+                scripts.rebuild.exec = ''
+                  hostname=$(hostname)
+                  nix run .#rebuild-$hostname
+                '';
+                scripts.hm-switch.exec = ''
+                  hostname=$(hostname)
+                  nix run .#hm-switch-$hostname
+                '';
               })
             ];
           };
