@@ -1,25 +1,26 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ config, pkgs, ... }: {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # # Binary Cache for Haskell.nix
-  # nix.settings.trusted-public-keys =
-  #   [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
-  # nix.settings.substituters = [ "https://cache.iog.io" ];
 
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
+{ config, pkgs, ... }:
+
+{
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=    
+    extra-substituters = https://nix-community.cachix.org https://cache.iog.io https://devenv.cachix.org
+  '';
+
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
-  # Setup keyfile
-  boot.initrd.secrets = { "/crypto_keyfile.bin" = null; };
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -39,16 +40,16 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  services.xserver.xkbOptions = "ctrl:nocaps";
-
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.wayland = false; # TODO disable for now because it doesn't work
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "us";
-    xkbVariant = "";
+    variant = "";
+    options = "ctrl:nocaps";
   };
 
   # Enable CUPS to print documents.
@@ -81,13 +82,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-      keepassxc
-      brave
-      spotify
-      discord
-      telegram-desktop
-      whatsapp-for-linux
-      #  thunderbird
+    #  thunderbird
     ];
   };
 
@@ -99,6 +94,7 @@
   environment.systemPackages = with pkgs; [
     clang
     gcc
+    gnomeExtensions.just-perfection
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wl-clipboard
   ];
@@ -121,7 +117,6 @@
         ];
       })
     ];
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -147,5 +142,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
+
 }

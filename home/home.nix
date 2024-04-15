@@ -205,7 +205,7 @@ in {
     vale
     vscode-langservers-extracted
     yamlfmt
-    pinentry_mac # gpg
+    # pinentry_mac # gpg
 
     # Galaxus
     dg-cli-with-plugins

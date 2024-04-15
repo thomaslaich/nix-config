@@ -59,13 +59,11 @@
         user = "thomaslaich";
         system = flake-utils.lib.system.aarch64-darwin;
       }
-      # commented for now
-      # {
-      #   name = "lenovo-desktop";
-      #   user = "thomaslaich";
-      #   system = flake-utils.lib.system.x86_64-linux;
-      # }
-        ];
+      {
+        name = "lenovo-desktop";
+        user = "thomaslaich";
+        system = flake-utils.lib.system.x86_64-linux;
+      }];
       isDarwin = machine: (builtins.match ".*darwin" machine.system) != null;
       darwinMachines = builtins.filter isDarwin machines;
       nixosMachines = builtins.filter (machine: !isDarwin machine) machines;
