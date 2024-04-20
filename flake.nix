@@ -54,16 +54,18 @@
       inherit (nixpkgs) lib;
       inherit (lib) genAttrs;
 
-      machines = [{
-        name = "macbook-pro-m1";
-        user = "thomaslaich";
-        system = flake-utils.lib.system.aarch64-darwin;
-      }
-      {
-        name = "lenovo-desktop";
-        user = "thomaslaich";
-        system = flake-utils.lib.system.x86_64-linux;
-      }];
+      machines = [
+        {
+          name = "macbook-pro-m1";
+          user = "thomaslaich";
+          system = flake-utils.lib.system.aarch64-darwin;
+        }
+        {
+          name = "lenovo-desktop";
+          user = "thomaslaich";
+          system = flake-utils.lib.system.x86_64-linux;
+        }
+      ];
       isDarwin = machine: (builtins.match ".*darwin" machine.system) != null;
       darwinMachines = builtins.filter isDarwin machines;
       nixosMachines = builtins.filter (machine: !isDarwin machine) machines;

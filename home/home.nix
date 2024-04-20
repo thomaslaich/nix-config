@@ -114,6 +114,7 @@ in {
         python-lsp-server
         requests
         scipy
+        matplotlib
         (pyodbc.overridePythonAttrs (old: {
           format = "setuptools";
           nativeBuildInputs = with pkgs; [ unixODBC ];

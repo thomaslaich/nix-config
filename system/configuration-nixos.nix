@@ -13,10 +13,9 @@
     extra-substituters = https://nix-community.cachix.org https://cache.iog.io https://devenv.cachix.org
   '';
 
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -42,7 +41,8 @@
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = false; # TODO disable for now because it doesn't work
+  services.xserver.displayManager.gdm.wayland =
+    false; # TODO disable for now because it doesn't work
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
@@ -80,10 +80,11 @@
     isNormalUser = true;
     description = "Thomas Laich";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      firefox
-    #  thunderbird
-    ];
+    packages = with pkgs;
+      [
+        firefox
+        #  thunderbird
+      ];
   };
 
   # Allow unfree packages
