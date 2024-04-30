@@ -168,11 +168,11 @@ in {
     lua
     mu # maildir indexer
     ncdu
-    nixfmt
+    nixfmt-rfc-style
     nixpkgs-fmt
     nodejs
     openssl
-    poetry
+    # poetry # currently not working :(
     postgresql
     python-with-packages
     restic
@@ -206,18 +206,16 @@ in {
     vale
     vscode-langservers-extracted
     yamlfmt
-    # pinentry_mac # gpg
 
     # Galaxus
     dg-cli-with-plugins
     watchman # relay GQL incremental compilation
   ] ++
 
-  # # stable packages
-  # (with pkgs.stable;
-  #   [
-  #     # pinentry_mac # gpg
-  #   ]) ++ 
+  # stable packages
+  (with pkgs.stable; [ ]) ++
+
+  # other packages
   [ dotnet-packages ];
 
   # secrets for from agenix 

@@ -781,10 +781,7 @@
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :config
-  (lsp-enable-which-key-integration t)
-  :hook
-  ;; C#
-  (csharp-mode . lsp-deferred))
+  (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
   :after lsp-mode)
@@ -945,6 +942,8 @@
   (evil-define-key 'normal peep-dired-mode-map (kbd "l") 'peep-dired-next-file)
   )
 
+;; Auto-refresh dired on file change
+(add-hook 'dired-mode-hook 'auto-revert-mode)
 
 ;; RSS feeds
 (use-package elfeed
