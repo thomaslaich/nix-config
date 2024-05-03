@@ -226,11 +226,11 @@
         "poetry2nix": "poetry2nix_2"
       },
       "locked": {
-        "lastModified": 1714483435,
-        "narHash": "sha256-wRafeWHEtxSVvp7XxGv1hiRMYl4QV9pOqFwnsyBFwoM=",
+        "lastModified": 1714753269,
+        "narHash": "sha256-Q06OhrdBqhY6uzBlFUioHJfLUGuMWU4fcFhWVtKWkcM=",
         "ref": "refs/heads/master",
-        "rev": "ce59a78f28a131963bfe938deed621ab3220ff1e",
-        "revCount": 23,
+        "rev": "2163b676312328f3de6b8dcc76ebe92acbaa0b3a",
+        "revCount": 24,
         "type": "git",
         "url": "ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/Playground/Dg.Nix"
       },

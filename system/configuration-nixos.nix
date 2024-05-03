@@ -49,7 +49,7 @@
   services.xserver.xkb = {
     layout = "us";
     variant = "";
-    options = "ctrl:nocaps";
+    options = "grp:alt_space_toggle, ctrl:swapcaps";
   };
 
   # Enable CUPS to print documents.
