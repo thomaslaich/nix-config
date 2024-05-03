@@ -5,7 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -13,13 +16,18 @@
     extra-substituters = https://nix-community.cachix.org https://cache.iog.io https://devenv.cachix.org
   '';
 
-  imports = [ # Include the results of the hardware scan.
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.initrd.kernelModules = [ "nvidia" ];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+  boot.kernelParams = [ "module_blacklist=i915" ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -41,8 +49,7 @@
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland =
-    false; # TODO disable for now because it doesn't work
+  services.xserver.displayManager.gdm.wayland = true; # TODO disable for now because it doesn't work
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
@@ -79,12 +86,14 @@
   users.users.thomaslaich = {
     isNormalUser = true;
     description = "Thomas Laich";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs;
-      [
-        firefox
-        #  thunderbird
-      ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [
+      firefox
+      #  thunderbird
+    ];
   };
 
   # Allow unfree packages
@@ -106,18 +115,17 @@
 
   # Fonts
   fonts.fontDir.enable = true;
-  fonts.packages = with pkgs;
-    [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-          "DroidSansMono"
-          "NerdFontsSymbolsOnly"
-          "Ubuntu"
-        ];
-      })
-    ];
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {
+      fonts = [
+        "FiraCode"
+        "JetBrainsMono"
+        "DroidSansMono"
+        "NerdFontsSymbolsOnly"
+        "Ubuntu"
+      ];
+    })
+  ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -144,5 +152,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }

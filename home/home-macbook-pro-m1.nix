@@ -1,4 +1,10 @@
-{ inputs, outputs, pkgs, ... }: {
+{
+  inputs,
+  outputs,
+  pkgs,
+  ...
+}:
+{
 
   nixpkgs = {
     # You can add overlays here
@@ -9,10 +15,8 @@
     ];
   };
 
-  home.packages = with pkgs;
-    [
+  home.packages = with pkgs; [
 
-      pinentry_mac # gpg
-    ];
-
+    pinentry_mac # gpg
+  ];
 }

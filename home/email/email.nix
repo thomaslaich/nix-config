@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   programs.mbsync = {
     enable = true;
     # TODO use agenix?
@@ -7,7 +8,9 @@
   programs.msmtp.enable = true;
   programs.notmuch = {
     enable = true;
-    hooks = { preNew = "mbsync -a"; };
+    hooks = {
+      preNew = "mbsync -a";
+    };
   };
   accounts.email = {
     accounts.gmail = {

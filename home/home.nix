@@ -1,10 +1,21 @@
-{ inputs, outputs, pkgs, config, ... }:
+{
+  inputs,
+  outputs,
+  pkgs,
+  config,
+  ...
+}:
 let
-  dotnet-packages = with pkgs.dotnetCorePackages;
-    combinePackages [ sdk_8_0 sdk_7_0 sdk_6_0 ];
+  dotnet-packages =
+    with pkgs.dotnetCorePackages;
+    combinePackages [
+      sdk_8_0
+      sdk_7_0
+      sdk_6_0
+    ];
   inherit (config.home) homeDirectory;
-
-in {
+in
+{
   imports = [
     inputs.kauz.homeModules.default
     inputs.agenix.homeManagerModules.default
@@ -33,7 +44,9 @@ in {
     nix-direnv.enable = true;
   };
 
-  programs.zsh = { enable = true; };
+  programs.zsh = {
+    enable = true;
+  };
 
   # Kauz colorscheme
   kauz = {
@@ -95,128 +108,135 @@ in {
 
   # I use this for pipx installations now
   # Of course I should not use pipx and instead install all CLI tools from source
-  home.sessionPath =
-    [ "${homeDirectory}/.local/bin" "${homeDirectory}/.rd/bin" ];
+  home.sessionPath = [
+    "${homeDirectory}/.local/bin"
+    "${homeDirectory}/.rd/bin"
+  ];
 
   home.sessionVariables = {
     DOTNET_ROOT = "${dotnet-packages}";
     KRB5_CONFIG = "${homeDirectory}/.config/krb5.conf";
   };
 
-  home.packages = let
-    python-packages = ps:
-      with ps; [
-        jupyter
-        numpy
-        pandas
-        pyarrow
-        python-lsp-ruff
-        python-lsp-server
-        requests
-        scipy
-        matplotlib
-        (pyodbc.overridePythonAttrs (old: {
-          format = "setuptools";
-          nativeBuildInputs = with pkgs; [ unixODBC ];
-          buildInputs = with pkgs; [ unixODBC ];
+  home.packages =
+    let
+      python-packages =
+        ps: with ps; [
+          jupyter
+          numpy
+          pandas
+          pyarrow
+          python-lsp-ruff
+          python-lsp-server
+          requests
+          scipy
+          matplotlib
+          (pyodbc.overridePythonAttrs (old: {
+            format = "setuptools";
+            nativeBuildInputs = with pkgs; [ unixODBC ];
+            buildInputs = with pkgs; [ unixODBC ];
 
-          # Tests require a database server
-          doCheck = false;
-          pythonImportsCheck = [ "pyodbc" ];
-        }))
-      ];
-    python-with-packages = pkgs.python3.withPackages python-packages;
-    dg-cli-with-plugins = pkgs.dg-cli.withPlugins (plugins:
-      with plugins; [
-        dg-cli-plugin-azure-devops
-        # dg-cli-plugin-digidog
-        dg-cli-plugin-graphql
-        dg-cli-plugin-kafka
-        # dg-cli-plugin-kube
-        dg-cli-plugin-mongodb
-        # dg-cli-plugin-ravendb
-        dg-cli-plugin-sql
-        dg-cli-plugin-templates
-        # dg-cli-plugin-topiccompare
-        # dg-cli-plugin-statictranslations
-        # dg-cli-plugin-github
-        # dg-cli-plugin-devcontainer
-        # dg-cli-plugin-keyringdevcontainer
-      ]);
-  in with pkgs;
-  [
-    _1password # pw manager
-    age
-    amber
-    any-nix-shell
-    azure-cli
-    azure-functions-core-tools
-    bat # better cat
-    curl # http requests from command line
-    eza # better ls (bound to `l` and `la` in fish)
-    fd
-    fzf
-    gh # github CLI
-    ghc
-    httpie
-    jq # json parser
-    killall
-    krb5
-    kubelogin
-    kubernetes-helm
-    lazydocker
-    lua
-    mu # maildir indexer
-    ncdu
-    nixfmt-rfc-style
-    nixpkgs-fmt
-    nodejs
-    openssl
-    # poetry # currently not working :(
-    postgresql
-    python-with-packages
-    restic
-    ripgrep # better grep
-    scala-cli
-    scc # analyse codebases
-    tldr # simpler manpages
-    vifm
-    wget
-    yarn
-    yazi
-    zoxide # better cd (bound to `z` in fish)
+            # Tests require a database server
+            doCheck = false;
+            pythonImportsCheck = [ "pyodbc" ];
+          }))
+        ];
+      python-with-packages = pkgs.python3.withPackages python-packages;
+      dg-cli-with-plugins = pkgs.dg-cli.withPlugins (
+        plugins: with plugins; [
+          dg-cli-plugin-azure-devops
+          # dg-cli-plugin-digidog
+          dg-cli-plugin-graphql
+          dg-cli-plugin-kafka
+          # dg-cli-plugin-kube
+          dg-cli-plugin-mongodb
+          # dg-cli-plugin-ravendb
+          dg-cli-plugin-sql
+          dg-cli-plugin-templates
+          # dg-cli-plugin-topiccompare
+          # dg-cli-plugin-statictranslations
+          # dg-cli-plugin-github
+          # dg-cli-plugin-devcontainer
+          # dg-cli-plugin-keyringdevcontainer
+        ]
+      );
+    in
+    with pkgs;
+    [
+      _1password # pw manager
+      age
+      amber
+      any-nix-shell
+      azure-cli
+      azure-functions-core-tools
+      bat # better cat
+      curl # http requests from command line
+      eza # better ls (bound to `l` and `la` in fish)
+      fd
+      fzf
+      gh # github CLI
+      ghc
+      httpie
+      jq # json parser
+      killall
+      krb5
+      kubelogin
+      kubernetes-helm
+      lazydocker
+      lua
+      mu # maildir indexer
+      ncdu
+      nixfmt-rfc-style
+      nixpkgs-fmt
+      nodejs
+      openssl
+      # poetry # currently not working :(
+      postgresql
+      python-with-packages
+      restic
+      ripgrep # better grep
+      scala-cli
+      scc # analyse codebases
+      tldr # simpler manpages
+      vifm
+      wget
+      yarn
+      yazi
+      zoxide # better cd (bound to `z` in fish)
 
-    # lsps and formatters
-    clang-tools
-    csharpier # needed for emacs (format-all-the-code and neoformat)
-    gopls
-    haskell-language-server
-    haskellPackages.fourmolu # haskell formatter
-    lua-language-server
-    nil
-    nodePackages.bash-language-server
-    nodePackages.prettier
-    nodePackages.typescript-language-server
-    omnisharp-roslyn
-    prettierd
-    ruff
-    ruff-lsp
-    statix
-    stylua
-    vale
-    vscode-langservers-extracted
-    yamlfmt
+      # lsps and formatters
+      clang-tools
+      csharpier # needed for emacs (format-all-the-code and neoformat)
+      gopls
+      haskell-language-server
+      haskellPackages.fourmolu # haskell formatter
+      lua-language-server
+      nil
+      nodePackages.bash-language-server
+      nodePackages.prettier
+      nodePackages.typescript-language-server
+      omnisharp-roslyn
+      prettierd
+      ruff
+      ruff-lsp
+      statix
+      stylua
+      vale
+      vscode-langservers-extracted
+      yamlfmt
 
-    # Galaxus
-    dg-cli-with-plugins
-    watchman # relay GQL incremental compilation
-  ] ++
+      # Galaxus
+      dg-cli-with-plugins
+      watchman # relay GQL incremental compilation
+    ]
+    ++
 
-  # stable packages
-  (with pkgs.stable; [ ]) ++
+      # stable packages
+      (with pkgs.stable; [ ])
+    ++
 
-  # other packages
-  [ dotnet-packages ];
+      # other packages
+      [ dotnet-packages ];
 
   # secrets for from agenix 
   age.secrets = {
