@@ -4,12 +4,10 @@ Configuration for my personal machines (both macOS and NixOS).
 
 Credits to [buntec/nix-config](https://github.com/buntec/nix-config); my config started as a clone of that repo.
 
-If you spot any errors or mistakes, feel free to open a pull request!
-
 ## Fresh NixOS install
 After installing NixOS from a USB drive, follow these steps:
 
-1. Clone this repo and `cd` into it.
+1. Clone this repo and `cd` into it. Use `nix-shell -p git` to access git.
 
 2. Copy `/etc/nixos/hardware-configuration.nix` into `./system` (OK to overwrite existing dummy file).
 
@@ -22,18 +20,19 @@ sudo nix run .#rebuild-thinkpad-x1
 ```
 
 4. Activate home-manager:
-
 ```bash
 sudo nix run .#hm-switch-thinkpad-x1
 ```
 
-### Notes: 
-On a Thinkpad X1 you might have to remove the line 
-```
-hardware.video.hidpi.enable = lib.mkDefault true;
-```
-from `hardware-configuration.nix` if `nixos-rebuild` complains about this option having no effect.
+5. After the initial installation, again `cd` into the repo, and activate direnv by typing `direnv allow`. Now you can use the simpler commands
+to for rebuild and hm switch:
+```bash
+# rebuild switch
+sudo just rebuild
 
+# hm switch
+just hm-switch
+```
 
 ## Fresh macOS install
 (Heavily inspired by this [gist](https://gist.github.com/jmatsushita/5c50ef14b4b96cb24ae5268dab613050))
@@ -47,26 +46,26 @@ To bootstrap a fresh macOS install, follow these steps:
 
 2. Install Nix:
 ```bash
-curl -L https://nixos.org/nix/install | sh
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
-3. Enable flakes
-```bash
-mkdir -p ~/.config/nix
-cat <<EOF > ~/.config/nix/nix.conf
-experimental-features = nix-command flakes
-EOF
-```
-
-4. To work around this [issue](https://github.com/LnL7/nix-darwin/issues/149)
-```bash
-sudo mv /etc/nix/nix.conf /etc/nix/.nix-darwin.bkp.nix.conf
-```
-
-5. Clone this repo, `cd` into it, then build and activate with one command:
+3. Clone this repo, `cd` into it, then build and activate with one command:
 ```bash
 nix run .#rebuild-macbook-pro-m1 # nix-darwin
 nix run .#hm-switch-macbook-pro-m1 # home-manager
+```
+
+4. After the initial installation, again `cd` into the repo, and activate direnv by typing `direnv allow`. Now you can use the simpler commands
+to for rebuild and hm switch:
+```bash
+# rebuild switch
+just rebuild
+
+# hm switch
+just hm-switch
+
+# rebuild & hm-switch
+just
 ```
 
 ## Migrating an existing macOS install to Nix

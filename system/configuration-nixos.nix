@@ -91,8 +91,9 @@
       "wheel"
     ];
     packages = with pkgs; [
+      _1password-gui
+      dropbox
       firefox
-      #  thunderbird
     ];
   };
 
@@ -116,6 +117,7 @@
   # Fonts
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
+    etBook
     (nerdfonts.override {
       fonts = [
         "FiraCode"
