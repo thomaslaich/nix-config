@@ -6,3 +6,9 @@ rebuild:
 
 hm-switch:
   hm-switch
+
+format:
+  nix fmt
+
+check:
+  nix flake check --impure
