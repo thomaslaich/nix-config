@@ -12,3 +12,6 @@ format:
 
 check:
   nix flake check --impure
+
+update:
+  nix flake update && rebuild && hm-switch
