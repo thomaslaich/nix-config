@@ -707,11 +707,11 @@
         "norg-meta": "norg-meta"
       },
       "locked": {
-        "lastModified": 1714870922,
-        "narHash": "sha256-R+ospZrv9QFy9TRexNh718WRKJ5B2UpWVPfJE9yB5Hs=",
+        "lastModified": 1714919713,
+        "narHash": "sha256-2mJnnebYJ5185oI/fJbMcFs4ENKt61Z0Z4MPvgkHE8w=",
         "owner": "nvim-neorg",
         "repo": "nixpkgs-neorg-overlay",
-        "rev": "42430157e4301f091a67a7b0243ed6570651b758",
+        "rev": "fe8a6855c0439e1b15e3d572a7d14b6a756ef2de",
         "type": "github"
       },
       "original": {

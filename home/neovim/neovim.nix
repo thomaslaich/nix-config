@@ -214,23 +214,18 @@
           config = builtins.readFile ./plugins/copilot.lua;
         };
 
-        # neorg is currently not working
-        # neorg = with pkgs; [
-        #   {
-        #     plugin = vimPlugins.neorg;
-        #     type = "lua";
-        #     config = builtins.readFile ./plugins/neorg.lua;
-        #   }
-        #   {
-        #     plugin = vimPlugins.neorg-telescope;
-        #     type = "lua";
-        #     config = builtins.readFile ./plugins/neorg-telescope.lua;
-        #   }
-        #   { plugin = luajitPackages.lua-utils-nvim; }
-        #   { plugin = vimPlugins.nvim-nio; }
-        #   { plugin = vimPlugins.nui-nvim; }
-        #   { plugin = luajitPackages.pathlib-nvim; }
-        # ];
+        neorg = with pkgs; [
+          {
+            plugin = vimPlugins.neorg;
+            type = "lua";
+            config = builtins.readFile ./plugins/neorg.lua;
+          }
+          {
+            plugin = vimPlugins.neorg-telescope;
+            type = "lua";
+            config = builtins.readFile ./plugins/neorg-telescope.lua;
+          }
+        ];
 
         lush = {
           plugin = pkgs.vimPlugins.lush-nvim;
@@ -263,7 +258,7 @@
         lspconfig
         lush
         metals
-        # neorg
+        neorg
         nvim-lint
         oil
         omnisharp-extended-lsp
