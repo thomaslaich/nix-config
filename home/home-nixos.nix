@@ -6,10 +6,9 @@
     };
   };
 
+  dconf.enable = true;
   dconf.settings = {
-    "org/gnome/desktop/peripherals/touchpad" = {
-      natural-scroll = false;
-    };
+    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
   home.packages = with pkgs; [ docker ];
