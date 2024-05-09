@@ -241,7 +241,7 @@ in
         inputs.agenix.packages.${system}.default
       ];
 
-  # secrets for from agenix 
+  # secrets from agenix 
   age.secrets = {
     gcal-clientid = {
       file = ../secrets/gcal-clientid.age;

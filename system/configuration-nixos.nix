@@ -2,7 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{
+  inputs,
+  outputs,
+  pkgs,
+  ...
+}:
 
 {
   nix.settings.experimental-features = [
@@ -19,6 +24,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    inputs.agenix.nixosModules.default
   ];
 
   # Bootloader.
@@ -96,8 +102,17 @@
     ];
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs = {
+    overlays = [
+      outputs.overlays.modifications
+      outputs.overlays.stable-packages
+    ];
+    # Configure your nixpkgs instance
+    config = {
+      # Allow unfree packages
+      allowUnfree = true;
+    };
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
