@@ -48,7 +48,10 @@
 ;;; Line Numbers
 
 (column-number-mode)
+(display-line-numbers-mode t)
 (setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode t)
+(setq global-display-line-numbers-type 'relative)
 
 ;; Enable line numbers for some modes
 (dolist (mode '(text-mode-hook
