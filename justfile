@@ -1,8 +1,8 @@
 default:
-  rebuild && hm-switch
+  sudo rebuild && hm-switch
 
 rebuild:
-  rebuild
+  sudo rebuild
 
 hm-switch:
   hm-switch
