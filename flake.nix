@@ -148,7 +148,6 @@
             modules = [
               ./system/configuration-nixos.nix
               ./system/configuration-${machine.name}.nix
-              agenix.nixosModules.default
             ];
           };
         }) nixosMachines
@@ -165,7 +164,6 @@
             modules = [
               ./system/configuration-darwin.nix
               ./system/configuration-${machine.name}.nix
-              agenix.darwinModules.default
             ];
           };
         }) darwinMachines
