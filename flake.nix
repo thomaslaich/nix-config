@@ -148,6 +148,7 @@
             modules = [
               ./system/configuration-nixos.nix
               ./system/configuration-${machine.name}.nix
+              agenix.nixosModules.default
             ];
           };
         }) nixosMachines

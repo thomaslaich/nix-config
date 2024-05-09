@@ -236,7 +236,10 @@ in
     ++
 
       # other packages
-      [ dotnet-packages ];
+      [
+        dotnet-packages
+        inputs.agenix.packages.${system}.default
+      ];
 
   # secrets for from agenix 
   age.secrets = {
