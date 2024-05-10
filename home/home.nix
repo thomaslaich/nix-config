@@ -168,7 +168,6 @@ in
       amber
       any-nix-shell
       azure-cli
-      azure-functions-core-tools
       bat # better cat
       curl # http requests from command line
       eza # better ls (bound to `l` and `la` in fish)
