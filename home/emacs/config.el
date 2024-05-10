@@ -664,6 +664,7 @@
   (org-gcal-reload-client-id-secret))
 
 (setq org-show-notification-handler 'message)
+(setq org-gcal-local-timezone "Europe/Zurich")
 
 ;; enter pinentry password directly from emacs (no popup)
 (setq epg-pinentry-mode 'loopback)
