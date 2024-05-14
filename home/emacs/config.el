@@ -660,7 +660,7 @@
   :config
   (setq org-gcal-fetch-file-alist
         '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
-          ("6o4qpmu946u88pfo7961amq2i0gsvl7n@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
+          ("6eft51mpf8n0tbic0v9cf56pq75uttas@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
   (org-gcal-reload-client-id-secret))
 
 (setq org-show-notification-handler 'message)
