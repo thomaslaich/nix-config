@@ -16,7 +16,59 @@
   - [[#evil-package][Evil Package]]
   - [[#evil-collection-package][Evil Collection Package]]
   - [[#additional-tools][Additional tools]]
+- [[#git-integration][Git Integration]]
 - [[#keybindings][Keybindings]]
+  - [[#macos-settings][MacOS Settings]]
+  - [[#miscallenous-settings][Miscallenous Settings]]
+  - [[#which-key][Which-key]]
+  - [[#moving-buffers][Moving Buffers]]
+  - [[#bind-key-setup][Bind-key Setup]]
+  - [[#generalel-setup][General.el Setup]]
+  - [[#zooming-inout][Zooming In/Out]]
+  - [[#top-level-keybindings][Top-Level Keybindings]]
+  - [[#buffer-keybindings-b][Buffer Keybindings (b)]]
+  - [[#window-management-keybindings-w][Window-Management Keybindings (w)]]
+  - [[#lisp-evaluation-keybindings-e][Lisp Evaluation Keybindings (e)]]
+  - [[#dired-keybindings-d][Dired Keybindings (d)]]
+  - [[#search-keybindings-f][Search Keybindings (f)]]
+  - [[#git-keybindings-g][Git Keybindings (g)]]
+  - [[#help-keybindings-h][Help Keybindings (h)]]
+  - [[#insert-keybindings-i][Insert Keybindings (i)]]
+  - [[#email-keybindings-e][Email Keybindings (e)]]
+  - [[#org-mode-keybindings-o][Org-mode Keybindings (o)]]
+  - [[#toggle-keybindings-t][Toggle Keybindings (t)]]
+  - [[#code-keybindings-c][Code Keybindings (c)]]
+  - [[#projectile-keybindings-p][Projectile Keybindings (p)]]
+- [[#completion][Completion]]
+  - [[#consult][Consult]]
+  - [[#marginalia][Marginalia]]
+  - [[#vertico][Vertico]]
+  - [[#embark][Embark]]
+- [[#org-mode][Org-mode]]
+  - [[#prettify-org][Prettify Org]]
+  - [[#table-of-contents][Table of Contents]]
+  - [[#timeblocks][Timeblocks]]
+  - [[#org-gtd][Org GTD]]
+  - [[#org-roam][Org Roam]]
+  - [[#org-habit-stats][Org Habit Stats]]
+- [[#development-tools][Development Tools]]
+  - [[#direnv][Direnv]]
+  - [[#copilot][Copilot]]
+  - [[#lsp-integration][LSP Integration]]
+  - [[#formatting-with-format-all][Formatting with format-all]]
+  - [[#code-completion-with-corfu][Code Completion with corfu]]
+- [[#programming-languages-setup][Programming Languages Setup]]
+  - [[#lisp][LISP]]
+  - [[#nix][Nix]]
+  - [[#lua][Lua]]
+  - [[#haskell][Haskell]]
+  - [[#csharp][CSharp]]
+  - [[#python][Python]]
+  - [[#typescript][Typescript]]
+- [[#projects-with-projectile][Projects with projectile]]
+- [[#email][Email]]
+- [[#calendar-integration][Calendar Integration]]
+- [[#rss-feeds-with-elfeed][RSS Feeds with elfeed]]
 
 * Disclaimer
 I use emacs mainly for orgmode, elisp, and Haskell development (not professionally).
@@ -693,9 +745,21 @@ Then, we'll enable ~org-bullets~:
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+end_src
 
-Last, we disable electric indent:
+Let's also remove emphasis markers (for italics, bold, etc.):
+#+begin_src emacs-lisp
+  (setq org-hide-emphasis-markers t)
+#+end_src
+
+Then we disable electric indent:
 #+begin_src emacs-lisp
   (electric-indent-mode -1)
+#+end_src
+
+** Table of Contents
+#+begin_src emacs-lisp
+  (use-package toc-org
+    :commands toc-org-enable
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 
 ** Timeblocks
