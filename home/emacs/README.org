@@ -827,3 +827,39 @@ Last, we disable electric indent:
         "gs" 'org-habit-stats-graph-daily-strength-switch)))
 #+end_src
 
+
+* Development Tools
+
+** Direnv
+
+** Copilot
+
+** LSP Integration
+
+** Formatting with format-all
+
+** Code Completion with corfu
+
+* Programming Languages Setup
+** LISP
+
+** Nix
+
+** Lua
+
+** Haskell
+
+** CSharp
+
+** Python
+
+** Typescript
+
+
+* Projects with projectile
+
+* Email
+
+* Calendar Integration
+
+* RSS Feeds with elfeed
