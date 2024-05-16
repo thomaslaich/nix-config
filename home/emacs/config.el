@@ -66,8 +66,8 @@
 ;;; FONTS AND THEMES
 
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
-(set-face-attribute 'variable-pitch nil :font "EtBembo" :height 140)
 (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 140)
+
 ;; Make commented text and keywords italics.
 (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
@@ -89,9 +89,6 @@
 ;; Hide minor modes from modeline (by adding :diminish to use-package)
 (use-package diminish)
 
-;; (load-theme 'catppuccin t)
-;; (setq catppuccin-flavor 'macchiato)
-;; (catppuccin-reload)
 (use-package doom-themes
   :ensure t
   :config
@@ -350,11 +347,10 @@
 (leader-def
   "o" '(:ignore t :wk "[O]rg")
   "o a" '(org-agenda :wk "Agenda")
-  "o f" '(cfw:open-org-calendar :wk "Calendar")
+  "o t" '(org-timeblock :wk "Timeblock")
+  "o l" '(org-timeblock-list :wk "Timeblock List")
   "o c" '(org-capture :wk "Capture")
-  "o l" '(org-store-link :wk "Link")
   "o r" '(org-refile :wk "Refile")
-  "o t" '(org-todo :wk "Todo")
   "o n" '(notmuch :wk "Notmuch Mail")
   "o m" '(mu4e :wk "Mail")
   "o r" '(elfeed :wk "RSS Feeds"))
@@ -441,45 +437,6 @@
 ;; prettify org
 ;; hide emphasis markers like italics or bold
 (setq org-hide-emphasis-markers t)
-;; replace list markers
-;; (font-lock-add-keywords 'org-mode
-;;                         '(("^ *\\([-]\\) "
-;;                           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-
-;; ;; Custom org-mode fonts
-;; (let* ((variable-tuple
-;;         (cond ((x-list-fonts "JetBrainsMono Nerd Font") '(:font "JetBrainsMono Nerd Font"))
-;;               ((x-family-fonts "Sans Serif") '(:family "Sans Serif"))
-;;               (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-;;        (base-font-color     (face-foreground 'default nil 'default))
-;;        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
-
-;;   (custom-theme-set-faces
-;;    'user
-;;    `(org-level-8 ((t (,@headline ,@variable-tuple))))
-;;    `(org-level-7 ((t (,@headline ,@variable-tuple))))
-;;    `(org-level-6 ((t (,@headline ,@variable-tuple))))
-;;    `(org-level-5 ((t (,@headline ,@variable-tuple))))
-;;    `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.05))))
-;;    `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.1))))
-;;    `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
-;;    `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.6))))
-;;    `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))
-;;    '(org-block ((t (:inherit variable-pitch))))
-;;    '(org-code ((t (:inherit (shadow fixed-pitch)))))
-;;    ;; '(org-document-info ((t (:foreground "dark orange"))))
-;;    '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-;;    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
-;;    ;; '(org-link ((t (:foreground "royal blue" :underline t))))
-;;    '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-;;    '(org-property-value ((t (:inherit fixed-pitch))) t)
-;;    '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-;;    ;; '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-;;    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-;;    '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
-;;    ))
-
 ;; evil org mode
 (use-package evil-org
   :after org
@@ -522,9 +479,26 @@
 (add-hook 'auto-save-hook #'org-save-all-org-buffers) ;; autosave org buffers
 
 (use-package org-habit-stats
-  :config
-  (define-key org-mode-map (kbd "C-c h") 'org-habit-stats-view-habit-at-point)
-  (evil-define-key 'normal 'org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda))
+  :hook ((org-habit-stats-mode) . my/org-habit-stats-evil-map)
+  :init
+  (defun my/org-habit-stats-evil-map ()
+    (define-key org-mode-map (kbd "C-c h") 'org-habit-stats-view-habit-at-point)
+    (evil-define-key 'normal 'org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda)
+    (evil-define-key 'normal org-habit-stats-mode-map
+      "," 'org-habit-stats-view-previous-habit
+      "." 'org-habit-stats-view-next-habit
+      "<" 'org-habit-stats-calendar-scroll-left
+      ">" 'org-habit-stats-calendar-scroll-right
+      (kbd "C-v") 'org-habit-stats-calendar-scroll-left-three-months
+      (kbd "M-v") 'org-habit-stats-calendar-scroll-right-three-months
+      "[" 'org-habit-stats-scroll-graph-left
+      "]" 'org-habit-stats-scroll-graph-right
+      "{" 'org-habit-stats-scroll-graph-left-big
+      "}" 'org-habit-stats-scroll-graph-right-big
+      "gm" 'org-habit-stats-graph-completions-per-month-switch
+      "gw" 'org-habit-stats-graph-completions-per-week-switch
+      "gd" 'org-habit-stats-graph-completions-per-weekday-switch
+      "gs" 'org-habit-stats-graph-daily-strength-switch)))
 
 ;; ORG ROAM FOR ZETTELKASTEN
 (use-package org-roam :after org
@@ -534,20 +508,60 @@
          ("C-c n i" . org-roam-node-insert))
   :config
   (org-roam-setup))
+(use-package org-roam-ui
+  :after org-roam
+  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 ;; nice calendars
-(use-package calfw)
-(use-package calfw-org
-  :after calfw)
+(use-package org-timeblock
+  :hook ((org-timeblock-mode org-timeblock-list-mode) . my/org-timeblock-evil-map)
+  :init
+  (defun my/org-timeblock-evil-map ()
+    "Set the keybindings for 'org-timeblock' to be compatible with evil mode"
+    (evil-define-key 'normal org-timeblock-mode-map
+      "+" 'org-timeblock-new-task
+      "j" 'org-timeblock-forward-block
+      "l" 'org-timeblock-forward-column
+      "h" 'org-timeblock-backward-column
+      "k" 'org-timeblock-backward-block
+      (kbd "C-<down>") 'org-timeblock-day-later
+      (kbd "C-<up>") 'org-timeblock-day-earlier
+      (kbd "RET") 'org-timeblock-goto
+      (kbd "TAB") 'org-timeblock-goto-other-window
+      "d" 'org-timeblock-set-duration
+      "r" 'org-timeblock-redraw-buffers
+      "gd" 'org-timeblock-jump-to-day
+      "s" 'org-timeblock-schedule
+      "t" 'org-timeblock-toggle-timeblock-list
+      "v" 'org-timeblock-switch-scaling
+      "V" 'org-timeblock-switch-view)
+    (evil-define-key 'normal org-timeblock-list-mode-map
+      "+" 'org-timeblock-new-task
+      "j" 'org-timeblock-list-next-line
+      "k" 'org-timeblock-list-previous-line
+      (kbd "C-<down>") 'org-timeblock-day-later
+      (kbd "C-<up>") 'org-timeblock-day-earlier
+      (kbd "C-s") 'org-timeblock-list-save
+      (kbd "M-<down>") 'org-timeblock-list-drag-line-forward
+      (kbd "M-<up>") 'org-timeblock-list-drag-line-backward
+      (kbd "RET") 'org-timeblock-list-goto
+      (kbd "TAB") 'org-timeblock-list-goto-other-window
+      "S" 'org-timeblock-list-toggle-sort-function
+      "d" 'org-timeblock-list-set-duration
+      "r" 'org-timeblock-redraw-buffers
+      "gd" 'org-timeblock-jump-to-day
+      "q" 'org-timeblock-quit
+      "s" 'org-timeblock-list-schedule
+      "t" 'org-timeblock-list-toggle-timeblock
+      "v" 'org-timeblock-switch-scaling
+      "V" 'org-timeblock-switch-view)))
 
 ;;; CREDENTIAL MANAGEMENT
-
-;; commented for now as I'm using agenix now
-;; I use 1password
-;; (use-package auth-source-1password
-;;   :config
-;;   (auth-source-1password-enable))
-;; (setq auth-source-debug t)
 
 ;; EMAIL & ORG SYNCHRONIZATION
 
