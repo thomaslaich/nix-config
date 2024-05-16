@@ -48,7 +48,7 @@
       };
 
       NSGlobalDomain = {
-        "com.apple.swipescrolldirection" = false; # disable "natural" scroll
+        "com.apple.swipescrolldirection" = true; # use natural scroll (we use MOS to invert it again for mouse)
 
         # key repeat: lower is faster
         InitialKeyRepeat = 15;
@@ -77,9 +77,9 @@
     etBook
     (nerdfonts.override {
       fonts = [
+        "DroidSansMono"
         "FiraCode"
         "JetBrainsMono"
-        "DroidSansMono"
         "NerdFontsSymbolsOnly"
         "Ubuntu"
       ];
