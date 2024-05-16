@@ -1,16 +1,729 @@
 #+TITLE: My GNU Emacs Config
 #+AUTHOR: Thomas Laich
+#+PROPERTY: header-args:emacs-lisp :tangle yes
 
 * Table of Contents :toc:
-- [[#general-info][General Info]]
+- [[#disclaimer][Disclaimer]]
+- [[#general-setup][General Setup]]
+- [[#ui-and-theming][UI and Theming]]
+  - [[#ui-elements][UI Elements]]
+  - [[#theme-and-fonts][Theme and Fonts]]
+  - [[#line-numbering][Line Numbering]]
+  - [[#modeline][Modeline]]
+  - [[#dashboard][Dashboard]]
+  - [[#miscallenous-ui-toolssettings][Miscallenous UI Tools/Settings]]
+- [[#evil-mode][Evil Mode]]
+  - [[#evil-package][Evil Package]]
+  - [[#evil-collection-package][Evil Collection Package]]
+  - [[#additional-tools][Additional tools]]
+- [[#keybindings][Keybindings]]
 
-* General Info
-
-This is my rather clumsy attempt at setting up Emacs from scratch.
-
-Disclaimer: I use emacs mainly for orgmode, elisp, and Haskell development (not professionally).
+* Disclaimer
+I use emacs mainly for orgmode, elisp, and Haskell development (not professionally).
 I use vscode for C#/F# development, and neovim for developing in nix.
 
-I let Nix manage my Emacs installation (including downloading, compiling, and pinning packages) using the [[https://github.com/nix-community/emacs-overlay][emacs-overlay]]. This has 2 important consequences:
-- I do not actually need the provided ~init.el~ file for my installation. It is included so that this config can be used outside of Nix.
-- I unfortunately as of now cannot use org-babel for my config. Thus, all configuration currently resides in ~config.el~.
+I let Nix manage my Emacs installation (including downloading, compiling, and pinning packages) using the [[https://github.com/nix-community/emacs-overlay][emacs-overlay]].
+
+Note that the ~README.org~ serves directly as my emacs configuration (~init.el~ file); the overlay automatically
+tangles the file and thus extracts all elisp-codeblocks.
+
+* General Setup
+Set a higher garbage collection limit (50MB), and log the startup time on the splash screen:
+
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold (* 50 1000 1000))
+
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (message "*** Emacs loaded in %s seconds with %d garbage collections."
+                        (emacs-init-time "%.2f")
+                        gcs-done)))
+#+end_src
+
+Use no-littering to automatically set common paths to the new user-emacs-directory:
+#+begin_src emacs-lisp
+  (use-package no-littering)
+#+end_src
+
+~use-package~ is added automatically by the nix emacs overlay.
+Here we just make sure we don't have to keep typing ~:ensure t~:
+#+begin_src emacs-lisp
+  (setq use-package-always-ensure t)
+#+end_src
+
+Do not make unnecessary sounds:
+#+begin_src emacs-lisp
+  (setq ring-bell-function #'ignore)
+#+end_src
+
+* UI and Theming
+** UI Elements
+Disable all unnecessary UI elements such as tool bar, menu bar, scroll bar, etc.:
+#+begin_src emacs-lisp
+  (scroll-bar-mode -1) ; Disable visible scrollbar
+  (tool-bar-mode -1)   ; Disable the toolbar
+  (menu-bar-mode -1)   ; Disable menu bar
+  (tooltip-mode -1)    ; Disable tooltips
+  (set-fringe-mode 10) ; Give some breathing room
+#+end_src
+
+** Theme and Fonts
+First, let's enable the doom theme:
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (load-theme 'doom-one t)
+    ;; (load-theme 'doom-nord-light	 t)
+
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+#+end_src
+
+Next, we enable the ~JetBrainsMono Nerd Font~ everywhere:
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
+  (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 140)
+  #+end_src
+
+Make commented text and keywords italics:
+  #+begin_src emacs-lisp
+  (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+  (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
+#+end_src
+
+Enable nerd icons:
+#+begin_src emacs-lisp
+  (use-package nerd-icons)
+#+end_src
+
+** Line Numbering
+Configure relative line numbers in all buffers:
+#+begin_src emacs-lisp
+  (column-number-mode)
+  (display-line-numbers-mode t)
+  (setq display-line-numbers-type 'relative)
+  (global-display-line-numbers-mode t)
+  (setq global-display-line-numbers-type 'relative)
+#+end_src
+
+Disable line numbers specifically in ~org-mode~:
+#+begin_src emacs-lisp
+  (dolist (mode '(org-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+
+** Modeline
+We use the doom modeline:
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :init (doom-modeline-mode 1))
+#+end_src
+
+Minions allow us to pick and choose minor modes from a dropdown menu in the modeline. We enable
+it like follows:
+#+begin_src emacs-lisp
+  (setq doom-modeline-minor-modes t)
+  (use-package minions
+    :hook (doom-modeline-mode . minions-mode))
+#+end_src
+
+Note that the above makes a package like [[https://github.com/myrjola/diminish.el][diminish.el]] unnessecary in my config.
+
+** Dashboard
+On the dashboard (splash screen), we want to:
+- Show the emacs logo
+- Recent files
+- Agenda items
+- Bookmarks
+- Projects
+- Registers
+
+We the use [[https://github.com/emacs-dashboard/emacs-dashboard/blob/master/dashboard.el][dashboard.el]] package for this:
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :init
+    (setq initial-buffer-choice 'dashboard-open)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-set-file-icons t)
+    ;; (setq dashboard-startup-banner "./banner.txt") ;; use standard emacs logo as banner
+    (setq dashboard-startup-banner 'logo)
+    (setq dashboard-center-content t) ;; set to 't' for centered content
+    (setq dashboard-items '((recents . 5)
+                            (agenda . 5)
+                            (bookmarks . 3)
+                            (projects . 3)
+                            (registers . 3)))
+    :custom
+    (dashboard-modify-heading-icons '((recents . "file-text")
+                                      (bookmarks . "book")))
+    :config
+    (dashboard-setup-startup-hook))
+#+end_src
+
+** Miscallenous UI Tools/Settings
+Enable folding with [[https://github.com/gregsexton/origami.el][origami.el]]:
+#+begin_src emacs-lisp
+  (use-package origami
+    :hook (yaml-mode . origami-mode))
+#+end_src
+
+Add transparency (only works on NixOS for me, not on Darwin):
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(alpha-background . 90))
+#+end_src
+
+Enable UI notifications:
+#+begin_src emacs-lisp
+  (use-package alert
+    :commands alert
+    :config
+    (setq alert-default-style 'notifications))
+#+end_src
+
+Rainbow delimeters help us match opening and closing brackets in code (see [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]):
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+* Evil Mode
+[[https://github.com/emacs-evil/evil][evil]] in Emacs is a package that provides Vim keybindings and behaviors within Emacs. 
+It allows me to use my beloved vim editing commands while still benefiting from Emacs's
+extensibility and features. It is hands-down the most important piece of configuration
+in my Emacs config.
+
+** Evil Package
+We enable ~evil-mode~ for normal text buffers first:
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :init
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-vsplit-window-right t)
+    (setq evil-split-window-below t)
+    :config
+    (evil-mode)
+    (evil-set-undo-system 'undo-redo))
+#+end_src
+
+Next, we would like to be able to escape insert-mode by typing ~jj~:
+#+begin_src emacs-lisp
+  (use-package evil-escape
+    :after evil
+    :init
+    (setq evil-escape-excluded-states '(normal visual)
+          evil-escape-excluded-major-modes '(neotree-mode treemacs-mode vterm-mode))
+    :config
+    (setq-default evil-escape-delay 0.2)
+    (setq-default evil-escape-key-sequence "jj")
+    (evil-escape-mode))
+#+end_src
+
+** Evil Collection Package
+[[https://github.com/emacs-evil/evil-collection][evil-collection]] allows us to enable vim keybindings outside of text buffers, that is,
+we then can use evil everywhere in emacs. For example, it will allow us to use
+evil in org-agenda, calendar, ~help-mode~, etc.
+
+#+begin_src emacs-lisp
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
+#+end_src
+
+** Additional tools
+*** Comments
+Simple plugin that enables us to toggle comments with ~gcc~:
+#+begin_src emacs-lisp
+  (use-package evil-commentary
+    :after evil
+    :config
+    (evil-commentary-mode))
+#+end_src
+
+*** Surround
+~evil-surround~ is the Emacs equivalent of ~vim-surround~. It let's us edit surrounding elements.
+
+#+begin_src emacs-lisp
+  (use-package evil-surround
+    :config
+    (global-evil-surround-mode 1))
+#+end_src
+*** Multiple Cursors
+Enable Atom-style multi-cursor editing:
+
+#+begin_src emacs-lisp
+  (use-package evil-multiedit
+    :config
+    (evil-multiedit-default-keybinds))
+#+end_src
+
+* Git Integration
+
+#+begin_src emacs-lisp
+;; Magit
+(use-package magit
+  :commands magit-status
+  :bind (("C-x g" . magit-status)))
+
+;; Git gutter
+(use-package git-gutter
+  :config
+  (global-git-gutter-mode +1))
+#+end_src
+
+* Keybindings
+** MacOS Settings
+Disable right option key on MacOS to allow for emacs bindings:
+#+begin_src emacs-lisp
+  (setq ns-option-modifier 'meta
+        mac-option-modifier 'meta
+        ns-right-option-modifer nil
+        mac-right-option-modifier nil)
+#+end_src
+
+** Miscallenous Settings
+
+By default Emacs requires you to hit ESC three times to close the minibuffer.
+This is annoying, so we're going to change it to just once:
+#+begin_src emacs-lisp
+  (global-set-key [escape] 'keyboard-escape-quit)
+#+end_src
+
+** Which-key
+Emacs which-key is a powerful package designed to enhance the usability of Emacs
+by providing users with context-sensitive help for keybindings. It dynamically displays a popup window
+listing possible keybindings and their associated commands when a user enters a key sequence.
+This feature is particularly helpful for users who are new to Emacs or who want to discover the 
+available functionality without having to memorize all the keybindings.
+Emacs which-key significantly improves the discoverability and efficiency of using Emacs.
+
+We enable it like so:
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :init (which-key-mode 1)
+    :diminish
+    :config
+    (setq which-key-side-window-location 'bottom
+          which-key-sort-order #'which-key-key-order-alpha
+          which-key-sort-uppercase-first nil
+          which-key-add-column-padding 1
+          which-key-max-display-columns nil
+          which-key-min-display-lines 6
+          which-key-side-window-slot -10
+          which-key-side-window-max-height 0.25
+          which-key-idle-delay 0.8
+          which-key-max-description-length 25
+          which-key-allow-imprecise-window-fit t
+          which-key-separator " → "))
+#+end_src
+
+** Moving Buffers
+The [[https://github.com/lukhas/buffer-move][buffer-move]] package allows us to move buffers from one window to another.
+We define keybindings to be very similar to just moving the cursor, but instead
+of ~hjkl~ we use capital ~HJKL~:
+
+#+begin_src emacs-lisp
+  (use-package buffer-move)
+#+end_src
+
+See below for keybindings.
+
+** Bind-key Setup
+
+
+#+begin_src emacs-lisp
+  (use-package bind-key
+    :config
+    (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
+#+end_src
+
+** General.el Setup
+#+begin_src emacs-lisp
+  (use-package general
+    :after evil
+    :config
+    (general-evil-setup))
+#+end_src
+
+Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
+#+begin_src emacs-lisp
+  (general-create-definer leader-def
+    :states '(normal visual insert emacs)
+    :keymaps 'override
+    :prefix "SPC" ; set leader
+    :global-prefix "M-SPC") ; access leader in insert mode (do we need this?)
+
+  (general-create-definer local-leader-def
+    :states '(normal visual insert emacs)
+    :keymaps 'override
+    :prefix "," ; set leader
+    :global-prefix "M-,") ; access leader in insert mode (do we need this?)
+#+end_src
+
+
+** Zooming In/Out
+
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-=") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
+  (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
+  (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
+  
+#+end_src
+
+** Top-Level Keybindings
+
+#+begin_src emacs-lisp
+  (leader-def
+    "." 'find-file)
+  ;; (leader-def
+  ;;   "f c" '((lambda () (interactive) (find-file "~/.config/nixpkgs/home.nix")) :wk "Open [C]onfig"))
+#+end_src
+
+** Buffer Keybindings (b)
+#+begin_src emacs-lisp
+  (leader-def
+    "b" '(:ignore t :wk "[B]uffer")
+    "b b" '(switch-to-buffer :wk "Switch Buffer")
+    "b i" '(ibuffer :wk "Ibuffer")
+    "b k" '(kill-current-buffer :wk "Kill Buffer")
+    "b n" '(next-buffer :wk "Next Buffer")
+    "b p" '(previous-buffer :wk "Previous Buffer")
+    "b r" '(revert-buffer :wk "Revert Buffer"))
+  
+#+end_src
+
+
+** Window-Management Keybindings (w)
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-h") 'evil-window-left)
+  (global-set-key (kbd "C-j") 'evil-window-down)
+  (global-set-key (kbd "C-k") 'evil-window-up)
+  (global-set-key (kbd "C-l") 'evil-window-right)
+
+  (leader-def
+    "w" '(:ignore t :wk "[W]indows")
+
+    ;; Window splits
+    "w c" '(evil-window-delete :wk "Close Current Window")
+    "w n" '(evil-window-new :wk "New Window")
+    "w s" '(evil-window-split :wk "Split (Horizontally)")
+    "w v" '(evil-window-vsplit :wk "Split Vertically")
+    "w o" '(delete-other-windows :wk "Close Other Windows")
+    "w =" '(balance-windows :wk "Balance Windows")
+    "w |" '(evil-window-set-width :wk "Set Window Width")
+    "w _" '(evil-window-set-height :wk "Set Window Height")
+
+    ;; Window motions
+    "w h" '(evil-window-left :wk "Move Left")
+    "w j" '(evil-window-down :wk "Move Down")
+    "w k" '(evil-window-up :wk "Move Up")
+    "w l" '(evil-window-right :wk "Move Right")
+    "w w" '(evil-window-next :wk "Next Window")
+
+    ;; Move windows
+    "w H" '(buf-move-left :wk "Buffer Move Left")
+    "w J" '(buf-move-down :wk "Buffer Move Down")
+    "w K" '(buf-move-up :wk "Buffer Move Up")
+    "w L" '(buf-move-right :wk "Buffer Move Right"))
+#+end_src
+
+** Lisp Evaluation Keybindings (e)
+#+begin_src emacs-lisp
+  (leader-def
+    "e" '(:ignore t :wk "[E]valuate")
+    "e b" '(eval-buffer :wk "Evaluate elisp in buffer")
+    "e d" '(eval-defun :wk "Evaluate elisp in defun")
+    "e e" '(eval-expression :wk "Evaluate elisp expression")
+    "e l" '(eval-last-sexp :wk "Evaluate elisp in last sexp")
+    "e r" '(eval-region :wk "Evaluate elisp in region"))
+  
+#+end_src
+
+** Dired Keybindings (d)
+#+begin_src emacs-lisp
+  (leader-def
+    "d" '(:ignore t :wk "[D]ired")
+    "d d" '(dired :wk "Open Dired")
+    "d j" '(dired-jump :wk "Jump to Current")
+    "d p" '(peep-dired :wk "Peep Dired"))
+#+end_src
+
+** Search Keybindings (f)
+#+begin_src emacs-lisp
+  (leader-def
+    "f" '(:ignore t :wk "[F]ind")
+    "f f" '(consult-find :wk "Find Files")
+    "f b" '(consult-buffer :wk "Find Buffer")
+    "f /" '(consult-buffer :wk "Find Buffer")
+    ;; TODO maybe add "f a" as in neovim?
+    "f g" '(consult-ripgrep :wk "Find by Grep")
+    "f h" '(consult-man :wk "Find Help")
+    "f i" '(info :wk "Find Info")
+    "f r" '(consult-recent-file :wk "Find Recent Files")
+    "f m" '(consult-notmuch-tree :wk "Find Mail")
+    "f n" '(org-roam-node-find :wk "Find Org Roam Node"))
+#+end_src
+
+** Git Keybindings (g)
+#+begin_src emacs-lisp
+  (leader-def
+    "g" '(:ignore t :wk "[G]it")
+    "g f" '(consult-git-grep :wk "Find in Git")
+    ;; TODO maybe at "g c" and "g b" as in neovim?
+    "g g" '(magit-status :wk "Magit"))
+#+end_src
+
+** Help Keybindings (h)
+#+begin_src emacs-lisp
+  (leader-def
+    "h" '(:ignore t :wk "[H]elp")
+    "h a" '(apropos :wk "Apropos")
+    "h c" '(describe-char :wk "Character")
+    "h f" '(describe-function :wk "Function")
+    "h k" '(describe-key :wk "Key")
+    "h m" '(describe-mode :wk "Mode")
+    "h p" '(describe-package :wk "Package")
+    "h v" '(describe-variable :wk "Variable"))
+  ;; need to add "h r r" for reloading config as well?
+#+end_src
+
+** Insert Keybindings (i)
+#+begin_src emacs-lisp
+  (leader-def
+    "i" '(:ignore t :wk "[I]nsert")
+    "i n" '(org-roam-node-insert :wk "Insert Org Roam Node")
+    "i d" '(insert-date :wk "Insert Date")
+    "i t" '(insert-time :wk "Insert Time"))
+#+end_src
+
+** Email Keybindings (e)
+#+begin_src emacs-lisp
+  (leader-def
+    "m" '(:ignore t :wk "[M]ail")
+    "m f" '(consult-notmuch-tree :wk "Find Mail")
+    "m n" '(notmuch :wk "Notmuch Mail")
+    "m m" '(mu4e :wk "Mail")
+    "m c" '(mu4e-compose-new :wk "Compose Mail"))
+#+end_src
+
+** Org-mode Keybindings (o)
+#+begin_src emacs-lisp
+  (leader-def
+    "o" '(:ignore t :wk "[O]rg")
+    "o a" '(org-agenda :wk "Agenda")
+    "o t" '(org-timeblock :wk "Timeblock")
+    "o l" '(org-timeblock-list :wk "Timeblock List")
+    "o c" '(org-capture :wk "Capture")
+    "o r" '(org-refile :wk "Refile")
+    "o n" '(notmuch :wk "Notmuch Mail")
+    "o m" '(mu4e :wk "Mail")
+    "o r" '(elfeed :wk "RSS Feeds"))
+#+end_src
+
+** Toggle Keybindings (t)
+#+begin_src emacs-lisp
+  ;; toggle keybindings
+  (leader-def
+    "t" '(:ignore t :wk "[T]oggle")
+    "t l" '(display-line-numbers-mode :wk "Toggle Line Numbers")
+    "t t" '(global-visual-line-mode :wk "Toggle Truncate Lines")
+    "t n" '(org-roam-buffer-toggle :wk "Toggle Org Roam Buffer")
+    "t v" '(vterm-toggle :wk "Toggle Vterm"))
+#+end_src
+
+** Code Keybindings (c)
+#+begin_src emacs-lisp
+  ;; Code keybindings
+  (leader-def
+    "c" '(:ignore t :wk "[C]ode")
+    "c c" '(compile :wk "Compile"))
+#+end_src
+
+** Projectile Keybindings (p)
+#+begin_src emacs-lisp
+  (leader-def "p" '(projectile-command-map :wk "[P]rojects"))
+#+end_src
+
+* Completion
+
+Here we setup all the grepping and completion in Emacs using the powerful Consult/Vertico/Embark/Corfu 
+ecosystem. Note that these packages supersede the older (but more established) Ivy/Counsel/etc
+ecosystem.
+
+** Consult
+[[https://github.com/minad/consult][consult.el]] is an Emacs package that enhances search and navigation capabilities within Emacs.
+It offers a set of interactive commands and utilities that enable users to perform efficient
+searches across different types of data, such as buffers, files, and bookmarks. 
+Consult provides features like incremental search, fuzzy matching, and filtering, 
+making it easier for users to find and navigate to specific locations or items within their Emacs environment.
+
+Note that there are alternatives, most prominently Ivy and Helm. However, those packages are older,
+less actively maintained, and less leightweight.
+
+A minium config of ~consult~ looks like this:
+#+begin_src emacs-lisp
+(use-package consult
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+
+  :custom
+  ;; set consult project root
+  (setq consult-project-function #'projectile-project-root)
+
+  :config
+  (setq consult-narrow-key "<") ;; "C-+"
+  )
+#+end_src
+
+** Marinalia
+Enable rich annotations using the Marginalia package
+#+begin_src emacs-lisp
+  (use-package marginalia
+    ;; The :init section is always executed.
+    :init
+
+    ;; Marginalia must be activated in the :init section of use-package such that
+    ;; the mode gets enabled right away. Note that this forces loading the
+    ;; package.
+    (marginalia-mode))
+#+end_src
+
+** Embark
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)         ;; pick some comfortable binding
+     ("C-;" . embark-dwim))        ;; good alternative: M-.
+    ;; ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+    :init
+
+    ;; Optionally replace the key help with a completing-read interface
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
+    ;; strategy, if you want to see the documentation from multiple providers.
+    (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+    ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+    :config
+
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+#+end_src
+  
+Consult integration
+#+begin_src emacs-lisp
+
+  ;; Consult users will also want the embark-consult package.
+  (use-package embark-consult
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+  #+end_src
+
+** Vertico
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init
+    (vertico-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; Persist history over Emacs restarts. Vertico sorts by history position.
+  (savehist-mode)
+
+  ;; A few more useful configurations...
+  (use-package emacs
+    :init
+    ;; Enable recursive minibuffers
+    (setq enable-recursive-minibuffers t))
+
+  ;; Optionally use the `orderless' completion style.
+  (use-package orderless
+    :init
+    ;; Configure a custom style dispatcher (see the Consult wiki)
+    ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
+    ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+    (setq completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
+* Org-mode
+
+** Prettify Org
+There are several packages that improve or prettify ~org-mode~. Most notably,
+[[https://github.com/minad/org-modern][org-modern]] gives a very slick modern UI to ~org-mode~. However, ~org-modern~
+was not working well for me with ~JetBrainsMono~ font, and therefore,
+I stick with [[https://github.com/sabof/org-bullets][org-bullets]] and a few org settings for now.
+
+First, let's enable indent mode for org:
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+#+end_src
+
+Then, we'll enable ~org-bullets~:
+#+begin_src emacs-lisp
+  (use-package org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+Last, we disable electric indent:
+#+begin_src emacs-lisp
+  (electric-indent-mode -1)
+#+end_src
+
+** Timeblocks
+
+** Org GTD
+
+#+begin_src emacs-lisp
+  (setq org-gtd-update-ack "3.0.0")
+  (use-package org-gtd :after org
+    :init
+    ;; Directories
+    (setq org-agenda-files '("~/Dropbox/notes/gcal-appointments.org"
+                             "~/Dropbox/notes/digitec-appointments.org"))
+    (setq org-gtd-directory "~/Dropbox/notes/org-gtd")
+    :config
+    (setq org-edna-use-inheritance t)
+    (org-edna-mode)
+    (leader-def
+      "d" '(:ignore t :wk "Org GT[D]")
+      "d c" '(org-gtd-capture :wk "Capture")
+      "d e" '(org-gtd-engage :wk "Engage")
+      "d p" '(org-gtd-process-inbox :wk "Process Inbox")
+      "d n" '(org-gtd-show-all-next :wk "Show all next")
+      "d s" '(org-gtd-review-stuck-projects :wk "Stuck Projects"))
+    (define-key org-gtd-clarify-map (kbd "C-c c") #'org-gtd-organize)
+    ;; set area of focus
+    (setq org-gtd-areas-of-focus '("Home" "Health" "Family" "Career" "Social"))
+    (setq org-gtd-organize-hooks '(org-gtd-set-area-of-focus org-set-tags-command))
+    (org-gtd-mode t))
+
+  ;; set area of focus and autosave org-gtd files when organizing (otherwise they frequently conflict with Beorg)
+  (setq auto-save-default nil) ;; disable by default
+  (add-hook 'org-mode-hook #'auto-save-mode) ;; enable in org-mode
+  (add-hook 'auto-save-hook #'org-save-all-org-buffers) ;; autosave org buffers
+#+end_src
+
+** Org Roam
+
+** Org Habit Stats
+
+

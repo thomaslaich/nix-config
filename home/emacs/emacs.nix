@@ -4,25 +4,11 @@
     enable = true;
     package = (
       pkgs.emacsWithPackagesFromUsePackage {
-        # Your Emacs config file. Org mode babel files are also
+        # We use the README.org directly. The file will be tangled automatically,
+        # that is, the source code blocks are going to be extracted.
+        config = ./README.org;
 
-        # supported.
-        # NB: Config files cannot contain unicode characters, since
-        #     they're being parsed in nix, which lacks unicode
-        #     support.
-        config = ./config.el;
-        # for some reason this does not work for me :(
-        # config = ./emacs.org;
-
-        # Whether to include your config as a default init file.
-        # If being bool, the value of config is used.
-        # Its value can also be a derivation like this if you want to do some
-        # substitution:
-        #   defaultInitFile = pkgs.substituteAll {
-        #     name = "default.el";
-        #     src = ./emacs.el;
-        #     inherit (config.xdg) configHome dataHome;
-        #   };
+        # Include the config as a default init file
         defaultInitFile = true;
 
         # Package is optional, defaults to pkgs.emacs
