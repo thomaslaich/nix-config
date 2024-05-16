@@ -587,8 +587,11 @@ A minium config of ~consult~ looks like this:
   )
 #+end_src
 
-** Marinalia
-Enable rich annotations using the Marginalia package
+** Marginalia
+[[https://github.com/minad/marginalia][marginalia.el]] is a package that enhances the minibuffer completion experience by providing rich contextual annotations for candidates,
+helping users make more informed selections.
+
+A minimal config looks like this:
 #+begin_src emacs-lisp
   (use-package marginalia
     ;; The :init section is always executed.
@@ -600,7 +603,41 @@ Enable rich annotations using the Marginalia package
     (marginalia-mode))
 #+end_src
 
+** Vertico
+[[https://github.com/minad/vertico][vertico.el]] is a package that offers a vertical completion interface, simplifying navigation and selection within the minibuffer.
+
+Let's activate ~vertico-mode~ like so:
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init
+    (vertico-mode))
+#+end_src
+
+A few extra config options taken directly from the Vertico github page:
+#+begin_src emacs-lisp
+  ;; Persist history over Emacs restarts. Vertico sorts by history position.
+  (savehist-mode)
+
+  ;; A few more useful configurations...
+  (use-package emacs
+    :init
+    ;; Enable recursive minibuffers
+    (setq enable-recursive-minibuffers t))
+
+  ;; Optionally use the `orderless' completion style.
+  (use-package orderless
+    :init
+    ;; Configure a custom style dispatcher (see the Consult wiki)
+    ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
+    ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+    (setq completion-styles '(orderless basic)
+          completion-category-defaults nil
+          completion-category-overrides '((file (styles partial-completion)))))
+#+end_src
+
 ** Embark
+[[https://github.com/oantolin/embark][Embark]] makes it easy to choose a command to run based on what is near point,
+both during a minibuffer completion session (in a way familiar to Helm or Counsel users) and in normal buffers. 
 #+begin_src emacs-lisp
   (use-package embark
     :bind
@@ -627,7 +664,7 @@ Enable rich annotations using the Marginalia package
                    (window-parameters (mode-line-format . none)))))
 #+end_src
   
-Consult integration
+Integrate Embark with Consult:
 #+begin_src emacs-lisp
 
   ;; Consult users will also want the embark-consult package.
@@ -636,33 +673,6 @@ Consult integration
     (embark-collect-mode . consult-preview-at-point-mode))
   #+end_src
 
-** Vertico
-#+begin_src emacs-lisp
-  (use-package vertico
-    :init
-    (vertico-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; Persist history over Emacs restarts. Vertico sorts by history position.
-  (savehist-mode)
-
-  ;; A few more useful configurations...
-  (use-package emacs
-    :init
-    ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t))
-
-  ;; Optionally use the `orderless' completion style.
-  (use-package orderless
-    :init
-    ;; Configure a custom style dispatcher (see the Consult wiki)
-    ;; (setq orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch)
-    ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-    (setq completion-styles '(orderless basic)
-          completion-category-defaults nil
-          completion-category-overrides '((file (styles partial-completion)))))
-#+end_src
 
 * Org-mode
 
@@ -689,6 +699,51 @@ Last, we disable electric indent:
 #+end_src
 
 ** Timeblocks
+
+#+begin_src emacs-lisp
+  (use-package org-timeblock
+    :hook ((org-timeblock-mode org-timeblock-list-mode) . my/org-timeblock-evil-map)
+    :init
+    (defun my/org-timeblock-evil-map ()
+      "Set the keybindings for 'org-timeblock' to be compatible with evil mode"
+      (evil-define-key 'normal org-timeblock-mode-map
+        "+" 'org-timeblock-new-task
+        "j" 'org-timeblock-forward-block
+        "l" 'org-timeblock-forward-column
+        "h" 'org-timeblock-backward-column
+        "k" 'org-timeblock-backward-block
+        (kbd "C-<down>") 'org-timeblock-day-later
+        (kbd "C-<up>") 'org-timeblock-day-earlier
+        (kbd "RET") 'org-timeblock-goto
+        (kbd "TAB") 'org-timeblock-goto-other-window
+        "d" 'org-timeblock-set-duration
+        "r" 'org-timeblock-redraw-buffers
+        "gd" 'org-timeblock-jump-to-day
+        "s" 'org-timeblock-schedule
+        "t" 'org-timeblock-toggle-timeblock-list
+        "v" 'org-timeblock-switch-scaling
+        "V" 'org-timeblock-switch-view)
+      (evil-define-key 'normal org-timeblock-list-mode-map
+        "+" 'org-timeblock-new-task
+        "j" 'org-timeblock-list-next-line
+        "k" 'org-timeblock-list-previous-line
+        (kbd "C-<down>") 'org-timeblock-day-later
+        (kbd "C-<up>") 'org-timeblock-day-earlier
+        (kbd "C-s") 'org-timeblock-list-save
+        (kbd "M-<down>") 'org-timeblock-list-drag-line-forward
+        (kbd "M-<up>") 'org-timeblock-list-drag-line-backward
+        (kbd "RET") 'org-timeblock-list-goto
+        (kbd "TAB") 'org-timeblock-list-goto-other-window
+        "S" 'org-timeblock-list-toggle-sort-function
+        "d" 'org-timeblock-list-set-duration
+        "r" 'org-timeblock-redraw-buffers
+        "gd" 'org-timeblock-jump-to-day
+        "q" 'org-timeblock-quit
+        "s" 'org-timeblock-list-schedule
+        "t" 'org-timeblock-list-toggle-timeblock
+        "v" 'org-timeblock-switch-scaling
+        "V" 'org-timeblock-switch-view)))
+#+end_src
 
 ** Org GTD
 
@@ -723,7 +778,52 @@ Last, we disable electric indent:
 #+end_src
 
 ** Org Roam
+*** Basic configuration
+#+begin_src emacs-lisp
+(use-package org-roam :after org
+  :custom
+  (org-roam-directory "~/Dropbox/notes/org-roam")
+  :bind (("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config
+  (org-roam-setup))
+#+end_src
+
+*** Org-roam UI
+#+begin_src emacs-lisp
+(use-package org-roam-ui
+  :after org-roam
+  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+#+end_src
 
 ** Org Habit Stats
 
+#+begin_src emacs-lisp
+  (use-package org-habit-stats
+    :hook ((org-habit-stats-mode) . my/org-habit-stats-evil-map)
+    :init
+    (defun my/org-habit-stats-evil-map ()
+      (define-key org-mode-map (kbd "C-c h") 'org-habit-stats-view-habit-at-point)
+      (evil-define-key 'normal 'org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda)
+      (evil-define-key 'normal org-habit-stats-mode-map
+        "," 'org-habit-stats-view-previous-habit
+        "." 'org-habit-stats-view-next-habit
+        "<" 'org-habit-stats-calendar-scroll-left
+        ">" 'org-habit-stats-calendar-scroll-right
+        (kbd "C-v") 'org-habit-stats-calendar-scroll-left-three-months
+        (kbd "M-v") 'org-habit-stats-calendar-scroll-right-three-months
+        "[" 'org-habit-stats-scroll-graph-left
+        "]" 'org-habit-stats-scroll-graph-right
+        "{" 'org-habit-stats-scroll-graph-left-big
+        "}" 'org-habit-stats-scroll-graph-right-big
+        "gm" 'org-habit-stats-graph-completions-per-month-switch
+        "gw" 'org-habit-stats-graph-completions-per-week-switch
+        "gd" 'org-habit-stats-graph-completions-per-weekday-switch
+        "gs" 'org-habit-stats-graph-daily-strength-switch)))
+#+end_src
 
