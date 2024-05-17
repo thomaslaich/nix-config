@@ -395,8 +395,7 @@ of ~hjkl~ we use capital ~HJKL~:
 See below for keybindings.
 
 ** Bind-key Setup
-
-
+TODO
 #+begin_src emacs-lisp
   (use-package bind-key
     :config
@@ -755,6 +754,19 @@ Let's also remove emphasis markers (for italics, bold, etc.):
 Then we disable electric indent:
 #+begin_src emacs-lisp
   (electric-indent-mode -1)
+#+end_src
+
+We also want to set font-sizes for different levels in org:
+#+begin_src emacs-lisp
+  (defun my/org-mode-hook ()
+    "Set custom heights for org-level headers."
+    (set-face-attribute 'org-level-1 nil :weight 'semi-bold :height 1.3)
+    (set-face-attribute 'org-level-2 nil :weight 'semi-bold :height 1.2)
+    (set-face-attribute 'org-level-3 nil :weight 'semi-bold :height 1.1)
+    (set-face-attribute 'org-level-4 nil :weight 'semi-bold :height 1.05)
+    (set-face-attribute 'org-level-5 nil :weight 'semi-bold :height 1))
+
+  (add-hook 'org-mode-hook #'my/org-mode-hook)
 #+end_src
 
 ** Table of Contents
