@@ -58,6 +58,7 @@
 - [[#calendar-integration][Calendar Integration]]
 - [[#rss-feeds-with-elfeed][RSS Feeds with elfeed]]
 - [[#agenix][Agenix]]
+- [[#dired][Dired]]
 
 * Disclaimer
 I use emacs mainly for orgmode, elisp, and Haskell development (not professionally).
@@ -984,6 +985,17 @@ This is a custom package that installs all lsp servers that require installation
 * Programming Languages Setup
 ** Lisp
 
+I currently am not using ~Lispy~, because it heavily conflicts with my evil setup.
+
+But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me with parentheses in Lisp:
+#+begin_src emacs-lisp
+  (use-package lispyville
+    :init
+    (general-add-hook '(emacs-lisp-mode-hook lisp-mode-hook) #'lispyville-mode)
+    :config
+    (lispyville-set-key-theme '(operators c-w additional)))
+#+end_src
+
 ** Nix
 #+begin_src emacs-lisp
   (use-package nix-mode
@@ -1015,14 +1027,16 @@ This is a custom package that installs all lsp servers that require installation
 #+end_src
 
 ** CSharp
+Note that ~csharp-mode~ is built-in for Emacs 29+. Therefore, we just have to activate ~lsp-mode~
+whenever we enter ~csharp-mode~:
 #+begin_src emacs-lisp
-  ;; note that csharp-mode is built-in for Emacs 29+
   (add-hook 'csharp-mode-hook 'lsp-deferred)
 #+end_src
 
 ** Python
+~python-mode~ is also builtin to Emacs. Therefore, we also just activate ~lsp-mode~ whenver
+we enter ~python-mode~:
 #+begin_src emacs-lisp
-  ;; Python just like C# is builtin
   (add-hook 'python-mode-hook 'lsp-deferred)
 #+end_src
 
@@ -1143,25 +1157,35 @@ This is a custom package that installs all lsp servers that require installation
 #+end_src
 
 * Calendar Integration
+I sync my Google calendars to Emacs ~org-mode~. NOTE: I do not mix GTD calendar appointments with gcal appointments
+On my phone everything is synched to apple calendar through beorg.
 
+First, we need to read client id and secret for google calendar.
+Those are provided in the ~~/.emacs.d/~ directory by ~agenix~ (see my Nix config).
 #+begin_src emacs-lisp
-  ;; Google calendar sync
-  ;; NOTE: I do not mix GTD calendar appointments with gcal appointments
-  ;; On my phone everything is synched to apple calendar through beorg
   (with-temp-buffer
     (insert-file-contents "~/.emacs.d/gcal-clientid")
     (setq org-gcal-client-id (replace-regexp-in-string "\n$" "" (buffer-string))))
   (with-temp-buffer
     (insert-file-contents "~/.emacs.d/gcal-clientsecret")
     (setq org-gcal-client-secret (replace-regexp-in-string "\n$" "" (buffer-string))))
+#+end_src
 
+Then I sync two calendars to Emacs: The first is my private calendar, the second is my
+company calendar. The company calendar is synced to google calendar via my [[https://github.com/thomaslaich/outlook-ical-proxy][outlook-ical-proxy]] server.
+#+begin_src emacs-lisp
   (use-package org-gcal
     :config
     (setq org-gcal-fetch-file-alist
           '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
             ("6eft51mpf8n0tbic0v9cf56pq75uttas@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
     (org-gcal-reload-client-id-secret))
+#+end_src
 
+A few more configuration is needed:
+- We have to explicitly set the timezone
+- We have to provide some config for epg
+#+begin_src emacs-lisp
   (setq org-show-notification-handler 'message)
   (setq org-gcal-local-timezone "Europe/Zurich")
 
@@ -1169,12 +1193,15 @@ This is a custom package that installs all lsp servers that require installation
   (setq epg-pinentry-mode 'loopback)
   ;; prevent logging in all the time
   (setq-default plstore-cache-passphrase-for-symmetric-encryption t)
-
 #+end_src
 
 * RSS Feeds with elfeed
+[[https://github.com/skeeto/elfeed][elfeed]] is a package designed for reading RSS and Atom feeds within the Emacs environment.
+It offers a powerful and customizable interface for aggregating and viewing news feeds,
+integrating seamlessly with Emacs workflows.
+
+We configure ~elfeed~ with feeds from hackernoon, NZZ, NY Times, Microsoft .NET news, etc.:
 #+begin_src emacs-lisp
-;; RSS feeds
 (use-package elfeed
   :config
   (setq elfeed-feeds
@@ -1190,4 +1217,17 @@ This is a custom package that installs all lsp servers that require installation
 * Agenix
 #+begin_src emacs-lisp
   (use-package agenix)
+#+end_src
+
+* Dired
+#+begin_src emacs-lisp
+  (use-package peep-dired
+    :after dired
+    :hook (evil-normalize-keymaps . peep-dired-hook)
+    :config
+    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
+    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-file) ;; replace with dired-find-file once we install dired-open
+    (evil-define-key 'normal peep-dired-mode-map (kbd "h") 'peep-dired-prev-file)
+    (evil-define-key 'normal peep-dired-mode-map (kbd "l") 'peep-dired-next-file)
+    )
 #+end_src
