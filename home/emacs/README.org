@@ -26,19 +26,7 @@
   - [[#generalel-setup][General.el Setup]]
   - [[#zooming-inout][Zooming In/Out]]
   - [[#top-level-keybindings][Top-Level Keybindings]]
-  - [[#buffer-keybindings-b][Buffer Keybindings (b)]]
-  - [[#window-management-keybindings-w][Window-Management Keybindings (w)]]
-  - [[#lisp-evaluation-keybindings-e][Lisp Evaluation Keybindings (e)]]
-  - [[#dired-keybindings-d][Dired Keybindings (d)]]
-  - [[#search-keybindings-f][Search Keybindings (f)]]
-  - [[#git-keybindings-g][Git Keybindings (g)]]
-  - [[#help-keybindings-h][Help Keybindings (h)]]
-  - [[#insert-keybindings-i][Insert Keybindings (i)]]
-  - [[#email-keybindings-e][Email Keybindings (e)]]
-  - [[#org-mode-keybindings-o][Org-mode Keybindings (o)]]
-  - [[#toggle-keybindings-t][Toggle Keybindings (t)]]
-  - [[#code-keybindings-c][Code Keybindings (c)]]
-  - [[#projectile-keybindings-p][Projectile Keybindings (p)]]
+  - [[#keybindings-by-topic][Keybindings by Topic]]
 - [[#completion][Completion]]
   - [[#consult][Consult]]
   - [[#marginalia][Marginalia]]
@@ -58,7 +46,7 @@
   - [[#formatting-with-format-all][Formatting with format-all]]
   - [[#code-completion-with-corfu][Code Completion with corfu]]
 - [[#programming-languages-setup][Programming Languages Setup]]
-  - [[#lisp][LISP]]
+  - [[#lisp][Lisp]]
   - [[#nix][Nix]]
   - [[#lua][Lua]]
   - [[#haskell][Haskell]]
@@ -69,6 +57,7 @@
 - [[#email][Email]]
 - [[#calendar-integration][Calendar Integration]]
 - [[#rss-feeds-with-elfeed][RSS Feeds with elfeed]]
+- [[#agenix][Agenix]]
 
 * Disclaimer
 I use emacs mainly for orgmode, elisp, and Haskell development (not professionally).
@@ -308,6 +297,7 @@ Simple plugin that enables us to toggle comments with ~gcc~:
     :config
     (global-evil-surround-mode 1))
 #+end_src
+
 *** Multiple Cursors
 Enable Atom-style multi-cursor editing:
 
@@ -317,18 +307,32 @@ Enable Atom-style multi-cursor editing:
     (evil-multiedit-default-keybinds))
 #+end_src
 
-* Git Integration
-
+*** Evil-org
 #+begin_src emacs-lisp
-;; Magit
-(use-package magit
-  :commands magit-status
-  :bind (("C-x g" . magit-status)))
+  (use-package evil-org
+    :after org
+    :hook (org-mode . (lambda () evil-org-mode))
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+#+end_src
 
-;; Git gutter
-(use-package git-gutter
-  :config
-  (global-git-gutter-mode +1))
+* Git Integration
+Magit is an Emacs package that provides a powerful interface for Git version control
+within Emacs. It offers a range of features, including status checking, staging,
+committing, branching, merging, and rebasing, all within a convenient and
+user-friendly interface.
+#+begin_src emacs-lisp
+  (use-package magit
+    :commands magit-status
+    :bind (("C-x g" . magit-status)))
+#+end_src
+
+[[https://github.com/emacsorphanage/git-gutter][git-Git gutter shows diffs in the sign column (equivalent to vim-gitgutter).
+#+begin_src emacs-lisp
+  (use-package git-gutter
+    :config
+    (global-git-gutter-mode +1))
 #+end_src
 
 * Keybindings
@@ -421,10 +425,8 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     :global-prefix "M-,") ; access leader in insert mode (do we need this?)
 #+end_src
 
-
 ** Zooming In/Out
-
-
+Zooming in and out by using either the ~+~, ~-~ keys or the mouse scroll wheel:
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-=") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
@@ -434,15 +436,16 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
 #+end_src
 
 ** Top-Level Keybindings
+This section contains all keybindings that are directly accessible after pressing the leader key.
+For me this is mostly opening ~dired~ and opening the global configuration file.
 
 #+begin_src emacs-lisp
   (leader-def
     "." 'find-file)
-  ;; (leader-def
-  ;;   "f c" '((lambda () (interactive) (find-file "~/.config/nixpkgs/home.nix")) :wk "Open [C]onfig"))
 #+end_src
 
-** Buffer Keybindings (b)
+** Keybindings by Topic
+*** Buffer-Management Keybindings (b)
 #+begin_src emacs-lisp
   (leader-def
     "b" '(:ignore t :wk "[B]uffer")
@@ -452,11 +455,9 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "b n" '(next-buffer :wk "Next Buffer")
     "b p" '(previous-buffer :wk "Previous Buffer")
     "b r" '(revert-buffer :wk "Revert Buffer"))
-  
 #+end_src
 
-
-** Window-Management Keybindings (w)
+*** Window-Management Keybindings (w)
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-h") 'evil-window-left)
   (global-set-key (kbd "C-j") 'evil-window-down)
@@ -490,7 +491,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "w L" '(buf-move-right :wk "Buffer Move Right"))
 #+end_src
 
-** Lisp Evaluation Keybindings (e)
+*** Lisp Evaluation Keybindings (e)
 #+begin_src emacs-lisp
   (leader-def
     "e" '(:ignore t :wk "[E]valuate")
@@ -502,7 +503,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
   
 #+end_src
 
-** Dired Keybindings (d)
+*** Dired Keybindings (d)
 #+begin_src emacs-lisp
   (leader-def
     "d" '(:ignore t :wk "[D]ired")
@@ -511,7 +512,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "d p" '(peep-dired :wk "Peep Dired"))
 #+end_src
 
-** Search Keybindings (f)
+*** Search Keybindings (f)
 #+begin_src emacs-lisp
   (leader-def
     "f" '(:ignore t :wk "[F]ind")
@@ -527,7 +528,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "f n" '(org-roam-node-find :wk "Find Org Roam Node"))
 #+end_src
 
-** Git Keybindings (g)
+*** Git Keybindings (g)
 #+begin_src emacs-lisp
   (leader-def
     "g" '(:ignore t :wk "[G]it")
@@ -536,7 +537,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "g g" '(magit-status :wk "Magit"))
 #+end_src
 
-** Help Keybindings (h)
+*** Help Keybindings (h)
 #+begin_src emacs-lisp
   (leader-def
     "h" '(:ignore t :wk "[H]elp")
@@ -550,7 +551,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
   ;; need to add "h r r" for reloading config as well?
 #+end_src
 
-** Insert Keybindings (i)
+*** Insert Keybindings (i)
 #+begin_src emacs-lisp
   (leader-def
     "i" '(:ignore t :wk "[I]nsert")
@@ -559,7 +560,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "i t" '(insert-time :wk "Insert Time"))
 #+end_src
 
-** Email Keybindings (e)
+*** Email Keybindings (e)
 #+begin_src emacs-lisp
   (leader-def
     "m" '(:ignore t :wk "[M]ail")
@@ -569,7 +570,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "m c" '(mu4e-compose-new :wk "Compose Mail"))
 #+end_src
 
-** Org-mode Keybindings (o)
+*** Org-mode Keybindings (o)
 #+begin_src emacs-lisp
   (leader-def
     "o" '(:ignore t :wk "[O]rg")
@@ -583,7 +584,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "o r" '(elfeed :wk "RSS Feeds"))
 #+end_src
 
-** Toggle Keybindings (t)
+*** Toggle Keybindings (t)
 #+begin_src emacs-lisp
   ;; toggle keybindings
   (leader-def
@@ -594,7 +595,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "t v" '(vterm-toggle :wk "Toggle Vterm"))
 #+end_src
 
-** Code Keybindings (c)
+*** Code Keybindings (c)
 #+begin_src emacs-lisp
   ;; Code keybindings
   (leader-def
@@ -602,7 +603,7 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
     "c c" '(compile :wk "Compile"))
 #+end_src
 
-** Projectile Keybindings (p)
+*** Projectile Keybindings (p)
 #+begin_src emacs-lisp
   (leader-def "p" '(projectile-command-map :wk "[P]rojects"))
 #+end_src
@@ -896,34 +897,297 @@ Then we disable electric indent:
 
 ** Direnv
 
+#+begin_src emacs-lisp
+  (use-package direnv
+    :config
+    (direnv-mode)) ;; direnv integration for emacs
+#+end_src
+
 ** Copilot
+#+begin_src emacs-lisp
+  (use-package copilot)
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+#+end_src
 
 ** LSP Integration
+~lsp-mode~
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :init
+    ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+    (setq lsp-keymap-prefix "C-c l")
+    :config
+    (lsp-enable-which-key-integration t))
+#+end_src
+
+~lsp-ui~
+#+begin_src emacs-lisp
+  (use-package lsp-ui
+    :after lsp-mode)
+#+end_src
+
+Keybindings
+#+begin_src emacs-lisp
+(local-leader-def lsp-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
+(local-leader-def lsp-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
+(local-leader-def c-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
+(local-leader-def c-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
+
+;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
+;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
+(evil-define-key 'normal 'lsp-mode-map "gd" 'lsp-goto-type-definition)
+(evil-define-key 'normal 'lsp-mode-map "gD" 'lsp-goto-implementation)
+(evil-define-key 'normal 'lsp-mode-map "gr" 'lsp-ui-peek-find-references)
+(evil-define-key 'normal 'lsp-mode-map "gm" 'lsp-rename)
+(evil-define-key 'normal 'lsp-mode-map "K" 'lsp-ui-doc-show)
+;; "g d" 'lsp-describe-thing-at-point
+;; "g d" 'lsp-go-to-definition
+;; "K" 'lsp-ui-doc-show
+;; "g r" 'lsp-rename
+;; ", a" 'lsp-execute-code-action)
+
+#+end_src
+
+This is a custom package that installs all lsp servers that require installation otherwise
+#+begin_src emacs-lisp
+  (use-package lsp-install-servers)
+#+end_src
 
 ** Formatting with format-all
+#+begin_src emacs-lisp
+  (use-package format-all
+    :commands format-all-mode
+    :hook (prog-mode . format-all-mode))
+#+end_src
 
 ** Code Completion with corfu
+#+begin_src emacs-lisp
+;; cool kids use corfu, not company
+(use-package corfu
+  ;; Optional customizations
+  :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  (corfu-preselect 'prompt)      ;; Preselect the prompt
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+  :init
+  (global-corfu-mode))
+#+end_src
 
 * Programming Languages Setup
-** LISP
+** Lisp
 
 ** Nix
+#+begin_src emacs-lisp
+  (use-package nix-mode
+    :mode "\\.nix\\'"
+    :hook (nix-mode . lsp-deferred))
+#+end_src
 
 ** Lua
+#+begin_src emacs-lisp
+  (use-package lua-mode
+    :mode "\\.lua\\'"
+    :hook (lua-mode . lsp-deferred)
+    :config
+    (setq lua-indent-level 2))
+#+end_src
 
 ** Haskell
+#+begin_src emacs-lisp
+  (use-package lsp-haskell)
+  (use-package haskell-mode
+    :mode "\\.hs\\'"
+    :hook (haskell-mode . lsp-deferred)
+    :config
+    (setq haskell-indentation-layout-offset 2
+          haskell-indentation-left-offset 2
+          haskell-indentation-starter-offset 2
+          haskell-indentation-where-pre-offset 2
+          haskell-indentation-where-post-offset 2))
+#+end_src
 
 ** CSharp
+#+begin_src emacs-lisp
+  ;; note that csharp-mode is built-in for Emacs 29+
+  (add-hook 'csharp-mode-hook 'lsp-deferred)
+#+end_src
 
 ** Python
+#+begin_src emacs-lisp
+  ;; Python just like C# is builtin
+  (add-hook 'python-mode-hook 'lsp-deferred)
+#+end_src
 
 ** Typescript
+#+begin_src emacs-lisp
+  (use-package typescript-mode
+    :mode "\\.ts\\'"
+    :hook (typescript-mode . lsp-deferred)
+    :config
+    (setq typescript-indent-level 2))
+#+end_src
 
 
 * Projects with projectile
+#+begin_src emacs-lisp
+  (use-package projectile
+    :init
+    (projectile-mode +1)
+    (setq projectile-project-search-path '("~/repos/"))
+    (setq projectile-switch-project-action #'projectile-dired)
+    :bind (:map projectile-mode-map
+                ("s-p" . projectile-command-map)
+                ("C-c p" . projectile-command-map)))
+
+
+  ;; Projectile consult integration
+  (use-package consult-projectile)
+#+end_src
 
 * Email
 
+#+begin_src emacs-lisp
+  (use-package mu4e
+    :config
+    ;; This is set to 't' to avoid mail syncing issues when using mbsync
+    (setq mu4e-change-filenames-when-moving t)
+
+    ;; Refresh mail using isync every 10 minutes
+    (setq mu4e-update-interval (* 10 60))
+    (setq mu4e-get-mail-command "mbsync -a")
+    (setq mu4e-maildir "~/Maildir/gmail")
+
+    ;; Further customization:
+    (setq mu4e-html2text-command "w3m -T text/html" ; how to hanfle html-formatted emails
+          mu4e-headers-auto-update t    ; avoid to type `g' to update
+          mu4e-view-show-images t       ; show images in the view buffer
+          mu4e-compose-signature-auto-include nil ; I don't want a message signature
+          mu4e-use-fancy-chars t)   ; allow fancy icons for mail threads
+
+    (setq mu4e-inbox-folder "/inbox")
+    (setq mu4e-drafts-folder "/Drafts")
+    (setq mu4e-sent-folder   "/Sent Mail")
+    (setq mu4e-refile-folder "/All Mail")
+    (setq mu4e-trash-folder  "/Trash")
+
+    (setq user-full-name "Thomas Laich")
+    (setq user-mail-address "thomaslaich@gmail.com")
+
+    (setq mu4e-maildir-shortcuts
+          '(("/inbox"     . ?i)
+            ("/CatPrimary"   . ?p)
+            ("/CatUpdates"   . ?u)
+            ("/Starred"   . ?r)
+            ("/All Mail"  . ?a)
+            ("/Sent Mail" . ?s)
+            ("/Drafts"    . ?d)
+            ("/Trash"     . ?t)))
+
+    ;; Display options
+    (setq mu4e-view-show-images t)
+    (setq mu4e-view-show-addresses 't)
+
+    ;; Use mu4e for sending e-mail
+    (setq mail-user-agent 'mu4e-user-agent
+          message-send-mail-function 'smtpmail-send-it
+          smtpmail-smtp-server "smtp.gmail.com"
+          ;; only used for auth-source-1password
+          smtpmail-smtp-user "thomaslaich@gmail.com"
+          ;; smtpmail-smtp-service 465
+          smtpmail-smtp-service 587
+          smtpmail-stream-type 'starttls)
+
+    ;; Some styling
+    (add-to-list 'mu4e-header-info-custom
+                 '(:empty . (:name "Empty"
+                                   :shortname ""
+                                   :function (lambda (msg) "  "))))
+    (setq mu4e-headers-fields '((:empty         .   10)
+                                (:human-date    .   12)
+                                (:flags         .    6)
+                                (:mailing-list  .   10)
+                                (:from          .   22)
+                                (:subject       .   nil)))
+    (setq mu4e-headers-unread-mark    '("u" . "📩 "))
+    (setq mu4e-headers-draft-mark     '("D" . "🚧 "))
+    (setq mu4e-headers-flagged-mark   '("F" . "🚩 "))
+    (setq mu4e-headers-new-mark       '("N" . "✨ "))
+    (setq mu4e-headers-passed-mark    '("P" . "↪ "))
+    (setq mu4e-headers-replied-mark   '("R" . "↩ "))
+    (setq mu4e-headers-seen-mark      '("S" . " "))
+    (setq mu4e-headers-trashed-mark   '("T" . "🗑️"))
+    (setq mu4e-headers-attach-mark    '("a" . "📎 "))
+    (setq mu4e-headers-encrypted-mark '("x" . "🔑 "))
+    (setq mu4e-headers-signed-mark    '("s" . "🔏 "))
+    (setq mu4e-headers-calendar-mark  '("c" . "📅 "))
+    (setq mu4e-headers-personal-mark '("p" . "👤 "))
+    (setq mu4e-headers-mailing-list-mark '("l" . "📧 ")))
+
+  ;; allow mu4e functions in org-mode
+  ;; (use-package mu4e-dashboard)
+
+  ;; TODO does this work?
+  ;; alerts
+  (use-package mu4e-alert
+    :config
+    (mu4e-alert-set-default-style 'libnotify)
+    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
+#+end_src
+
 * Calendar Integration
 
+#+begin_src emacs-lisp
+  ;; Google calendar sync
+  ;; NOTE: I do not mix GTD calendar appointments with gcal appointments
+  ;; On my phone everything is synched to apple calendar through beorg
+  (with-temp-buffer
+    (insert-file-contents "~/.emacs.d/gcal-clientid")
+    (setq org-gcal-client-id (replace-regexp-in-string "\n$" "" (buffer-string))))
+  (with-temp-buffer
+    (insert-file-contents "~/.emacs.d/gcal-clientsecret")
+    (setq org-gcal-client-secret (replace-regexp-in-string "\n$" "" (buffer-string))))
+
+  (use-package org-gcal
+    :config
+    (setq org-gcal-fetch-file-alist
+          '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
+            ("6eft51mpf8n0tbic0v9cf56pq75uttas@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
+    (org-gcal-reload-client-id-secret))
+
+  (setq org-show-notification-handler 'message)
+  (setq org-gcal-local-timezone "Europe/Zurich")
+
+  ;; enter pinentry password directly from emacs (no popup)
+  (setq epg-pinentry-mode 'loopback)
+  ;; prevent logging in all the time
+  (setq-default plstore-cache-passphrase-for-symmetric-encryption t)
+
+#+end_src
+
 * RSS Feeds with elfeed
+#+begin_src emacs-lisp
+;; RSS feeds
+(use-package elfeed
+  :config
+  (setq elfeed-feeds
+        '(("https://planet.emacslife.com/atom.xml" coding emacs)
+          ("https://hnrss.org/frontpage" coding hackernews)
+          ("https://hnrss.org/jobs" hackernews jobs)
+          ("https://hackernoon.com/feed" coding hackernoon)
+          ("https://devblogs.microsoft.com/dotnet/feed/" coding dotnet)
+          ("https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" news)
+          ("https://www.nzz.ch/startseite.rss" news))))
+#+end_src
+
+* Agenix
+#+begin_src emacs-lisp
+  (use-package agenix)
+#+end_src
