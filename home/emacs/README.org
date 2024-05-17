@@ -329,7 +329,7 @@ user-friendly interface.
     :bind (("C-x g" . magit-status)))
 #+end_src
 
-[[https://github.com/emacsorphanage/git-gutter][git-Git gutter shows diffs in the sign column (equivalent to vim-gitgutter).
+[[https://github.com/emacsorphanage/git-gutter][git-gutter]] shows diffs in the sign column (equivalent to vim-gitgutter).
 #+begin_src emacs-lisp
   (use-package git-gutter
     :config
