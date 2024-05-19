@@ -12,10 +12,10 @@
   - [[#modeline][Modeline]]
   - [[#dashboard][Dashboard]]
   - [[#miscallenous-ui-toolssettings][Miscallenous UI Tools/Settings]]
-- [[#evil-mode][Evil Mode]]
+- [[#evil][Evil]]
   - [[#evil-package][Evil Package]]
   - [[#evil-collection-package][Evil Collection Package]]
-  - [[#additional-tools][Additional tools]]
+  - [[#additional-evil-tools][Additional Evil Tools]]
 - [[#git-integration][Git Integration]]
 - [[#keybindings][Keybindings]]
   - [[#macos-settings][MacOS Settings]]
@@ -61,8 +61,8 @@
 - [[#dired][Dired]]
 
 * Disclaimer
-I use emacs mainly for orgmode, elisp, and Haskell development (not professionally).
-I use vscode for C#/F# development, and neovim for developing in nix.
+I use emacs mainly for orgmode and a little bit of development in elisp and Haskell.
+I use vscode professionally for C#/F# and TypeScript development.
 
 I let Nix manage my Emacs installation (including downloading, compiling, and pinning packages) using the [[https://github.com/nix-community/emacs-overlay][emacs-overlay]].
 
@@ -138,6 +138,11 @@ Make commented text and keywords italics:
   (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
 #+end_src
 
+Let's also adjust the line height:
+#+begin_src emacs-lisp
+  (setq-default line-spacing 0.15)
+#+end_src
+
 Enable nerd icons:
 #+begin_src emacs-lisp
   (use-package nerd-icons)
@@ -163,7 +168,7 @@ Disable line numbers specifically in ~org-mode~:
 We use the doom modeline:
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :init (doom-modeline-mode 1))
+    :hook (after-init . doom-modeline-mode))
 #+end_src
 
 Minions allow us to pick and choose minor modes from a dropdown menu in the modeline. We enable
@@ -233,8 +238,8 @@ Rainbow delimeters help us match opening and closing brackets in code (see [[htt
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-* Evil Mode
-[[https://github.com/emacs-evil/evil][evil]] in Emacs is a package that provides Vim keybindings and behaviors within Emacs. 
+* Evil
+[[https://github.com/emacs-evil/evil][evil]] or ~evil-mode~ is a package that provides Vim keybindings and behaviors within Emacs. 
 It allows me to use my beloved vim editing commands while still benefiting from Emacs's
 extensibility and features. It is hands-down the most important piece of configuration
 in my Emacs config.
@@ -280,8 +285,8 @@ evil in org-agenda, calendar, ~help-mode~, etc.
     (evil-collection-init))
 #+end_src
 
-** Additional tools
-*** Comments
+** Additional Evil Tools
+*** Evil Comments
 Simple plugin that enables us to toggle comments with ~gcc~:
 #+begin_src emacs-lisp
   (use-package evil-commentary
@@ -290,7 +295,7 @@ Simple plugin that enables us to toggle comments with ~gcc~:
     (evil-commentary-mode))
 #+end_src
 
-*** Surround
+*** Evil Surround
 ~evil-surround~ is the Emacs equivalent of ~vim-surround~. It let's us edit surrounding elements.
 
 #+begin_src emacs-lisp
@@ -301,14 +306,13 @@ Simple plugin that enables us to toggle comments with ~gcc~:
 
 *** Multiple Cursors
 Enable Atom-style multi-cursor editing:
-
 #+begin_src emacs-lisp
   (use-package evil-multiedit
     :config
     (evil-multiedit-default-keybinds))
 #+end_src
 
-*** Evil-org
+*** Evil Org
 #+begin_src emacs-lisp
   (use-package evil-org
     :after org
@@ -319,10 +323,12 @@ Enable Atom-style multi-cursor editing:
 #+end_src
 
 * Git Integration
-Magit is an Emacs package that provides a powerful interface for Git version control
+[[https://github.com/magit/magit][magit]] is a package that provides a powerful interface for Git version control
 within Emacs. It offers a range of features, including status checking, staging,
 committing, branching, merging, and rebasing, all within a convenient and
-user-friendly interface.
+user-friendly interface. It is the best-in-class Git tool out there.
+
+Let's enable it like so:
 #+begin_src emacs-lisp
   (use-package magit
     :commands magit-status
@@ -363,7 +369,6 @@ available functionality without having to memorize all the keybindings.
 Emacs which-key significantly improves the discoverability and efficiency of using Emacs.
 
 We enable it like so:
-
 #+begin_src emacs-lisp
   (use-package which-key
     :init (which-key-mode 1)
@@ -730,25 +735,30 @@ Integrate Embark with Consult:
 * Org-mode
 
 ** Prettify Org
-There are several packages that improve or prettify ~org-mode~. Most notably,
-[[https://github.com/minad/org-modern][org-modern]] gives a very slick modern UI to ~org-mode~. However, ~org-modern~
-was not working well for me with ~JetBrainsMono~ font, and therefore,
-I stick with [[https://github.com/sabof/org-bullets][org-bullets]] and a few org settings for now.
-
 First, let's enable indent mode for org:
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'org-indent-mode)
 #+end_src
 
-Then, we'll enable ~org-bullets~:
+There are several packages that improve or prettify ~org-mode~. Most notably,
+[[https://github.com/minad/org-modern][org-modern]] gives a very slick modern UI to ~org-mode~. 
+Despite ~org-modern~ not working great for me with ~JetBrainsMono~ font, I still use it
+for now. (Before I was using stick with [[https://github.com/sabof/org-bullets][org-bullets]] and a few org settings.)
 #+begin_src emacs-lisp
-  (use-package org-bullets)
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  ;; my old config
+  ;; (use-package org-bullets)
+  ;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  
+  ;; with org-modern
+  (use-package org-modern)
+  (setq org-modern-star 'replace)
+  (global-org-modern-mode)
 #+end_src
 
 Let's also remove emphasis markers (for italics, bold, etc.):
 #+begin_src emacs-lisp
   (setq org-hide-emphasis-markers t)
+  (setq org-pretty-entities t)
 #+end_src
 
 Then we disable electric indent:
