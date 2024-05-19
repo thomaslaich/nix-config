@@ -743,7 +743,7 @@ First, let's enable indent mode for org:
 There are several packages that improve or prettify ~org-mode~. Most notably,
 [[https://github.com/minad/org-modern][org-modern]] gives a very slick modern UI to ~org-mode~. 
 Despite ~org-modern~ not working great for me with ~JetBrainsMono~ font, I still use it
-for now. (Before I was using stick with [[https://github.com/sabof/org-bullets][org-bullets]] and a few org settings.)
+for now. (Before I was using [[https://github.com/sabof/org-bullets][org-bullets]] and a few org settings.)
 #+begin_src emacs-lisp
   ;; my old config
   ;; (use-package org-bullets)
@@ -1006,7 +1006,6 @@ This is a custom package that installs all lsp servers that require installation
 
 * Programming Languages Setup
 ** Lisp
-
 I currently am not using ~Lispy~, because it heavily conflicts with my evil setup.
 
 But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me with parentheses in Lisp:
@@ -1019,6 +1018,7 @@ But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me wi
 #+end_src
 
 ** Nix
+I use [[https://github.com/NixOS/nix-mode][nix-mode]] and active ~lsp-mode~ when entering ~nix-mode~:
 #+begin_src emacs-lisp
   (use-package nix-mode
     :mode "\\.nix\\'"
@@ -1026,6 +1026,7 @@ But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me wi
 #+end_src
 
 ** Lua
+I use [[https://github.com/immerrr/lua-mode][lua-mode]] and active ~lsp-mode~ when entering ~lua-mode~:
 #+begin_src emacs-lisp
   (use-package lua-mode
     :mode "\\.lua\\'"
@@ -1035,8 +1036,13 @@ But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me wi
 #+end_src
 
 ** Haskell
+I first install the haskell LSP ([[https://github.com/emacs-lsp/lsp-haskell][lsp-haskell]]):
 #+begin_src emacs-lisp
   (use-package lsp-haskell)
+#+end_src
+
+I use [[https://github.com/immerrr/lua-mode][haskell-mode]] and active ~lsp-mode~ when entering ~haskell-mode~:
+#+begin_src emacs-lisp
   (use-package haskell-mode
     :mode "\\.hs\\'"
     :hook (haskell-mode . lsp-deferred)
@@ -1063,12 +1069,10 @@ we enter ~python-mode~:
 #+end_src
 
 ** Typescript
+Emacs 29+ also ships with ~typescript-ts-mode~ and ~tsx-ts-mode~. Therefore, we just have to enable ~lsp-mode~ for ts/tsx buffers:
 #+begin_src emacs-lisp
-  (use-package typescript-mode
-    :mode "\\.ts\\'"
-    :hook (typescript-mode . lsp-deferred)
-    :config
-    (setq typescript-indent-level 2))
+  (add-hook 'typescript-ts-mode 'lsp-deferred)
+  (add-hook 'tsx-ts-mode 'lsp-deferred)
 #+end_src
 
 
@@ -1237,6 +1241,9 @@ We configure ~elfeed~ with feeds from hackernoon, NZZ, NY Times, Microsoft .NET 
 #+end_src
 
 * Agenix
+I use [[https://github.com/ryantm/agenix][agenix]] for managing my secrets across multiple machines managed by Nix.
+[[https://github.com/t4ccer/agenix.el][agenix.el]] allows me to edit ~.age~ files in place, automatically encrypting/descrypting them.
+Installing and enabling it is simple:
 #+begin_src emacs-lisp
   (use-package agenix)
 #+end_src
