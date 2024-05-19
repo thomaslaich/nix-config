@@ -212,6 +212,12 @@ We the use [[https://github.com/emacs-dashboard/emacs-dashboard/blob/master/dash
     (dashboard-setup-startup-hook))
 #+end_src
 
+We also inhibit the default splash screen:
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t)
+  (setq inhibit-startup-message t)
+#+end_src
+
 ** Miscallenous UI Tools/Settings
 Enable folding with [[https://github.com/gregsexton/origami.el][origami.el]]:
 #+begin_src emacs-lisp
@@ -286,8 +292,12 @@ evil in org-agenda, calendar, ~help-mode~, etc.
 #+end_src
 
 ** Additional Evil Tools
+Apart from the ~evil~ and ~evil-collection~, there are a few packages that improve
+~evil-mode~ beyond the standard bindings. All these packages usually have an
+equivalent counterpart in (Neo)vim.
 *** Evil Comments
-Simple plugin that enables us to toggle comments with ~gcc~:
+[[https://github.com/linktohack/evil-commentary][evil-commentary]] is a simple plugin that enables us to toggle comments with
+the keybinding ~gcc~:
 #+begin_src emacs-lisp
   (use-package evil-commentary
     :after evil
@@ -295,14 +305,19 @@ Simple plugin that enables us to toggle comments with ~gcc~:
     (evil-commentary-mode))
 #+end_src
 
+The package is the Emacs counterpart to [[https://github.com/tpope/vim-commentary][commentary.vim]].
+
 *** Evil Surround
-~evil-surround~ is the Emacs equivalent of ~vim-surround~. It let's us edit surrounding elements.
+[[https://github.com/emacs-evil/evil-surround][evil-surround]] is a package the let's us edit surrounding elements with 
+the keybinding ~s~ (e.g. ~ds(~ deletes surrounding ~( )~ brackets).
 
 #+begin_src emacs-lisp
   (use-package evil-surround
     :config
     (global-evil-surround-mode 1))
 #+end_src
+
+The package is the Emacs counterpart to [[https://github.com/tpope/vim-surround][vim-surround]].
 
 *** Multiple Cursors
 Enable Atom-style multi-cursor editing:
@@ -312,7 +327,9 @@ Enable Atom-style multi-cursor editing:
     (evil-multiedit-default-keybinds))
 #+end_src
 
-*** Evil Org
+*** Evil-org
+~evil-collection~ bindings for ~org-mode~ are not great. The following package improves
+the evil keybindings in ~org-mode~ (especially ~org-agenda~):
 #+begin_src emacs-lisp
   (use-package evil-org
     :after org
