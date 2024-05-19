@@ -34,8 +34,8 @@
   - [[#embark][Embark]]
 - [[#org-mode][Org-mode]]
   - [[#prettify-org][Prettify Org]]
-  - [[#table-of-contents][Table of Contents]]
-  - [[#timeblocks][Timeblocks]]
+  - [[#toc-org][Toc-org]]
+  - [[#timeblocks-graphical-calendar][Timeblocks (Graphical Calendar)]]
   - [[#org-gtd][Org GTD]]
   - [[#org-roam][Org Roam]]
   - [[#org-habit-stats][Org Habit Stats]]
@@ -779,14 +779,25 @@ We also want to set font-sizes for different levels in org:
   (add-hook 'org-mode-hook #'my/org-mode-hook)
 #+end_src
 
-** Table of Contents
+** Toc-org
+[[][toc-org]] allows to generate "Table of Contents" sections in org document by simply using the tag
+~:toc:~. You can see an example of this in this very document.
+
+We install and enable it like so:
 #+begin_src emacs-lisp
   (use-package toc-org
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 
-** Timeblocks
+** Timeblocks (Graphical Calendar)
+[[][org-timeblock]] is a package that allows to display org-agenda items (like calendar events and TODOs)
+in ASCII graphics similar to a program like Outlook.
+
+I was using [[][calfw]] before, but the package is quite old and not very well-maintained. Furthermore, ~calfw~
+does not allow us to display event blocks graphically.
+
+Note that since ~org-timeblock~ does not have ~evil-collection~ bindings, we have to define them ourselves:
 
 #+begin_src emacs-lisp
   (use-package org-timeblock
@@ -834,6 +845,7 @@ We also want to set font-sizes for different levels in org:
 #+end_src
 
 ** Org GTD
+
 
 #+begin_src emacs-lisp
   (setq org-gtd-update-ack "3.0.0")
