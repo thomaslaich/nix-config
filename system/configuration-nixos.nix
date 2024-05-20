@@ -58,6 +58,28 @@
   services.xserver.displayManager.gdm.wayland = true;
   services.xserver.desktopManager.gnome.enable = true;
 
+  # Disable a few gnome packages
+  environment.gnome.excludePackages =
+    (with pkgs; [
+      # gnome-photos
+      gnome-tour
+      # gedit # text editor
+    ])
+    ++ (with pkgs.gnome; [
+      cheese # webcam tool
+      gnome-music
+      # gnome-terminal
+      epiphany # web browser
+      geary # email reader
+      evince # document viewer
+      gnome-characters
+      totem # video player
+      tali # poker game
+      iagno # go game
+      hitori # sudoku game
+      atomix # puzzle game
+    ]);
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
