@@ -227,6 +227,14 @@
           }
         ];
 
+        orgmode = with pkgs; [
+          {
+            plugin = vimPlugins.orgmode;
+            type = "lua";
+            config = builtins.readFile ./plugins/orgmode.lua;
+          }
+        ];
+
         lush = {
           plugin = pkgs.vimPlugins.lush-nvim;
           type = "lua";
@@ -262,6 +270,7 @@
         nvim-lint
         oil
         omnisharp-extended-lsp
+        orgmode
         plenary
         telescope
         treesitter

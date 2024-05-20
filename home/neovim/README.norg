@@ -1,0 +1,16 @@
+@document.meta
+title: My Personal Neovim Configuration
+description: My Neovim configuration managed in Nix
+authors: [ "Thomas Laich" ]
+@end
+
+* Disclaimer
+  I use Neovim mainly for developing in Nix and Lua.
+
+  I use the home manager module `neovim` to manage my Neovim configuration.
+  Thus, my configuration is written partly in Nix and partly in Lua. 
+
+  Note that, other than in my Emacs configuration, the `README.norg` 
+  does not directly as my Neovim configuration; there is not such functionality
+  as to auto-tangle `.norg` files for use as configs.
+
