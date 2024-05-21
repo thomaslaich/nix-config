@@ -135,6 +135,6 @@
   users.users.thomaslaich = {
     name = "thomaslaich";
     home = "/Users/thomaslaich";
-    # shell = pkgs.fish;
+    shell = pkgs.fish;
   };
 }

@@ -16,10 +16,6 @@
   - [[#evil-package][Evil Package]]
   - [[#evil-collection-package][Evil Collection Package]]
   - [[#additional-evil-tools][Additional Evil Tools]]
-- [[#git-integration][Git Integration]]
-- [[#terminal-emulation-and-shells][Terminal Emulation and Shells]]
-  - [[#terminal-emulation-with-vterm][Terminal Emulation with vterm]]
-  - [[#eshell][EShell]]
 - [[#keybindings][Keybindings]]
   - [[#macos-settings][MacOS Settings]]
   - [[#miscallenous-settings][Miscallenous Settings]]
@@ -28,8 +24,13 @@
   - [[#bind-key-setup][Bind-key Setup]]
   - [[#generalel-setup][General.el Setup]]
   - [[#zooming-inout][Zooming In/Out]]
-  - [[#top-level-keybindings][Top-Level Keybindings]]
-  - [[#keybindings-by-topic][Keybindings by Topic]]
+  - [[#global-keybindings][Global Keybindings]]
+- [[#git-integration][Git Integration]]
+  - [[#magit][magit]]
+  - [[#git-gutter][git-gutter]]
+- [[#terminal-emulation-and-shells][Terminal Emulation and Shells]]
+  - [[#terminal-emulation-with-vterm][Terminal Emulation with vterm]]
+  - [[#eshell][EShell]]
 - [[#completion][Completion]]
   - [[#consult][Consult]]
   - [[#marginalia][Marginalia]]
@@ -37,7 +38,8 @@
   - [[#embark][Embark]]
 - [[#org-mode][Org-mode]]
   - [[#prettify-org][Prettify Org]]
-  - [[#toc-org][Toc-org]]
+  - [[#org-tempo][org-tempo]]
+  - [[#toc-org][toc-org]]
   - [[#timeblocks-graphical-calendar][Timeblocks (Graphical Calendar)]]
   - [[#org-gtd][Org GTD]]
   - [[#org-roam][Org Roam]]
@@ -345,48 +347,6 @@ the evil keybindings in ~org-mode~ (especially ~org-agenda~):
     (evil-org-agenda-set-keys))
 #+end_src
 
-* Git Integration
-[[https://github.com/magit/magit][magit]] is a package that provides a powerful interface for Git version control
-within Emacs. It offers a range of features, including status checking, staging,
-committing, branching, merging, and rebasing, all within a convenient and
-user-friendly interface. It is the best-in-class Git tool out there.
-
-Let's enable it like so:
-#+begin_src emacs-lisp
-  (use-package magit
-    :commands magit-status
-    :general
-    (leader-def
-      "g g" '(magit-status :wk "Status")))
-#+end_src
-
-[[https://github.com/emacsorphanage/git-gutter][git-gutter]] shows diffs in the sign column (equivalent to vim-gitgutter).
-#+begin_src emacs-lisp
-  (use-package git-gutter
-    :config
-    (global-git-gutter-mode +1))
-#+end_src
-
-* Terminal Emulation and Shells
-** Terminal Emulation with vterm
-#+begin_src emacs-lisp
-(use-package vterm
-  :commands vterm
-  :config
-  (setq shell-file-name (getenv "SHELL")
-        vterm-max-scrollback 5000))
-
-(use-package vterm-toggle
-  :after vterm
-  :config
-  (setq vterm-toggle-fullscreen-p nil
-        vterm-toggle-scope 'project
-        vterm-toggle-cd-auto-create-buffer nil
-        vterm-toggle-cd-auto-run-dired nil))
-#+end_src
-
-** EShell
-TODO
 * Keybindings
 ** MacOS Settings
 Disable right option key on MacOS to allow for emacs bindings:
@@ -465,27 +425,31 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
   (general-create-definer leader-def
     :states '(normal visual insert emacs)
     :keymaps 'override
-    :prefix "SPC" ; set leader
+    :prefix leader; set leader
     :global-prefix "M-SPC") ; access leader in insert mode (do we need this?)
 
   (general-create-definer local-leader-def
     :states '(normal visual insert emacs)
     :keymaps 'override
-    :prefix "," ; set leader
+    :prefix local-leader; set leader
     :global-prefix "M-,") ; access leader in insert mode (do we need this?)
 #+end_src
 
 ** Zooming In/Out
 Zooming in and out by using either the ~+~, ~-~ keys or the mouse scroll wheel:
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-=") 'text-scale-increase)
-  (global-set-key (kbd "C--") 'text-scale-decrease)
-  (global-set-key (kbd "<C-wheel-up>") 'text-scale-increase)
-  (global-set-key (kbd "<C-wheel-down>") 'text-scale-decrease)
-  
+  (general-define-key "C-=" 'text-scale-increase)
+  (general-define-key "C--" 'text-scale-decrease)
+  (general-define-key "<C-wheel-up>" 'text-scale-increase)
+  (general-define-key "<C-wheel-down>" 'text-scale-decrease)
 #+end_src
 
-** Top-Level Keybindings
+** Global Keybindings
+Package specific keybindings are defined in place (where I install the package itself).
+This section contains keybindings by topic that involve core Emacs functionality such
+as window and buffer management.
+
+*** Top-Level Keybindings
 This section contains all keybindings that are directly accessible after pressing the leader key.
 For me this is mostly opening ~dired~ and opening the global configuration file.
 
@@ -494,7 +458,6 @@ For me this is mostly opening ~dired~ and opening the global configuration file.
     "." 'find-file)
 #+end_src
 
-** Keybindings by Topic
 *** Buffer-Management Keybindings (b)
 #+begin_src emacs-lisp
   (leader-def
@@ -558,8 +521,7 @@ For me this is mostly opening ~dired~ and opening the global configuration file.
   (leader-def
     "d" '(:ignore t :wk "[D]ired")
     "d d" '(dired :wk "Open Dired")
-    "d j" '(dired-jump :wk "Jump to Current")
-    "d p" '(peep-dired :wk "Peep Dired"))
+    "d j" '(dired-jump :wk "Jump to Current"))
 #+end_src
 
 *** Search Keybindings (f)
@@ -569,7 +531,6 @@ For me this is mostly opening ~dired~ and opening the global configuration file.
     "f f" '(consult-find :wk "Find Files")
     "f b" '(consult-buffer :wk "Find Buffer")
     "f /" '(consult-buffer :wk "Find Buffer")
-    ;; TODO maybe add "f a" as in neovim?
     "f g" '(consult-ripgrep :wk "Find by Grep")
     "f h" '(consult-man :wk "Find Help")
     "f i" '(info :wk "Find Info")
@@ -582,7 +543,8 @@ For me this is mostly opening ~dired~ and opening the global configuration file.
 #+begin_src emacs-lisp
   (leader-def
     "g" '(:ignore t :wk "[G]it")
-    "g f" '(consult-git-grep :wk "Find in Git"))
+    "g f" '(consult-git-grep :wk "Find in Git")
+    "g g" '(magit-status :wk "Status"))
 #+end_src
 
 *** Help Keybindings (h)
@@ -638,6 +600,7 @@ For me this is mostly opening ~dired~ and opening the global configuration file.
     "t l" '(display-line-numbers-mode :wk "Toggle Line Numbers")
     "t t" '(global-visual-line-mode :wk "Toggle Truncate Lines")
     "t n" '(org-roam-buffer-toggle :wk "Toggle Org Roam Buffer")
+    "t e" '(eshell-toggle :wk "Toggle EShell")
     "t v" '(vterm-toggle :wk "Toggle Vterm"))
 #+end_src
 
@@ -646,6 +609,71 @@ For me this is mostly opening ~dired~ and opening the global configuration file.
   (leader-def
     "c" '(:ignore t :wk "[C]ode")
     "c c" '(compile :wk "Compile"))
+#+end_src
+
+
+* Git Integration
+** magit
+[[https://github.com/magit/magit][magit]] is a package that provides a powerful interface for Git version control
+within Emacs. It offers a range of features, including status checking, staging,
+committing, branching, merging, and rebasing, all within a convenient and
+user-friendly interface. It is the best-in-class Git tool out there.
+
+Let's enable it like so:
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
+** git-gutter
+[[https://github.com/emacsorphanage/git-gutter][git-gutter]] shows diffs in the sign column (equivalent to vim-gitgutter).
+#+begin_src emacs-lisp
+  (use-package git-gutter
+    :config
+    (global-git-gutter-mode +1))
+#+end_src
+
+* Terminal Emulation and Shells
+** Terminal Emulation with vterm
+#+begin_src emacs-lisp
+  (use-package vterm
+    :commands vterm
+    :config
+    (setq shell-file-name (getenv "SHELL")
+          vterm-max-scrollback 5000))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package vterm-toggle
+    :after vterm
+    :config
+    (setq vterm-toggle-fullscreen-p nil
+          vterm-toggle-scope 'project
+          vterm-toggle-cd-auto-create-buffer nil
+          vterm-toggle-cd-auto-run-dired nil))
+#+end_src
+
+** EShell
+Emacs Eshell is a shell implemented in Emacs Lisp, offering a unique integration with the Emacs environment.
+It allows users to execute both Emacs and external shell commands, benefiting from Emacs' extensive customization options.
+Eshell provides a unified interface for managing tasks within Emacs, blending traditional shell capabilities with the editor's powerful features.
+
+#+begin_src emacs-lisp
+  (use-package eshell-syntax-highlighting
+    :after eshell-mode
+    :config
+    ;; Enable in all Eshell buffers.
+    (eshell-syntax-highlighting-global-mode +1))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package eshell-toggle
+    :custom
+    (eshell-toggle-size-fraction 3)
+    (eshell-toggle-find-project-root-package t) ;; for projectile
+    ;; (eshell-toggle-find-project-root-package 'projectile) ;; for projectile
+    ;; (eshell-toggle-use-projectile-root 'project) ;; for in-built project.el
+    (eshell-toggle-run-command nil)
+    (eshell-toggle-init-function #'eshell-toggle-init-ansi-term))
 #+end_src
 
 * Completion
@@ -814,7 +842,13 @@ We also want to set font-sizes for different levels in org:
   (add-hook 'org-mode-hook #'my/org-mode-hook)
 #+end_src
 
-** Toc-org
+** org-tempo
+
+#+begin_src emacs-lisp
+  (use-package org-tempo)
+#+end_src
+
+** toc-org
 [[https://github.com/snosov1/toc-org][toc-org]] allows to generate "Table of Contents" sections in org document by simply using the tag
 ~:toc:~. You can see an example of this in this very document.
 
@@ -881,7 +915,6 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 
 ** Org GTD
 
-
 #+begin_src emacs-lisp
   (setq org-gtd-update-ack "3.0.0")
   (use-package org-gtd :after org
@@ -927,18 +960,17 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 
 *** Org-roam UI
 #+begin_src emacs-lisp
-(use-package org-roam-ui
-  :after org-roam
-  :hook (after-init . org-roam-ui-mode)
-  :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+  (use-package org-roam-ui
+    :after org-roam
+    ;; :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 #+end_src
 
 ** Org Habit Stats
-
 #+begin_src emacs-lisp
   (use-package org-habit-stats
     :hook ((org-habit-stats-mode) . my/org-habit-stats-evil-map)
@@ -1139,6 +1171,7 @@ Emacs 29+ also ships with ~typescript-ts-mode~ and ~tsx-ts-mode~. Therefore, we 
     (projectile-mode +1)
     (setq projectile-project-search-path '("~/repos/"))
     (setq projectile-switch-project-action #'projectile-dired)
+    ;; this for some reason does not yet work :(
     :general
     (leader-def "p" '(projectile-command-map :wk "[P]rojects")))
 #+end_src
@@ -1310,10 +1343,10 @@ Installing and enabling it is simple:
     :after dired
     :hook (evil-normalize-keymaps . peep-dired-hook)
     :config
-    (evil-define-key 'normal dired-mode-map (kbd "h") 'dired-up-directory)
-    (evil-define-key 'normal dired-mode-map (kbd "l") 'dired-find-file) ;; replace with dired-find-file once we install dired-open
-    (evil-define-key 'normal peep-dired-mode-map (kbd "h") 'peep-dired-prev-file)
-    (evil-define-key 'normal peep-dired-mode-map (kbd "l") 'peep-dired-next-file)
+    ;; (general-evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
+    ;; (general-evil-define-key 'normal dired-mode-map "l" 'dired-find-file) ;; replace with dired-find-file once we install dired-open
+    (general-evil-define-key 'normal peep-dired-mode-map "h" 'peep-dired-prev-file)
+    (general-evil-define-key 'normal peep-dired-mode-map "l" 'peep-dired-next-file)
     )
 #+end_src
 
