@@ -233,6 +233,13 @@
             type = "lua";
             config = builtins.readFile ./plugins/orgmode.lua;
           }
+          {
+            plugin = vimPlugins.org-bullets-nvim;
+            type = "lua";
+            config = ''
+              require('org-bullets').setup()
+            '';
+          }
         ];
 
         lush = {

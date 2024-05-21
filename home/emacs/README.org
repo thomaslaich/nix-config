@@ -59,6 +59,7 @@
   - [[#csharp][CSharp]]
   - [[#python][Python]]
   - [[#typescript][Typescript]]
+  - [[#c][C/*]]
 - [[#projects-with-projectile][Projects with projectile]]
 - [[#email][Email]]
 - [[#calendar-integration][Calendar Integration]]
@@ -88,12 +89,12 @@ Set a higher garbage collection limit (50MB), and log the startup time on the sp
                         gcs-done)))
 #+end_src
 
-Use no-littering to automatically set common paths to the new user-emacs-directory:
+Use [[https://github.com/emacscollective/no-littering][no-littering]] to automatically set common paths to the new user-emacs-directory:
 #+begin_src emacs-lisp
   (use-package no-littering)
 #+end_src
 
-~use-package~ is added automatically by the nix emacs overlay.
+[[https://github.com/jwiegley/use-package][use-package]] is added automatically by the nix emacs overlay.
 Here we just make sure we don't have to keep typing ~:ensure t~:
 #+begin_src emacs-lisp
   (setq use-package-always-ensure t)
@@ -634,6 +635,8 @@ Let's enable it like so:
 
 * Terminal Emulation and Shells
 ** Terminal Emulation with vterm
+[[https://github.com/akermu/emacs-libvterm][emacs-libvterm (vterm)]] is fully-fledged terminal emulator inside GNU Emacs based on libvterm, a C library.
+As a result of using compiled code (instead of elisp), emacs-libvterm is fully capable, fast, and it can seamlessly handle large outputs.
 #+begin_src emacs-lisp
   (use-package vterm
     :commands vterm
@@ -642,6 +645,8 @@ Let's enable it like so:
           vterm-max-scrollback 5000))
 #+end_src
 
+[[https://github.com/jixiuf/vterm-toggle][vterm-toggle]] enables us to toggle between the vterm buffer and whatever buffer you
+are currently editing:
 #+begin_src emacs-lisp
   (use-package vterm-toggle
     :after vterm
@@ -1159,10 +1164,15 @@ we enter ~python-mode~:
 ** Typescript
 Emacs 29+ also ships with ~typescript-ts-mode~ and ~tsx-ts-mode~. Therefore, we just have to enable ~lsp-mode~ for ts/tsx buffers:
 #+begin_src emacs-lisp
-  (add-hook 'typescript-ts-mode 'lsp-deferred)
-  (add-hook 'tsx-ts-mode 'lsp-deferred)
+  (add-hook 'typescript-ts-mode-hook 'lsp-deferred)
+  (add-hook 'tsx-ts-mode-hook 'lsp-deferred)
 #+end_src
 
+** C/*
+Emacs ships with ~c-mode~. We just activate the LSP (~clangd~) like so:
+#+begin_src emacs-lisp
+  (add-hook 'c-mode-hook 'lsp-deferred)
+#+end_src
 
 * Projects with projectile
 #+begin_src emacs-lisp

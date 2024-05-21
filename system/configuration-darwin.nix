@@ -70,6 +70,10 @@
   # Issue: https://github.com/nix-community/home-manager/issues/1341
   environment.systemPackages = with pkgs; [ ];
 
+  environment.variables = {
+    FISH_SHELL = "${pkgs.fish}/bin/fish";
+  };
+
   # Fonts
   fonts.fontDir.enable = true;
   fonts.fonts = with pkgs; [
@@ -135,6 +139,6 @@
   users.users.thomaslaich = {
     name = "thomaslaich";
     home = "/Users/thomaslaich";
-    shell = pkgs.fish;
+    # shell = pkgs.fish;
   };
 }

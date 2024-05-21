@@ -118,7 +118,7 @@
       "networkmanager"
       "wheel"
     ];
-    shell = pkgs.fish;
+    # shell = pkgs.fish;
     packages = with pkgs; [
       _1password-gui
       dropbox

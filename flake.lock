@@ -668,11 +668,11 @@
     "lsp-progress": {
       "flake": false,
       "locked": {
-        "lastModified": 1710128058,
-        "narHash": "sha256-EPItMt6m0wr4GFDN5uCvj2XJDZvhkF9u4jUu/kHES8I=",
+        "lastModified": 1716181859,
+        "narHash": "sha256-lemswtWOf6O96YkUnIFZIsuZPO4oUTNpZRItsl/GSnU=",
         "owner": "linrongbin16",
         "repo": "lsp-progress.nvim",
-        "rev": "1c37b1cd0611563a767f0a340d61f265c4c54ecd",
+        "rev": "55a04895ea20c365b670051a3128265d43bdfa3d",
         "type": "github"
       },
       "original": {
@@ -1061,11 +1061,11 @@
     },
     "nixpkgs_9": {
       "locked": {
-        "lastModified": 1709961763,
-        "narHash": "sha256-6H95HGJHhEZtyYA3rIQpvamMKAGoa8Yh2rFV29QnuGw=",
+        "lastModified": 1716137900,
+        "narHash": "sha256-sowPU+tLQv8GlqtVtsXioTKeaQvlMz/pefcdwg8MvfM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3030f185ba6a4bf4f18b87f345f104e6a6961f34",
+        "rev": "6c0b7a92c30122196a761b440ac0d46d3d9954f1",
         "type": "github"
       },
       "original": {
@@ -1113,6 +1113,22 @@
       "original": {
         "owner": "nvim-neorg",
         "repo": "tree-sitter-norg-meta",
+        "type": "github"
+      }
+    },
+    "org-bullets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1708554267,
+        "narHash": "sha256-aIEe1dgUmDzu9kl33JCNcgyfp8DymURltH0HcZfph0Y=",
+        "owner": "nvim-orgmode",
+        "repo": "org-bullets.nvim",
+        "rev": "3623e86e0fa6d07f45042f7207fc333c014bf167",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvim-orgmode",
+        "repo": "org-bullets.nvim",
         "type": "github"
       }
     },
@@ -1423,14 +1439,15 @@
         "flake-utils": "flake-utils_10",
         "lsp-progress": "lsp-progress",
         "nixpkgs": "nixpkgs_9",
+        "org-bullets": "org-bullets",
         "startup": "startup"
       },
       "locked": {
-        "lastModified": 1710277816,
-        "narHash": "sha256-A0dISc7ZhMlP4BKXrcSvZ3wtOmHoTWzSkKUJy55Doh4=",
+        "lastModified": 1716315421,
+        "narHash": "sha256-f1ze5WmYAG9NOzUw7E6b40Oi2b+uicFxOWAA7EMHRnU=",
         "owner": "thomaslaich",
         "repo": "vimplugins-overlay",
-        "rev": "1e89e5c269cca6aba61ee9cd84bcded6eb8a208a",
+        "rev": "9f431a3e494ddf2ddc851d17321a2a7d42b0c0cb",
         "type": "github"
       },
       "original": {
