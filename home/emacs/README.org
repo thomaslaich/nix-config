@@ -425,13 +425,13 @@ Set up ~SPC~ and ~,~ as the leader and local leader keys, respectively:
   (general-create-definer leader-def
     :states '(normal visual insert emacs)
     :keymaps 'override
-    :prefix leader; set leader
+    :prefix "SPC" ; set leader
     :global-prefix "M-SPC") ; access leader in insert mode (do we need this?)
 
   (general-create-definer local-leader-def
     :states '(normal visual insert emacs)
     :keymaps 'override
-    :prefix local-leader; set leader
+    :prefix "," ; set leader
     :global-prefix "M-,") ; access leader in insert mode (do we need this?)
 #+end_src
 
