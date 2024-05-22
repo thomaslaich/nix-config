@@ -642,7 +642,7 @@ As a result of using compiled code (instead of elisp), emacs-libvterm is fully c
     :commands vterm
     :config
     (setq shell-file-name (getenv "SHELL")
-          vterm-shell (getenv "FISH_SHELL")
+          vterm-shell (getenv "SHELL")
           vterm-max-scrollback 5000))
 #+end_src
 
@@ -1152,7 +1152,8 @@ I use [[https://github.com/immerrr/lua-mode][haskell-mode]] and active ~lsp-mode
 Note that ~csharp-mode~ is built-in for Emacs 29+. Therefore, we just have to activate ~lsp-mode~
 whenever we enter ~csharp-mode~:
 #+begin_src emacs-lisp
-  (add-hook 'csharp-mode-hook 'lsp-deferred)
+  (add-to-list 'major-mode-remap-alist '(csharp-mode . csharp-ts-mode))
+  (add-hook 'csharp-ts-mode-hook 'lsp-deferred)
 #+end_src
 
 ** Python
@@ -1172,7 +1173,8 @@ Emacs 29+ also ships with ~typescript-ts-mode~ and ~tsx-ts-mode~. Therefore, we 
 ** C/*
 Emacs ships with ~c-mode~. We just activate the LSP (~clangd~) like so:
 #+begin_src emacs-lisp
-  (add-hook 'c-mode-hook 'lsp-deferred)
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-hook 'c-ts-mode-hook 'lsp-deferred)
 #+end_src
 
 * Projects with projectile
