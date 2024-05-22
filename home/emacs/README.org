@@ -21,7 +21,6 @@
   - [[#miscallenous-settings][Miscallenous Settings]]
   - [[#which-key][Which-key]]
   - [[#moving-buffers][Moving Buffers]]
-  - [[#bind-key-setup][Bind-key Setup]]
   - [[#generalel-setup][General.el Setup]]
   - [[#zooming-inout][Zooming In/Out]]
   - [[#global-keybindings][Global Keybindings]]
@@ -242,13 +241,15 @@ Add transparency (only works on NixOS for me, not on Darwin):
   (add-to-list 'default-frame-alist '(alpha-background . 90))
 #+end_src
 
-Enable UI notifications:
+Enable UI notifications with [[https://github.com/jwiegley/alert][alert]] for now:
 #+begin_src emacs-lisp
   (use-package alert
     :commands alert
     :config
     (setq alert-default-style 'notifications))
 #+end_src
+
+Note that there is also an Emacs builtin desktop notification package ~notifications.el~. I should try that out sometimes.
 
 Rainbow delimeters help us match opening and closing brackets in code (see [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]):
 #+begin_src emacs-lisp
@@ -342,7 +343,7 @@ Enable Atom-style multi-cursor editing:
 TODO: Try ~evil-mc~
 
 *** Evil-org
-~evil-collection~ bindings for ~org-mode~ are not great. The following package improves
+~evil-collection~ bindings for ~org-mode~ are not great. The [[https://github.com/Somelauw/evil-org-mode][evil-org]] package improves
 the evil keybindings in ~org-mode~ (especially ~org-agenda~):
 #+begin_src emacs-lisp
   (use-package evil-org
@@ -372,7 +373,7 @@ This is annoying, so we're going to change it to just once:
 #+end_src
 
 ** Which-key
-Emacs which-key is a powerful package designed to enhance the usability of Emacs
+Emacs [[https://github.com/justbur/emacs-which-key][which-key]] is a powerful package designed to enhance the usability of Emacs
 by providing users with context-sensitive help for keybindings. It dynamically displays a popup window
 listing possible keybindings and their associated commands when a user enters a key sequence.
 This feature is particularly helpful for users who are new to Emacs or who want to discover the 
@@ -410,15 +411,9 @@ of ~hjkl~ we use capital ~HJKL~:
 
 See below for keybindings.
 
-** Bind-key Setup
-TODO
-#+begin_src emacs-lisp
-  (use-package bind-key
-    :config
-    (add-to-list 'same-window-buffer-names "*Personal Keybindings*"))
-#+end_src
-
 ** General.el Setup
+[[https://github.com/noctuid/general.el][general.el]] simplifies defining keybindings greatly. Let's install it
+and enable its evil-setup like so:
 #+begin_src emacs-lisp
   (use-package general
     :after evil
@@ -647,6 +642,7 @@ As a result of using compiled code (instead of elisp), emacs-libvterm is fully c
     :commands vterm
     :config
     (setq shell-file-name (getenv "SHELL")
+          vterm-shell (getenv "FISH_SHELL")
           vterm-max-scrollback 5000))
 #+end_src
 
@@ -663,7 +659,7 @@ are currently editing:
 #+end_src
 
 ** EShell
-Emacs Eshell is a shell implemented in Emacs Lisp, offering a unique integration with the Emacs environment.
+Emacs Eshell is a builtin shell implemented in Emacs Lisp, offering a unique integration with the Emacs environment.
 It allows users to execute both Emacs and external shell commands, benefiting from Emacs' extensive customization options.
 Eshell provides a unified interface for managing tasks within Emacs, blending traditional shell capabilities with the editor's powerful features.
 
