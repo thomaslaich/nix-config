@@ -81,12 +81,6 @@ Set a higher garbage collection limit (50MB), and log the startup time on the sp
 
 #+begin_src emacs-lisp
   (setq gc-cons-threshold (* 50 1000 1000))
-
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "*** Emacs loaded in %s seconds with %d garbage collections."
-                        (emacs-init-time "%.2f")
-                        gcs-done)))
 #+end_src
 
 Use [[https://github.com/emacscollective/no-littering][no-littering]] to automatically set common paths to the new user-emacs-directory:
@@ -105,6 +99,13 @@ Do not make unnecessary sounds:
   (setq ring-bell-function #'ignore)
 #+end_src
 
+Install [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] to ensure environment variables inside Emacs look the same as in the my shell:
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell)
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+#+end_src
+
 * UI and Theming
 ** UI Elements
 Disable all unnecessary UI elements such as tool bar, menu bar, scroll bar, etc.:
@@ -117,7 +118,7 @@ Disable all unnecessary UI elements such as tool bar, menu bar, scroll bar, etc.
 #+end_src
 
 ** Theme and Fonts
-First, let's enable the doom theme:
+First, let's install the [[https://github.com/doomemacs/themes][doom themes]] and activate ~doom-one~:
 #+begin_src emacs-lisp
   (use-package doom-themes
     :config
@@ -145,12 +146,12 @@ Make commented text and keywords italics:
   (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
 #+end_src
 
-Let's also adjust the line height:
+Let's also adjust the line height (mostly for ~org-modern~ to work correctly):
 #+begin_src emacs-lisp
   (setq-default line-spacing 0.15)
 #+end_src
 
-Enable nerd icons:
+Enable [[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons.el]]:
 #+begin_src emacs-lisp
   (use-package nerd-icons)
 #+end_src
@@ -165,20 +166,24 @@ Configure relative line numbers in all buffers:
   (setq global-display-line-numbers-type 'relative)
 #+end_src
 
-Disable line numbers specifically in ~org-mode~:
+Disable line numbers specifically in ~org-mode~, and all shell environments:
 #+begin_src emacs-lisp
-  (dolist (mode '(org-mode-hook))
+  (dolist (mode '(org-mode-hook
+                term-mode-hook
+                vterm-mode-hook
+                shell-mode-hook
+                eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
 
 ** Modeline
-We use the doom modeline:
+We use the [[https://github.com/seagle0128/doom-modeline][doom-modeline]]:
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :hook (after-init . doom-modeline-mode))
 #+end_src
 
-Minions allow us to pick and choose minor modes from a dropdown menu in the modeline. We enable
+[[https://github.com/tarsius/minions][minions]] allow us to pick and choose minor modes from a dropdown menu in the modeline. We enable
 it like follows:
 #+begin_src emacs-lisp
   (setq doom-modeline-minor-modes t)
