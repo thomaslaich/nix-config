@@ -1070,6 +1070,7 @@ This is a custom package that installs all lsp servers that require installation
     (setq-default format-all-formatters
                   '(("C"     (clang-format))
                     ("C#"    (csharpier))
+                    ("Nix"   (nixfmt))
                     ("Shell" (shfmt "-i" "4" "-ci")))))
 #+end_src
 
