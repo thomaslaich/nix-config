@@ -233,7 +233,9 @@ We also inhibit the default splash screen:
 Enable folding with [[https://github.com/gregsexton/origami.el][origami.el]]:
 #+begin_src emacs-lisp
   (use-package origami
-    :hook (yaml-mode . origami-mode))
+    :hook 
+    (yaml-mode . origami-mode)
+    (prog-mode . origami-mode))
 #+end_src
 
 Add transparency (only works on NixOS for me, not on Darwin):
@@ -1044,11 +1046,12 @@ Keybindings
   (local-leader-def c-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
   (local-leader-def c-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
 
-  (evil-define-key 'normal 'lsp-mode-map "gd" 'lsp-find-definition)
-  (evil-define-key 'normal 'lsp-mode-map "gD" 'lsp-ui-peek-find-implementation)
-  (evil-define-key 'normal 'lsp-mode-map "gr" 'lsp-ui-peek-find-references)
-  (evil-define-key 'normal 'lsp-mode-map "gm" 'lsp-rename)
-  
+  (general-evil-define-key 'normal lsp-mode-map "gd" '(lsp-find-definition :wk "Goto Definition"))
+  (general-evil-define-key 'normal lsp-mode-map "gD" '(lsp-find-declaration :wk "Goto Declaration"))
+  (general-evil-define-key 'normal lsp-mode-map "gI" '(lsp-ui-peek-find-implementation :wk "Goto Implementation"))
+  (general-evil-define-key 'normal lsp-mode-map "gr" '(lsp-ui-peek-find-references :wk "Peek References"))
+  (local-leader-def lsp-mode-map "r" '(lsp-rename :wk "Rename"))
+
   (custom-set-variables '(lsp-ui-doc-position 'at-point))
   (evil-define-key 'normal 'lsp-mode-map "K" 'lsp-ui-doc-glance)
 #+end_src
@@ -1062,7 +1065,12 @@ This is a custom package that installs all lsp servers that require installation
 #+begin_src emacs-lisp
   (use-package format-all
     :commands format-all-mode
-    :hook (prog-mode . format-all-mode))
+    :hook (prog-mode . format-all-mode)
+    :config
+    (setq-default format-all-formatters
+                  '(("C"     (clang-format))
+                    ("C#"    (csharpier))
+                    ("Shell" (shfmt "-i" "4" "-ci")))))
 #+end_src
 
 ** Code Completion with corfu
@@ -1185,7 +1193,7 @@ Emacs ships with ~c-mode~. We just activate the LSP (~clangd~) like so:
 
 Projectile consult integration:
 #+begin_src emacs-lisp
-    (use-package consult-projectile)
+  (use-package consult-projectile)
 #+end_src
 
 * Email
