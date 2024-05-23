@@ -1039,24 +1039,18 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 
 Keybindings
 #+begin_src emacs-lisp
-(local-leader-def lsp-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
-(local-leader-def lsp-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
-(local-leader-def c-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
-(local-leader-def c-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
+  (local-leader-def lsp-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
+  (local-leader-def lsp-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
+  (local-leader-def c-mode-map "f" '(format-all-buffer :wk "Format Buffer"))
+  (local-leader-def c-mode-map "a" '(lsp-execute-code-action :wk "Code Action"))
 
-;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
-;; (g-def lsp-mode-map "r" '(lsp-rename :wk "Rename Symbol"))
-(evil-define-key 'normal 'lsp-mode-map "gd" 'lsp-goto-type-definition)
-(evil-define-key 'normal 'lsp-mode-map "gD" 'lsp-goto-implementation)
-(evil-define-key 'normal 'lsp-mode-map "gr" 'lsp-ui-peek-find-references)
-(evil-define-key 'normal 'lsp-mode-map "gm" 'lsp-rename)
-(evil-define-key 'normal 'lsp-mode-map "K" 'lsp-ui-doc-show)
-;; "g d" 'lsp-describe-thing-at-point
-;; "g d" 'lsp-go-to-definition
-;; "K" 'lsp-ui-doc-show
-;; "g r" 'lsp-rename
-;; ", a" 'lsp-execute-code-action)
-
+  (evil-define-key 'normal 'lsp-mode-map "gd" 'lsp-find-definition)
+  (evil-define-key 'normal 'lsp-mode-map "gD" 'lsp-ui-peek-find-implementation)
+  (evil-define-key 'normal 'lsp-mode-map "gr" 'lsp-ui-peek-find-references)
+  (evil-define-key 'normal 'lsp-mode-map "gm" 'lsp-rename)
+  
+  (custom-set-variables '(lsp-ui-doc-position 'at-point))
+  (evil-define-key 'normal 'lsp-mode-map "K" 'lsp-ui-doc-glance)
 #+end_src
 
 This is a custom package that installs all lsp servers that require installation otherwise
