@@ -25,7 +25,7 @@
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
   # Disable the GNOME3/GDM auto-suspend feature that cannot be disabled in GUI!
