@@ -14,7 +14,7 @@
 
     # home manager
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
 
     # nix darwin
     darwin.url = "github:lnl7/nix-darwin";
