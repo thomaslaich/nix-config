@@ -882,16 +882,16 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
     :init
     (defun my/org-timeblock-evil-map ()
       "Set the keybindings for 'org-timeblock' to be compatible with evil mode"
-      (evil-define-key 'normal org-timeblock-mode-map
+      (general-evil-define-key 'normal org-timeblock-mode-map
         "+" 'org-timeblock-new-task
         "j" 'org-timeblock-forward-block
         "l" 'org-timeblock-forward-column
         "h" 'org-timeblock-backward-column
         "k" 'org-timeblock-backward-block
-        (kbd "C-<down>") 'org-timeblock-day-later
-        (kbd "C-<up>") 'org-timeblock-day-earlier
-        (kbd "RET") 'org-timeblock-goto
-        (kbd "TAB") 'org-timeblock-goto-other-window
+        "}" 'org-timeblock-day-later
+        "{" 'org-timeblock-day-earlier
+        "RET" 'org-timeblock-goto
+        "TAB" 'org-timeblock-goto-other-window
         "d" 'org-timeblock-set-duration
         "r" 'org-timeblock-redraw-buffers
         "gd" 'org-timeblock-jump-to-day
@@ -899,17 +899,17 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
         "t" 'org-timeblock-toggle-timeblock-list
         "v" 'org-timeblock-switch-scaling
         "V" 'org-timeblock-switch-view)
-      (evil-define-key 'normal org-timeblock-list-mode-map
+      (general-evil-define-key 'normal org-timeblock-list-mode-map
         "+" 'org-timeblock-new-task
         "j" 'org-timeblock-list-next-line
         "k" 'org-timeblock-list-previous-line
-        (kbd "C-<down>") 'org-timeblock-day-later
-        (kbd "C-<up>") 'org-timeblock-day-earlier
-        (kbd "C-s") 'org-timeblock-list-save
-        (kbd "M-<down>") 'org-timeblock-list-drag-line-forward
-        (kbd "M-<up>") 'org-timeblock-list-drag-line-backward
-        (kbd "RET") 'org-timeblock-list-goto
-        (kbd "TAB") 'org-timeblock-list-goto-other-window
+        "}" 'org-timeblock-day-later
+        "{" 'org-timeblock-day-earlier
+        "C-s" 'org-timeblock-list-save
+        "M-<down>" 'org-timeblock-list-drag-line-forward
+        "M-<up>" 'org-timeblock-list-drag-line-backward
+        "RET" 'org-timeblock-list-goto
+        "TAB" 'org-timeblock-list-goto-other-window
         "S" 'org-timeblock-list-toggle-sort-function
         "d" 'org-timeblock-list-set-duration
         "r" 'org-timeblock-redraw-buffers
@@ -922,6 +922,8 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 #+end_src
 
 ** Org GTD
+I use [[https://github.com/Trevoke/org-gtd.el][org-gtd.el]] for task management using the GTD method. Currently, this is a completely separate way of capturing things.
+I have yet to find out whether I need org-capture at all.
 
 #+begin_src emacs-lisp
   (setq org-gtd-update-ack "3.0.0")
@@ -983,29 +985,26 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 Note that ~org-habit-stats~ does not have any keybindings in ~evil-collection~, therefore,
 we have to define our own bindings here:
 #+begin_src emacs-lisp
-  (use-package org-habit-stats
-    :hook ((org-habit-stats-mode) . my/org-habit-stats-evil-map)
-    :init
-    (defun my/org-habit-stats-evil-map ()
-      (define-key org-mode-map (kbd "C-c h") 'org-habit-stats-view-habit-at-point)
-      (general-evil-define-key 'normal 'org-agenda-mode-map "H" 'org-habit-stats-view-habit-at-point-agenda)
-      (general-evil-define-key 'normal 'org-habit-stats-mode-map
-        "," 'org-habit-stats-view-previous-habit
-        "." 'org-habit-stats-view-next-habit
-        "<" 'org-habit-stats-calendar-scroll-left
-        ">" 'org-habit-stats-calendar-scroll-right
-        (kbd "C-v") 'org-habit-stats-calendar-scroll-left-three-months
-        (kbd "M-v") 'org-habit-stats-calendar-scroll-right-three-months
-        "[" 'org-habit-stats-scroll-graph-left
-        "]" 'org-habit-stats-scroll-graph-right
-        "{" 'org-habit-stats-scroll-graph-left-big
-        "}" 'org-habit-stats-scroll-graph-right-big
-        "gm" 'org-habit-stats-graph-completions-per-month-switch
-        "gw" 'org-habit-stats-graph-completions-per-week-switch
-        "gd" 'org-habit-stats-graph-completions-per-weekday-switch
-        "gs" 'org-habit-stats-graph-daily-strength-switch)))
-#+end_src
+  (use-package org-habit-stats)
 
+  (general-evil-define-key 'normal 'org-mode-map "H" 'org-habit-stats-view-habit-at-point)
+  (general-evil-define-key 'normal 'org-agenda-mode-map "H" 'org-habit-stats-view-habit-at-point-agenda)
+  (general-evil-define-key 'normal 'org-habit-stats-mode-map
+  "," 'org-habit-stats-view-previous-habit
+  "." 'org-habit-stats-view-next-habit
+  "<" 'org-habit-stats-calendar-scroll-left
+  ">" 'org-habit-stats-calendar-scroll-right
+  (kbd "C-v") 'org-habit-stats-calendar-scroll-left-three-months
+  (kbd "M-v") 'org-habit-stats-calendar-scroll-right-three-months
+  "[" 'org-habit-stats-scroll-graph-left
+  "]" 'org-habit-stats-scroll-graph-right
+  "{" 'org-habit-stats-scroll-graph-left-big
+  "}" 'org-habit-stats-scroll-graph-right-big
+  "gm" 'org-habit-stats-graph-completions-per-month-switch
+  "gw" 'org-habit-stats-graph-completions-per-week-switch
+  "gd" 'org-habit-stats-graph-completions-per-weekday-switch
+  "gs" 'org-habit-stats-graph-daily-strength-switch)
+#+end_src
 
 * Development Tools
 
@@ -1072,6 +1071,9 @@ This is a custom package that installs all lsp servers that require installation
 #+end_src
 
 ** Formatting with format-all
+[[https://github.com/lassik/emacs-format-all-the-code][format-all]] or ~emacs-format-all-the-code~ is a package very similar to ~conform-nvim~ for neovim.
+It supports many formatters for all kinds of different languages.
+I prefer dedicated formatters to LSP formatting whenever possible.
 #+begin_src emacs-lisp
   (use-package format-all
     :commands format-all-mode
@@ -1085,6 +1087,20 @@ This is a custom package that installs all lsp servers that require installation
 #+end_src
 
 ** Code Completion with corfu
+It's important to know that there are two main types of completion in emacs:
+
+1) ~completing-read~ which occurs in the minibuffer, and is what you get with ~M-x~, ~find-file~,
+   and all sorts of emacs commands which "prompt for something".
+   I use ~vertico.el~ for this type of completion. 
+2) ~completion-at-point~ (and its friend ~completion-in-region~) is used to complete text
+   in the buffer itself. By default this occurs in a special separate *Completions* buffer,
+   but ~company~, ~corfu~ and others provide nice (auto-)pop-up UIs instead.
+   
+[[https://github.com/company-mode/company-mode][company]] is both a completion provider and a popup user interface.
+
+Conversely, [[https://github.com/minad/corfu][corfu.el]] only provides a popup user interface for completion-at-point
+and is thus more lightweight. I use ~corfu~ for its simplicity.
+
 #+begin_src emacs-lisp
 ;; cool kids use corfu, not company
 (use-package corfu
@@ -1103,6 +1119,9 @@ This is a custom package that installs all lsp servers that require installation
   (global-corfu-mode))
 #+end_src
 
+A package to look at at a later stage may be [[https://github.com/minad/cape][cape]] which adds completion-at-point extensions
+and can be used together with ~corfu~.
+
 ** Debugging with dap-mode
 TODO
 #+begin_src emacs-lisp
@@ -1113,7 +1132,7 @@ TODO
 
 * Programming Languages Setup
 ** Lisp
-I currently am not using ~Lispy~, because it heavily conflicts with my evil setup.
+I currently am not using [[https://github.com/abo-abo/lispy][lispy]], because it heavily conflicts with my evil setup.
 
 But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me with parentheses in Lisp:
 #+begin_src emacs-lisp
@@ -1208,6 +1227,7 @@ Projectile consult integration:
 #+end_src
 
 * Email
+Currently not working, because ~mu~ is not working...
 
 #+begin_src emacs-lisp
   (use-package mu4e
