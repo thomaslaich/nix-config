@@ -851,7 +851,7 @@ We also want to set font-sizes for different levels in org:
 #+end_src
 
 ** org-tempo
-
+TODO can I activate this without ~use-package~?
 #+begin_src emacs-lisp
   (use-package org-tempo)
 #+end_src
@@ -979,14 +979,17 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 #+end_src
 
 ** Org Habit Stats
+[[https://github.com/ml729/org-habit-stats][org-habit-stats]] allow me to see bar charts and calendars for my org-mode habits.
+Note that ~org-habit-stats~ does not have any keybindings in ~evil-collection~, therefore,
+we have to define our own bindings here:
 #+begin_src emacs-lisp
   (use-package org-habit-stats
     :hook ((org-habit-stats-mode) . my/org-habit-stats-evil-map)
     :init
     (defun my/org-habit-stats-evil-map ()
       (define-key org-mode-map (kbd "C-c h") 'org-habit-stats-view-habit-at-point)
-      (evil-define-key 'normal 'org-agenda-mode-map (kbd "H") 'org-habit-stats-view-habit-at-point-agenda)
-      (evil-define-key 'normal org-habit-stats-mode-map
+      (general-evil-define-key 'normal 'org-agenda-mode-map "H" 'org-habit-stats-view-habit-at-point-agenda)
+      (general-evil-define-key 'normal 'org-habit-stats-mode-map
         "," 'org-habit-stats-view-previous-habit
         "." 'org-habit-stats-view-next-habit
         "<" 'org-habit-stats-calendar-scroll-left
@@ -1007,7 +1010,7 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 * Development Tools
 
 ** Direnv
-
+[[https://github.com/wbolster/emacs-direnv][emacs-direnv]] provides [[https://direnv.net/][direnv]] integration for emacs. It's an essential development tool for me.
 #+begin_src emacs-lisp
   (use-package direnv
     :config
@@ -1015,6 +1018,8 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 #+end_src
 
 ** Copilot
+[[https://github.com/copilot-emacs/copilot.el][copilot.el]] is the emacs plugin for GitHub Copilot support in Emacs. Note that this package
+is not available on Melpa as of now, so I bundled it in my [[https://github.com/thomaslaich/epkgs-overlay][epkgs-overlay]].
 #+begin_src emacs-lisp
   (use-package copilot)
   (add-hook 'prog-mode-hook 'copilot-mode)
@@ -1022,7 +1027,11 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 #+end_src
 
 ** LSP Integration
-~lsp-mode~
+There are currently 2 LSP implementations for Emacs:
+1) [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]]: A quite extensive package with a lot of additional functionality like UI support
+2) [[https://github.com/joaotavora/eglot][eglot]]: A more minimalistic implementation now bundled with Emacs itself
+
+For now, I use ~lsp-mode~ together with its UI plugins. Let's enable ~lsp-mode~ first:
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
@@ -1033,7 +1042,8 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
     (lsp-enable-which-key-integration t))
 #+end_src
 
-~lsp-ui~
+[[https://github.com/emacs-lsp/lsp-ui][lsp-ui]] is an addition to ~lsp-mode~ that enables context menus, hover information, etc.
+to ~lsp-mode~. It is activated automatically by ~lsp-mode~.
 #+begin_src emacs-lisp
   (use-package lsp-ui
     :after lsp-mode)
