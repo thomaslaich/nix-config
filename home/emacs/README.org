@@ -168,10 +168,11 @@ Configure relative line numbers in all buffers:
 Disable line numbers specifically in ~org-mode~, and all shell environments:
 #+begin_src emacs-lisp
   (dolist (mode '(org-mode-hook
-                term-mode-hook
-                vterm-mode-hook
-                shell-mode-hook
-                eshell-mode-hook))
+                  org-agenda-mode-hook
+                  term-mode-hook
+                  vterm-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
 
