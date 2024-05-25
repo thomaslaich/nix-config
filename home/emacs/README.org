@@ -853,7 +853,7 @@ We also want to set font-sizes for different levels in org:
 ** org-tempo
 TODO can I activate this without ~use-package~?
 #+begin_src emacs-lisp
-  (use-package org-tempo)
+  (require 'org-tempo)
 #+end_src
 
 ** toc-org
