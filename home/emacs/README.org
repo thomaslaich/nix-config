@@ -1071,7 +1071,7 @@ Keybindings
   (general-evil-define-key 'normal lsp-mode-map "gD" '(lsp-find-declaration :wk "Goto Declaration"))
   (general-evil-define-key 'normal lsp-mode-map "gI" '(lsp-ui-peek-find-implementation :wk "Goto Implementation"))
   (general-evil-define-key 'normal lsp-mode-map "gr" '(lsp-ui-peek-find-references :wk "Peek References"))
-  (local-leader-def lsp-mode-map "r" '(lsp-rename :wk "Rename"))
+  (local-leader-def lsp-mode-map "m" '(lsp-rename :wk "Rename"))
 
   (custom-set-variables '(lsp-ui-doc-position 'at-point))
   (evil-define-key 'normal 'lsp-mode-map "K" 'lsp-ui-doc-glance)
@@ -1239,8 +1239,9 @@ Projectile consult integration:
 #+end_src
 
 * Email
-Currently not working, because ~mu~ is not working...
-
+[[https://github.com/emacsmirror/mu4e][mu4e]] is an email client for Emacs, designed for handling large volumes of email efficiently.
+It integrates with the mu email search engine, supports various email protocols,
+and offers features like tagging, threading, and fast searches, all within the Emacs environment.
 #+begin_src emacs-lisp
   (use-package mu4e
     :config
@@ -1317,12 +1318,10 @@ Currently not working, because ~mu~ is not working...
     (setq mu4e-headers-calendar-mark  '("c" . "📅 "))
     (setq mu4e-headers-personal-mark '("p" . "👤 "))
     (setq mu4e-headers-mailing-list-mark '("l" . "📧 ")))
+#+end_src
 
-  ;; allow mu4e functions in org-mode
-  ;; (use-package mu4e-dashboard)
-
-  ;; TODO does this work?
-  ;; alerts
+[[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] allow desktop notifications for emails.
+#+begin_src emacs-lisp
   (use-package mu4e-alert
     :config
     (mu4e-alert-set-default-style 'libnotify)

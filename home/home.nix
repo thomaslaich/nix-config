@@ -183,6 +183,7 @@ in
       kubelogin
       kubernetes-helm
       lazydocker
+      libnotify
       lua
       mu # maildir indexer
       ncdu
@@ -190,7 +191,7 @@ in
       nixpkgs-fmt
       nodejs
       openssl
-      # poetry # currently not working :(
+      poetry # currently not working :(
       postgresql
       python-with-packages
       restic
