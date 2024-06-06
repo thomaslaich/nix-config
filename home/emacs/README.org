@@ -27,6 +27,7 @@
   - [[#global-keybindings][Global Keybindings]]
 - [[#git-integration][Git Integration]]
   - [[#magit][magit]]
+  - [[#forge][forge]]
   - [[#git-gutter][git-gutter]]
 - [[#terminal-emulation-and-shells][Terminal Emulation and Shells]]
   - [[#terminal-emulation-with-vterm][Terminal Emulation with vterm]]
@@ -632,6 +633,12 @@ user-friendly interface. It is the best-in-class Git tool out there.
 Let's enable it like so:
 #+begin_src emacs-lisp
   (use-package magit)
+#+end_src
+
+** forge
+[[https://github.com/magit/forge][forge]] allows me to work with Git forges, such as Github and Gitlab, from emacs. More info in the GitHub [[https://magit.vc/manual/forge][manual]].
+#+begin_src emacs-lisp
+  (use-package forge)
 #+end_src
 
 ** git-gutter
