@@ -186,7 +186,7 @@ in
       libnotify
       lua
       mu # maildir indexer
-      ncdu
+      # ncdu # broken due to https://github.com/NixOS/nixpkgs/issues/317055
       nixfmt-rfc-style
       nixpkgs-fmt
       nodejs
