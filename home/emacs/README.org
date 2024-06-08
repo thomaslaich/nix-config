@@ -1170,9 +1170,9 @@ But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me wi
 ** Nix
 I use [[https://github.com/NixOS/nix-mode][nix-mode]] and active ~lsp-mode~ when entering ~nix-mode~:
 #+begin_src emacs-lisp
-  (use-package nix-mode
+  (use-package nix-ts-mode
     :mode "\\.nix\\'"
-    :hook (nix-mode . lsp-deferred))
+    :hook (nix-ts-mode . lsp-deferred))
 #+end_src
 
 ** Lua
