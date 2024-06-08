@@ -8,13 +8,14 @@
     devenv.url = "github:cachix/devenv";
     devenv.inputs.nixpkgs.follows = "nixpkgs";
 
-    # nixpkgs (note i currently don't have a linux machine, so I'm only using unstable and darwin channels)
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
+    nixpkgs-nixos.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
+    nixpkgs-nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
 
     # home manager
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs-stable";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # nix darwin
     darwin.url = "github:lnl7/nix-darwin";
@@ -32,7 +33,8 @@
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
 
     # themes
-    kauz.url = "github:buntec/kauz";
+    # kauz.url = "github:buntec/kauz";
+    nix-colorscheme.url = "github:buntec/nix-colorscheme";
 
     # dg-cli, etc.
     dg-nix.url = "git+ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/Playground/Dg.Nix";
@@ -49,16 +51,11 @@
       self,
       darwin,
       nixpkgs,
+      nixpkgs-nixos,
       home-manager,
       devenv,
       flake-utils,
       treefmt-nix,
-      agenix,
-      neorg-overlay,
-      vimplugins-overlay,
-      epkgs-overlay,
-      emacs-overlay,
-      kauz,
       ...
     }@inputs:
     let
@@ -78,9 +75,9 @@
           system = flake-utils.lib.system.x86_64-linux;
         }
       ];
-      isDarwin = machine: (builtins.match ".*darwin" machine.system) != null;
-      darwinMachines = builtins.filter isDarwin machines;
-      nixosMachines = builtins.filter (machine: !isDarwin machine) machines;
+      isDarwin = system: (builtins.match ".*darwin" system) != null;
+      darwinMachines = builtins.filter (machine: isDarwin machine.system) machines;
+      nixosMachines = builtins.filter (machine: !isDarwin machine.system) machines;
       machinesBySystem = builtins.groupBy (machine: machine.system) machines;
       systems = builtins.attrNames machinesBySystem;
 
@@ -88,10 +85,24 @@
 
       overlays = import ./overlays { inherit inputs; };
 
+      # we select the branch according to recommendation in https://nix.dev/concepts/faq.html#rolling
+      pkgsBySystem = builtins.listToAttrs (
+        builtins.map (system: {
+          name = system;
+          value = import (if (isDarwin system) then nixpkgs else nixpkgs-nixos) {
+            inherit system;
+            # inherit overlays;
+            config = {
+              allowUnfree = true;
+            };
+          };
+        }) systems
+      );
+
       treefmtEval = eachSystem (
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = pkgsBySystem.${system};
         in
         treefmt-nix.lib.evalModule pkgs ./treefmt.nix
       );
@@ -102,7 +113,7 @@
       devShells = eachSystem (
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = pkgsBySystem.${system};
         in
         {
           default = devenv.lib.mkShell {
@@ -132,7 +143,7 @@
       formatter = eachSystem (
         system:
         let
-          pkgs = import nixpkgs { inherit system; };
+          pkgs = pkgsBySystem.${system};
         in
         treefmtEval.${pkgs.system}.config.build.wrapper
       );
@@ -140,7 +151,7 @@
       nixosConfigurations = builtins.listToAttrs (
         builtins.map (machine: {
           inherit (machine) name;
-          value = nixpkgs.lib.nixosSystem {
+          value = lib.nixosSystem {
             inherit (machine) system;
             specialArgs = {
               inherit inputs outputs;
@@ -170,31 +181,25 @@
       );
 
       homeConfigurations = builtins.listToAttrs (
-        builtins.map (
-          machine:
-          let
-            pkgs = import nixpkgs { inherit (machine) system; };
-          in
-          {
-            inherit (machine) name;
-            value = home-manager.lib.homeManagerConfiguration {
-              inherit pkgs;
-              extraSpecialArgs = {
-                inherit inputs outputs;
-              };
-              modules = [
-                {
-                  home.username = machine.user;
-                  home.homeDirectory =
-                    if (isDarwin machine) then "/Users/${machine.user}" else "/home/${machine.user}";
-                }
-                ./home/home.nix
-                ./home/home-${if (isDarwin machine) then "darwin" else "nixos"}.nix
-                ./home/home-${machine.name}.nix
-              ];
+        builtins.map (machine: {
+          inherit (machine) name;
+          value = home-manager.lib.homeManagerConfiguration {
+            pkgs = pkgsBySystem.${machine.system};
+            extraSpecialArgs = {
+              inherit inputs outputs;
             };
-          }
-        ) machines
+            modules = [
+              {
+                home.username = machine.user;
+                home.homeDirectory =
+                  if (isDarwin machine.system) then "/Users/${machine.user}" else "/home/${machine.user}";
+              }
+              ./home/home.nix
+              ./home/home-${if (isDarwin machine.system) then "darwin" else "nixos"}.nix
+              ./home/home-${machine.name}.nix
+            ];
+          };
+        }) machines
       );
 
       apps = builtins.mapAttrs (
@@ -204,9 +209,9 @@
             builtins.map (
               machine:
               let
-                pkgs = import nixpkgs { inherit system; };
+                pkgs = pkgsBySystem.${system};
                 rebuildScript = pkgs.writeShellScript "rebuild-${machine.name}" (
-                  if (isDarwin machine) then
+                  if (isDarwin machine.system) then
                     "${
                       self.darwinConfigurations.${machine.name}.system
                     }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}"
@@ -247,7 +252,7 @@
               machine:
               let
                 toplevel =
-                  if (isDarwin machine) then
+                  if (isDarwin machine.system) then
                     darwinConfigurations.${machine.name}.config.system.build.toplevel
                   else
                     nixosConfigurations.${machine.name}.config.system.build.toplevel;

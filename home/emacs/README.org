@@ -121,18 +121,24 @@ Disable all unnecessary UI elements such as tool bar, menu bar, scroll bar, etc.
 ** Theme and Fonts
 First, let's install the [[https://github.com/doomemacs/themes][doom themes]] and activate ~doom-one~:
 #+begin_src emacs-lisp
-  (use-package doom-themes
-    :config
-    ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-          doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-one t)
-    ;; (load-theme 'doom-nord-light	 t)
+  ;; (use-package doom-themes
+  ;;   :config
+  ;;   ;; Global settings (defaults)
+  ;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+  ;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  ;;   (load-theme 'doom-one t)
+  ;;   ;; (load-theme 'doom-nord-light	 t)
 
-    ;; Enable flashing mode-line on errors
-    (doom-themes-visual-bell-config)
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
+  ;;   ;; Enable flashing mode-line on errors
+  ;;   (doom-themes-visual-bell-config)
+  ;;   ;; Corrects (and improves) org-mode's native fontification.
+  ;;   (doom-themes-org-config))
+
+  (use-package catppuccin-theme
+    :config
+    (load-theme 'catppuccin :no-confirm)
+    (setq catppuccin-flavor 'frappe) ;; or 'latte, 'frappe, or 'mocha or 'macchiato
+    (catppuccin-reload))
 #+end_src
 
 Next, we enable the ~JetBrainsMono Nerd Font~ everywhere:
@@ -346,18 +352,6 @@ Enable Atom-style multi-cursor editing:
 #+end_src
 
 TODO: Try ~evil-mc~
-
-*** Evil-org
-~evil-collection~ bindings for ~org-mode~ are not great. The [[https://github.com/Somelauw/evil-org-mode][evil-org]] package improves
-the evil keybindings in ~org-mode~ (especially ~org-agenda~):
-#+begin_src emacs-lisp
-  (use-package evil-org
-    :after org
-    :hook (org-mode . (lambda () evil-org-mode))
-    :config
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
-#+end_src
 
 * Keybindings
 ** MacOS Settings

@@ -18,7 +18,8 @@ let
 in
 {
   imports = [
-    inputs.kauz.homeModules.default
+    # inputs.kauz.homeModules.default
+    inputs.nix-colorscheme.homeModules.colorscheme
     inputs.agenix.homeManagerModules.default
     ./kitty/kitty.nix
     ./fish/fish.nix
@@ -49,12 +50,17 @@ in
     enable = true;
   };
 
-  # Kauz colorscheme
-  kauz = {
-    fish.enable = true;
-    kitty.enable = true;
-    neovim.enable = true;
-    tmux.enable = true;
+  # # Kauz colorscheme
+  # kauz = {
+  #   fish.enable = true;
+  #   kitty.enable = true;
+  #   neovim.enable = true;
+  #   tmux.enable = true;
+  # };
+
+  colorscheme = {
+    enable = true;
+    name = "catppuccin-frappe";
   };
 
   # private dropbox
@@ -74,7 +80,7 @@ in
       # from inputs
 
       # Kauz colorscheme overlay
-      inputs.kauz.overlays.default
+      # inputs.kauz.overlays.default
       # Neorg Overlay
       inputs.neorg-overlay.overlays.default
       # this adds a few vimplugins unavailable in nixpkgs
