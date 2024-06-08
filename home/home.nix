@@ -61,6 +61,7 @@ in
   colorscheme = {
     enable = true;
     name = "catppuccin-frappe";
+    # name = "doom-one";
   };
 
   # private dropbox

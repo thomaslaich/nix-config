@@ -821,7 +821,6 @@ Integrate Embark with Consult with [[https://github.com/oantolin/embark/blob/mas
   #+end_src
 
 * Org-mode
-
 ** Prettify Org
 First, let's enable indent mode for org:
 #+begin_src emacs-lisp
