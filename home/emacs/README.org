@@ -352,6 +352,18 @@ Enable Atom-style multi-cursor editing:
 #+end_src
 
 TODO: Try ~evil-mc~
+    
+*** Evil-org
+~evil-collection~ bindings for ~org-mode~ are not great. The [[https://github.com/Somelauw/evil-org-mode][evil-org]] package improves
+the evil keybindings in ~org-mode~ (especially ~org-agenda~):
+#+begin_src emacs-lisp
+  (use-package evil-org
+    :after org
+    :hook (org-mode . (lambda () evil-org-mode))
+    :config
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys))
+#+end_src
 
 * Keybindings
 ** MacOS Settings
