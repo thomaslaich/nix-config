@@ -1236,12 +1236,11 @@ Emacs ships with ~c-mode~. We just activate the LSP (~clangd~) like so:
 * Projects with projectile
 #+begin_src emacs-lisp
   (use-package projectile
+    :after general
     :init
     (projectile-mode +1)
     (setq projectile-project-search-path '("~/repos/"))
     (setq projectile-switch-project-action #'projectile-dired)
-    ;; this for some reason does not yet work :(
-    :general
     (leader-def "p" '(projectile-command-map :wk "[P]rojects")))
 #+end_src
 
