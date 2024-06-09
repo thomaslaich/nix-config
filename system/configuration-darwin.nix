@@ -116,7 +116,6 @@
       "spotify"
       "studio-3t"
       "telegram"
-      "visual-studio-code"
       "whatsapp"
     ];
   };

@@ -21,12 +21,13 @@ in
     # inputs.kauz.homeModules.default
     inputs.nix-colorscheme.homeModules.colorscheme
     inputs.agenix.homeManagerModules.default
-    ./kitty/kitty.nix
-    ./fish/fish.nix
-    ./tmux/tmux.nix
-    ./neovim/neovim.nix
     ./emacs/emacs.nix
     ./email/email.nix
+    ./fish/fish.nix
+    ./kitty/kitty.nix
+    ./neovim/neovim.nix
+    ./tmux/tmux.nix
+    ./vscode/vscode.nix
   ];
 
   home.stateVersion = "22.11";
@@ -92,6 +93,8 @@ in
       inputs.emacs-overlay.overlays.default
       # dg-cli overlay
       inputs.dg-nix.overlays.default
+      # vscode overlay
+      inputs.nix-vscode-extensions.overlays.default
 
       # Or define it inline, for example:
       # (final: prev: {

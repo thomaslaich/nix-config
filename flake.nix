@@ -26,11 +26,12 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     # overlays
-    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
 
     # themes
     # kauz.url = "github:buntec/kauz";
