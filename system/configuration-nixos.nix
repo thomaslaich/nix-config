@@ -124,7 +124,6 @@
       dropbox
       firefox
       kubernetes
-      vscode
     ];
   };
 

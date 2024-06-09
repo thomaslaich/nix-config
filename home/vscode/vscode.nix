@@ -48,6 +48,7 @@
       # "workbench.colorTheme" = "Tokyo Night Storm";
       # "workbench.colorTheme" = "Catppuccin Macchiato";
       "workbench.colorTheme" = "Catppuccin Frappé";
+      "workbench.preferredHighContrastColorTheme" = "Catppuccin Frappé";
       "workbench.iconTheme" = "catppuccin-frappe";
 
       # editor basics
@@ -400,11 +401,11 @@
       ms-azuretools.vscode-azurefunctions
 
       # Galaxus
-      dg-infinity.claptrap
+      # dg-infinity.claptrap # currently not working
 
       # Avro
       streetsidesoftware.avro
-      
+
       # Powershell
       ms-vscode.powershell
 
