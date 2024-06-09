@@ -11,5 +11,8 @@
     "org/gnome/desktop/interface".color-scheme = "prefer-dark";
   };
 
-  home.packages = with pkgs; [ docker ];
+  home.packages = with pkgs; [
+    docker
+    whatsapp-for-linux
+  ];
 }
