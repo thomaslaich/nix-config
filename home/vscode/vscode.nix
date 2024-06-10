@@ -407,7 +407,7 @@
       streetsidesoftware.avro
 
       # Powershell
-      ms-vscode.powershell
+      # ms-vscode.powershell
 
       # Shell
       timonwong.shellcheck
