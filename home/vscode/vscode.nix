@@ -291,9 +291,9 @@
         "<C-a>" = false;
         "<C-f>" = false;
       };
-      "[csharp]" = {
-        "editor.defaultFormatter" = "ms-dotnettools.csharp";
-      };
+      # "[csharp]" = {
+      #   "editor.defaultFormatter" = "ms-dotnettools.csharp";
+      # };
       "[jsonc]" = {
         "editor.defaultFormatter" = "vscode.json-language-features";
       };
