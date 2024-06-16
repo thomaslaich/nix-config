@@ -240,7 +240,7 @@
         }
         {
           "before" = [
-            ""
+            ","
             "a"
           ];
           "commands" = [
@@ -337,6 +337,7 @@
       svelte.svelte-vscode
       dbaeumer.vscode-eslint
       unifiedjs.vscode-mdx
+      esbenp.prettier-vscode
 
       # Python
       ms-python.python
