@@ -387,8 +387,8 @@
       meta.relay
 
       # C/C++
-      ms-vscode.makefile-tools
-      ms-vscode.cpptools
+      # ms-vscode.makefile-tools
+      # ms-vscode.cpptools
 
       # Lisp
       mattn.lisp

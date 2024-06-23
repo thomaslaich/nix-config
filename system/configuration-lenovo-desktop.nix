@@ -9,12 +9,7 @@
   boot.kernelParams = [ "module_blacklist=i915" ];
 
   # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    # extraPackages = with pkgs; [ vaapiVdpau ];
-  };
+  hardware.graphics.enable = true;
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
