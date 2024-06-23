@@ -398,6 +398,7 @@
       justusadam.language-haskell
 
       # Azure
+      ms-azuretools.vscode-azureresourcegroups
       ms-vscode.azure-account
       ms-azuretools.vscode-azurefunctions
 

@@ -216,6 +216,7 @@ in
       zoxide # better cd (bound to `z` in fish)
 
       # lsps and formatters
+      bash-language-server
       clang-tools
       csharpier # needed for emacs (format-all-the-code and neoformat)
       gopls
@@ -223,7 +224,6 @@ in
       haskellPackages.fourmolu # haskell formatter
       lua-language-server
       nil
-      nodePackages.bash-language-server
       nodePackages.prettier
       nodePackages.typescript-language-server
       omnisharp-roslyn

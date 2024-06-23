@@ -75,8 +75,7 @@
   };
 
   # Fonts
-  fonts.fontDir.enable = true;
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     ubuntu_font_family
     etBook
     (nerdfonts.override {
