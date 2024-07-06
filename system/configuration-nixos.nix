@@ -119,12 +119,8 @@
       "wheel"
     ];
     # shell = pkgs.fish;
-    packages = with pkgs; [
-      _1password-gui
-      dropbox
-      firefox
-      kubernetes
-    ];
+    # use HM instead
+    # packages = with pkgs; [ ];
   };
 
   nixpkgs = {

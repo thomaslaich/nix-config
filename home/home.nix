@@ -215,6 +215,11 @@ in
       yazi
       zoxide # better cd (bound to `z` in fish)
 
+      # GUI apps
+      discord
+      kitty
+      spotify
+
       # lsps and formatters
       bash-language-server
       clang-tools

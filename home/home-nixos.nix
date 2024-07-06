@@ -12,7 +12,11 @@
   };
 
   home.packages = with pkgs; [
+    _1password-gui
     docker
+    dropbox
+    firefox
+    kubernetes
     whatsapp-for-linux
   ];
 }
