@@ -256,6 +256,7 @@ in
       [
         dotnet-packages
         inputs.agenix.packages.${system}.default
+        inputs.hcat.packages.${system}.default
       ];
 
   # secrets from agenix 

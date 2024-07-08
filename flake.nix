@@ -37,6 +37,8 @@
     # kauz.url = "github:buntec/kauz";
     nix-colorscheme.url = "github:buntec/nix-colorscheme";
 
+    hcat.url = "github:thomaslaich/hcat";
+
     # dg-cli, etc.
     dg-nix.url = "git+ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/Playground/Dg.Nix";
     dg-nix.inputs.nixpkgs.follows = "nixpkgs";
