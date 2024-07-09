@@ -361,7 +361,7 @@
       ms-dotnettools.vscode-dotnet-runtime
       ionide.ionide-fsharp
       csharpier.csharpier-vscode # formatter
-      icsharpcode.ilspy-vscode
+      # icsharpcode.ilspy-vscode
       tintoy.msbuild-project-tools
 
       # Lua
