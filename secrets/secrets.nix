@@ -19,4 +19,8 @@ in
     user1
     user2
   ];
+  "claptrap.age".publicKeys = [
+    user1
+    user2
+  ];
 }

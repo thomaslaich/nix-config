@@ -275,6 +275,9 @@ in
       file = ../secrets/netrc.age;
       path = "${homeDirectory}/.netrc";
     };
+    claptrap = {
+      file = ../secrets/claptrap.age;
+    };
   };
 
   programs.htop.enable = true;

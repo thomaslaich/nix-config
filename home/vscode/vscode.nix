@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.vscode = {
     enable = true;
@@ -310,6 +310,8 @@
       "files.eol" = "\n";
       "editor.formatOnSave" = false;
       "github.copilot.editor.enableAutoCompletions" = true;
+      "claptrap.configEndpoint" = "${config.age.secrets.claptrap.path}";
+      "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
     };
 
     extensions = with pkgs.vscode-marketplace; [
@@ -371,8 +373,7 @@
       bbenoist.nix
       brettm12345.nixfmt-vscode
 
-      # Docker
-      ms-azuretools.vscode-docker
+      # Dockerols.vscode-docker
       ms-kubernetes-tools.vscode-kubernetes-tools
 
       # XML, YAML, TOML
@@ -403,8 +404,7 @@
       ms-azuretools.vscode-azurefunctions
 
       # Galaxus
-      # dg-infinity.claptrap # currently not working
-
+      dg-infinity.claptrap
       # Avro
       streetsidesoftware.avro
 
