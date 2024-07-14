@@ -247,9 +247,7 @@ in
     ++
 
       # stable packages
-      (with pkgs.stable; [
-        azure-cli
-      ])
+      (with pkgs.stable; [ azure-cli ])
     ++
 
       # other packages

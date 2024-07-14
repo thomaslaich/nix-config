@@ -61,23 +61,23 @@
   # Disable a few gnome packages
   environment.gnome.excludePackages =
     (with pkgs; [
-      # gnome-photos
+      cheese # webcam tool
+      epiphany # web browser
+      evince # document viewer
+      geary # email reader
       gnome-tour
+      totem # video player
       # gedit # text editor
+      # gnome-photos
     ])
     ++ (with pkgs.gnome; [
-      cheese # webcam tool
-      gnome-music
-      # gnome-terminal
-      epiphany # web browser
-      geary # email reader
-      evince # document viewer
-      gnome-characters
-      totem # video player
-      tali # poker game
-      iagno # go game
-      hitori # sudoku game
       atomix # puzzle game
+      gnome-characters
+      gnome-music
+      hitori # sudoku game
+      iagno # go game
+      tali # poker game
+      # gnome-terminal
     ]);
 
   # Configure keymap in X11
@@ -140,7 +140,7 @@
   environment.systemPackages = with pkgs; [
     clang
     gcc
-    gnome3.gnome-tweaks
+    gnome-tweaks
     gnomeExtensions.just-perfection
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wl-clipboard
