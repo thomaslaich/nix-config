@@ -30,6 +30,7 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
+    # nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions?rev=8e091c59f250bcc1f6e73350fcacc59b36769ade";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
 
