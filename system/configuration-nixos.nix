@@ -59,26 +59,25 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   # Disable a few gnome packages
-  environment.gnome.excludePackages =
-    (with pkgs; [
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
+      # gedit # text editor
+      # gnome-photos
+      atomix # puzzle game
       cheese # webcam tool
       epiphany # web browser
       evince # document viewer
       geary # email reader
-      gnome-tour
-      totem # video player
-      # gedit # text editor
-      # gnome-photos
-    ])
-    ++ (with pkgs.gnome; [
-      atomix # puzzle game
       gnome-characters
       gnome-music
+      gnome-tour
       hitori # sudoku game
       iagno # go game
       tali # poker game
-      # gnome-terminal
-    ]);
+      totem # video player
+    ]
+  );
 
   # Configure keymap in X11
   services.xserver.xkb = {
