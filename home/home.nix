@@ -159,7 +159,7 @@ in
           # dg-cli-plugin-digidog
           dg-cli-plugin-graphql
           dg-cli-plugin-kafka
-          # dg-cli-plugin-kube
+          dg-cli-plugin-kube
           dg-cli-plugin-mongodb
           # dg-cli-plugin-ravendb
           dg-cli-plugin-sql
