@@ -178,6 +178,7 @@ in
       age
       amber
       any-nix-shell
+      azure-cli
       bat # better cat
       curl # http requests from command line
       eza # better ls (bound to `l` and `la` in fish)
@@ -247,7 +248,7 @@ in
     ++
 
       # stable packages
-      (with pkgs.stable; [ azure-cli ])
+      (with pkgs.stable; [ ])
     ++
 
       # other packages
