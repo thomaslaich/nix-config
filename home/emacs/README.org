@@ -1098,9 +1098,13 @@ This is a custom package that installs all lsp servers that require installation
 
 ** Diagnostics with flycheck
 #+begin_src emacs-lisp
-  ;; (use-package flycheck
-  ;;   :ensure t
-  ;;   :init (global-flycheck-mode))
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+  (use-package flycheck-pos-tip)
+  (with-eval-after-load 'flycheck
+    (flycheck-pos-tip-mode))
+  (setq lsp-eldoc-enable-hover nil)
 #+end_src
 
 ** Formatting with format-all
