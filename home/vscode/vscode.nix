@@ -2,6 +2,7 @@
 {
   programs.vscode = {
     enable = true;
+    package = pkgs.vscode;
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
     # I try to make the key bindings as similar as possible to my nvim setup
@@ -361,7 +362,7 @@
       ms-dotnettools.csdevkit
       ms-dotnettools.dotnet-interactive-vscode
       ms-dotnettools.vscode-dotnet-runtime
-      ionide.ionide-fsharp
+      # ionide.ionide-fsharp
       csharpier.csharpier-vscode # formatter
       # icsharpcode.ilspy-vscode
       tintoy.msbuild-project-tools
