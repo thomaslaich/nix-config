@@ -5,15 +5,15 @@ local whichkey = require("which-key")
 whichkey.setup({})
 
 -- document existing key chains
-whichkey.register({
-  ["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-  ["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-  ["<leader>g"] = { name = "[G]it", _ = "which_key_ignore" },
-  ["<leader>h"] = { name = "More git", _ = "which_key_ignore" },
-  ["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-  ["<leader>f"] = { name = "[F]ind", _ = "which_key_ignore" },
-  ["<leader>p"] = { name = "[P]rojects", _ = "which_key_ignore" },
-  ["<leader>w"] = { name = "[W]indows", _ = "which_key_ignore" },
-  ["<leader>b"] = { name = "[B]uffers", _ = "which_key_ignore" },
-  ["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
+whichkey.add({
+  { "<leader>c", group = "[C]ode" },
+  { "<leader>d", group = "[D]ocument" },
+  { "<leader>g", group = "[G]it" },
+  { "<leader>h", group = "More git" },
+  { "<leader>r", group = "[R]ename" },
+  { "<leader>f", group = "[F]ind" },
+  { "<leader>p", group = "[P]rojects" },
+  { "<leader>w", group = "[W]indows" },
+  { "<leader>b", group = "[B]uffers" },
+  { "<leader>t", group = "[T]oggle" },
 })
