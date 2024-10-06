@@ -2,7 +2,7 @@
 {
   programs.vscode = {
     enable = true;
-    package = pkgs.vscode;
+    package = pkgs.stable.vscode;
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
     # I try to make the key bindings as similar as possible to my nvim setup
