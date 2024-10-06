@@ -201,6 +201,7 @@ in
       nixpkgs-fmt
       nodejs
       openssl
+      pixi
       poetry # currently not working :(
       postgresql
       python-with-packages
