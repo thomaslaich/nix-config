@@ -20,7 +20,13 @@ lsp_config.gopls.setup({})
 
 lsp_config.html.setup({})
 
-lsp_config.tsserver.setup({})
+lsp_config.ts_ls.setup({
+  filetypes = {
+    "javascript",
+    "typescript",
+    "vue",
+  },
+})
 
 -- waiting for https://github.com/jmederosalvarado/roslyn.nvim to move the lsp server installation
 -- outside the module. Until then, let's use omnisharp-roslyn for .NET

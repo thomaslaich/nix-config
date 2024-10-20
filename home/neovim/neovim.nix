@@ -280,7 +280,7 @@
         orgmode
         plenary
         telescope
-        # treesitter
+        treesitter
         ui-plugins
       ];
 
