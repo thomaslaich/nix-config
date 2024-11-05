@@ -128,6 +128,10 @@ map("n", "<leader>wh", "<C-W>h", { desc = "Go Left" })
 map("n", "<leader>wj", "<C-W>j", { desc = "Go Down" })
 map("n", "<leader>wk", "<C-W>k", { desc = "Go Up" })
 map("n", "<leader>wl", "<C-W>l", { desc = "Go Right" })
+map("n", "<C-h>", "<C-W>h", { desc = "Go Left" })
+map("n", "<C-j>", "<C-W>j", { desc = "Go Down" })
+map("n", "<C-k>", "<C-W>k", { desc = "Go Up" })
+map("n", "<C-l>", "<C-W>l", { desc = "Go Right" })
 map("n", "<leader>wH", "<C-W>H", { desc = "Move Left" })
 map("n", "<leader>wJ", "<C-W>J", { desc = "Move Down" })
 map("n", "<leader>wK", "<C-W>K", { desc = "Move Up" })
@@ -249,14 +253,8 @@ vim.api.nvim_create_autocmd("FileType", {
 -- LSP hover
 vim.diagnostic.config({
   float = {
-    border = 'rounded',
+    border = "rounded",
   },
 })
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
-  vim.lsp.handlers.hover,
-  {border = 'rounded'}
-)
-vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-  vim.lsp.handlers.signature_help,
-  {border = 'rounded'}
-)
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
