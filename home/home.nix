@@ -153,28 +153,10 @@ in
           }))
         ];
       python-with-packages = pkgs.python3.withPackages python-packages;
-      dg-cli-with-plugins = pkgs.dg-cli.withPlugins (
-        plugins: with plugins; [
-          dg-cli-plugin-azure-devops
-          # dg-cli-plugin-digidog
-          dg-cli-plugin-graphql
-          dg-cli-plugin-kafka
-          dg-cli-plugin-kube
-          dg-cli-plugin-mongodb
-          # dg-cli-plugin-ravendb
-          dg-cli-plugin-sql
-          dg-cli-plugin-templates
-          # dg-cli-plugin-topiccompare
-          # dg-cli-plugin-statictranslations
-          # dg-cli-plugin-github
-          # dg-cli-plugin-devcontainer
-          # dg-cli-plugin-keyringdevcontainer
-        ]
-      );
     in
     with pkgs;
     [
-      _1password # pw manager
+      _1password-cli # pw manager
       age
       amber
       any-nix-shell
@@ -242,7 +224,7 @@ in
       yamlfmt
 
       # Galaxus
-      dg-cli-with-plugins
+      dg-cli
       watchman # relay GQL incremental compilation
     ]
     ++
