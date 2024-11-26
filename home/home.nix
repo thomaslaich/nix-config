@@ -137,20 +137,10 @@ in
           numpy
           pandas
           pyarrow
-          python-lsp-ruff
           python-lsp-server
           requests
           scipy
           matplotlib
-          (pyodbc.overridePythonAttrs (old: {
-            format = "setuptools";
-            nativeBuildInputs = with pkgs; [ unixODBC ];
-            buildInputs = with pkgs; [ unixODBC ];
-
-            # Tests require a database server
-            doCheck = false;
-            pythonImportsCheck = [ "pyodbc" ];
-          }))
         ];
       python-with-packages = pkgs.python3.withPackages python-packages;
     in

@@ -1119,6 +1119,7 @@ I prefer dedicated formatters to LSP formatting whenever possible.
     (setq-default format-all-formatters
                   '(("C"       (clang-format))
                     ("C#"      (csharpier))
+  		  ("Python"  (ruff "format"))
   		  ("Haskell" (fourmolu))
                     ("Nix"     (nixfmt))
                     ("Shell"   (shfmt "-i" "4" "-ci")))))
@@ -1237,11 +1238,20 @@ whenever we enter ~csharp-mode~:
 #+end_src
 
 ** Python
-~python-mode~ is also builtin to Emacs. Therefore, we also just activate ~lsp-mode~ whenver
+~python-ts-mode~ is also builtin to Emacs. Therefore, we also just activate ~lsp-mode~ whenver
 we enter ~python-mode~:
 #+begin_src emacs-lisp
-  (add-hook 'python-mode-hook 'lsp-deferred)
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  (add-hook 'python-ts-mode-hook 'lsp-deferred)
 #+end_src
+
+To enable linting with ~ruff~, we have to add:
+#+begin_src emacs-lisp
+  (use-package 'flymake-ruff
+    :hook
+    (python-ts-mode . flymake-ruff-load))
+#+end_src
+
 
 ** Typescript
 Emacs 29+ also ships with ~typescript-ts-mode~ and ~tsx-ts-mode~. Therefore, we just have to enable ~lsp-mode~ for ts/tsx buffers:
