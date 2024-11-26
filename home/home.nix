@@ -169,6 +169,7 @@ in
       ghc
       httpie
       jq # json parser
+      k9s
       killall
       krb5
       kubelogin
@@ -177,7 +178,7 @@ in
       libnotify
       lua
       mu # maildir indexer
-      # ncdu # broken due to https://github.com/NixOS/nixpkgs/issues/317055
+      ncdu
       nixfmt-rfc-style
       nixpkgs-fmt
       nodejs
