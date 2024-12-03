@@ -13,8 +13,23 @@ lsp_config.smithy_ls.setup({
 -- lsp_config.hls.setup {}
 
 lsp_config.bashls.setup({})
-lsp_config.pylsp.setup({})
-lsp_config.ruff.setup({})
+lsp_config.pylsp.setup({
+  settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          enabled = false,
+        },
+        flake8 = {
+          enabled = false,
+        },
+        pyflakes = {
+          enabled = false,
+        },
+      },
+    },
+  },
+})
 lsp_config.gopls.setup({})
 lsp_config.html.setup({})
 lsp_config.ts_ls.setup({
