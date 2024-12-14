@@ -78,15 +78,12 @@
   fonts.packages = with pkgs; [
     ubuntu_font_family
     etBook
-    (nerdfonts.override {
-      fonts = [
-        "DroidSansMono"
-        "FiraCode"
-        "JetBrainsMono"
-        "NerdFontsSymbolsOnly"
-        "Ubuntu"
-      ];
-    })
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.symbols-only
+    nerd-fonts.ubuntu
+
   ];
 
   # some GUI apps need to be installed with homebrew (but not all!)
@@ -124,8 +121,8 @@
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
 
-  # nix.package = pkgs.nix; # this is the default
-  nix.package = pkgs.nixVersions.nix_2_20; # manually go for newest version for now
+  nix.package = pkgs.nix; # this is the default
+  # nix.package = pkgs.nixVersions.nix_2_20; # manually go for newest version for now
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;

@@ -11,8 +11,7 @@ let
     with pkgs.dotnetCorePackages;
     combinePackages [
       sdk_8_0
-      sdk_7_0
-      sdk_6_0
+      sdk_9_0
     ];
   inherit (config.home) homeDirectory;
 in

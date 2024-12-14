@@ -1231,11 +1231,11 @@ I currently am not using [[https://github.com/abo-abo/lispy][lispy]], because it
 
 But I do use [[https://github.com/noctuid/lispyville][lispyville]] to help me with parentheses in Lisp:
 #+begin_src emacs-lisp
-  (use-package lispyville
-    :init
-    (general-add-hook '(emacs-lisp-mode-hook lisp-mode-hook) #'lispyville-mode)
-    :config
-    (lispyville-set-key-theme '(operators c-w additional)))
+  ;; (use-package lispyville
+  ;;   :init
+  ;;   (general-add-hook '(emacs-lisp-mode-hook lisp-mode-hook) #'lispyville-mode)
+  ;;   :config
+  ;;   (lispyville-set-key-theme '(operators c-w additional)))
 #+end_src
 
 ** Nix
@@ -1451,12 +1451,12 @@ Those are provided in the ~~/.emacs.d/~ directory by ~agenix~ (see my Nix config
 Then I sync two calendars to Emacs: The first is my private calendar, the second is my
 company calendar. The company calendar is synced to google calendar via my [[https://github.com/thomaslaich/outlook-ical-proxy][outlook-ical-proxy]] server.
 #+begin_src emacs-lisp
-  (use-package org-gcal
-    :config
-    (setq org-gcal-fetch-file-alist
-          '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
-            ("6eft51mpf8n0tbic0v9cf56pq75uttas@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
-    (org-gcal-reload-client-id-secret))
+  ;; (use-package org-gcal
+  ;;   :config
+  ;;   (setq org-gcal-fetch-file-alist
+  ;;         '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
+  ;;           ("6eft51mpf8n0tbic0v9cf56pq75uttas@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
+  ;;   (org-gcal-reload-client-id-secret))
 #+end_src
 
 A few more configuration is needed:
