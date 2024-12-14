@@ -1216,18 +1216,15 @@ TODO
     :commands (kubernetes-overview)
     :config
     (setq kubernetes-poll-frequency 3600
-          kubernetes-redraw-frequency 3600)
-    :init
-    (defun my/kubernetes-evil-map ()
-      "Set the keybindings for 'kubernetes-mode to be compatible with evil mode"
-      (general-evil-define-key 'normal kubernetes-mode-map
-        "?" 'kubernetes-config-popup
-        "gr" 'kubernetes-refresh
-        "gn" 'kubernetes-set-namespace
-        "e" 'kubernetes-edit
-        "l" 'kubernetes-logs
-        "d" 'kubernetes-describe
-        "c" 'kubernetes-display-config)))
+          kubernetes-redraw-frequency 3600))
+  (general-evil-define-key 'normal kubernetes-mode-map
+    "g?" 'kubernetes-config-popup
+    "gr" 'kubernetes-refresh
+    "C-n" 'kubernetes-set-namespace
+    "ge" 'kubernetes-edit
+    "gl" 'kubernetes-logs
+    "gd" 'kubernetes-describe
+    "gc" 'kubernetes-display-config)
   #+end_src
 
 
