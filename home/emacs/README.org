@@ -655,7 +655,12 @@ For me this is mostly opening ~dired~ and opening the global configuration file.
     "c c" '(compile :wk "Compile"))
 #+end_src
 
-
+*** Kubernetes Keybindings (k)
+#+begin_src emacs-lisp
+  (leader-def
+    "k" '(:ignore t :wk "[K]uberntes")
+    "k k" '(kubernetes-overview :wk "Kubernetes Overview"))
+#+end_src
 * Git Integration
 ** magit
 [[https://github.com/magit/magit][magit]] is a package that provides a powerful interface for Git version control
@@ -1207,16 +1212,24 @@ TODO
 ** Kubernetes
 
 #+begin_src emacs-lisp
-
   (use-package kubernetes
     :commands (kubernetes-overview)
     :config
     (setq kubernetes-poll-frequency 3600
-          kubernetes-redraw-frequency 3600))
-  
+          kubernetes-redraw-frequency 3600)
+    :init
+    (defun my/kubernetes-evil-map ()
+      "Set the keybindings for 'kubernetes-mode to be compatible with evil mode"
+      (general-evil-define-key 'normal kubernetes-mode-map
+        "?" 'kubernetes-config-popup
+        "gr" 'kubernetes-refresh
+        "gn" 'kubernetes-set-namespace
+        "e" 'kubernetes-edit
+        "l" 'kubernetes-logs
+        "d" 'kubernetes-describe
+        "c" 'kubernetes-display-config)))
+  #+end_src
 
-
-#+end_src
 
 * Programming Languages Setup
 ** YAML/JSON/TOML/etc
