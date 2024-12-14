@@ -40,6 +40,7 @@
 - [[#org-mode][Org-mode]]
   - [[#prettify-org][Prettify Org]]
   - [[#org-tempo][org-tempo]]
+  - [[#org-download][org-download]]
   - [[#toc-org][toc-org]]
   - [[#timeblocks-graphical-calendar][Timeblocks (Graphical Calendar)]]
   - [[#org-gtd][Org GTD]]
@@ -53,7 +54,9 @@
   - [[#formatting-with-format-all][Formatting with format-all]]
   - [[#code-completion-with-corfu][Code Completion with corfu]]
   - [[#debugging-with-dap-mode][Debugging with dap-mode]]
+  - [[#kubernetes][Kubernetes]]
 - [[#programming-languages-setup][Programming Languages Setup]]
+  - [[#yamljsontomletc][YAML/JSON/TOML/etc]]
   - [[#lisp][Lisp]]
   - [[#nix][Nix]]
   - [[#lua][Lua]]
@@ -146,6 +149,29 @@ Next, we enable the ~JetBrainsMono Nerd Font~ everywhere:
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
   (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 140)
+
+  (use-package ligature
+    :config
+    ;; Enable the "www" ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    ;; Enable traditional ligature support in eww-mode, if the
+    ;; `variable-pitch' face supports it
+    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+    ;; Enable all Cascadia Code ligatures in programming modes
+    (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+                                        ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                                        "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                                        "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                                        "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                                        "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                                        "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                                        "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                                        ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+                                        "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+                                        "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+                                        "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+                                        "\\\\" "://"))
+    (global-ligature-mode t))
   #+end_src
 
 Make commented text and keywords italics:
@@ -873,6 +899,12 @@ TODO can I activate this without ~use-package~?
   (require 'org-tempo)
 #+end_src
 
+** org-download
+
+#+begin_src emacs-lisp
+(use-package org-download)
+#+end_src
+
 ** toc-org
 [[https://github.com/snosov1/toc-org][toc-org]] allows to generate "Table of Contents" sections in org document by simply using the tag
 ~:toc:~. You can see an example of this in this very document.
@@ -1101,10 +1133,13 @@ This is a custom package that installs all lsp servers that require installation
   (use-package flycheck
     :ensure t
     :init (global-flycheck-mode))
-  (use-package flycheck-pos-tip)
-  (with-eval-after-load 'flycheck
-    (flycheck-pos-tip-mode))
+  ;; (use-package flycheck-pos-tip)
+  ;; (with-eval-after-load 'flycheck
+  ;;   (flycheck-pos-tip-mode))
   (setq lsp-eldoc-enable-hover nil)
+  
+  (use-package flycheck-popup-tip
+    :hook (flycheck-mode . flycheck-popup-tip-mode))
 #+end_src
 
 ** Formatting with format-all
@@ -1169,7 +1204,28 @@ TODO
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 #+end_src
 
+** Kubernetes
+
+#+begin_src emacs-lisp
+
+  (use-package kubernetes
+    :commands (kubernetes-overview)
+    :config
+    (setq kubernetes-poll-frequency 3600
+          kubernetes-redraw-frequency 3600))
+  
+
+
+#+end_src
+
 * Programming Languages Setup
+** YAML/JSON/TOML/etc
+[[https://github.com/yoshiki/yaml-mode][yaml-mode]] for ~.yml~ and ~.yaml~ files:
+
+#+begin_src emacs-lisp
+  ;; (add-to-list 'auto-mode-alist '(""\\.yaml" . yaml-ts-mode))
+#+end_src
+
 ** Lisp
 I currently am not using [[https://github.com/abo-abo/lispy][lispy]], because it heavily conflicts with my evil setup.
 
@@ -1243,6 +1299,10 @@ we enter ~python-mode~:
 #+begin_src emacs-lisp
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (add-hook 'python-ts-mode-hook 'lsp-deferred)
+
+  (setq lsp-pylsp-plugins-autopep8-enabled nil)
+  (setq lsp-pylsp-plugins-flake8-enabled nil)
+  (setq lsp-pylsp-plugins-pydocstyle-enabled nil)
 #+end_src
 
 To enable linting with ~ruff~, we have to add:

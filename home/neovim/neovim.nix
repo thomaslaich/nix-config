@@ -261,6 +261,11 @@
         haskell-tools = {
           plugin = pkgs.vimPlugins.haskell-tools-nvim;
         };
+        kubectl = {
+          plugin = pkgs.vimPlugins.kubectl-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/kubectl-nvim.lua;
+        };
       in
       pkgs.lib.lists.flatten [
         aerial
@@ -270,6 +275,7 @@
         core-motion-plugins
         git-plugins
         haskell-tools
+        kubectl
         lspconfig
         lush
         metals

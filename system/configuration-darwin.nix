@@ -105,6 +105,7 @@
       "firefox"
       "google-chrome"
       "microsoft-teams"
+      "mongodb-compass"
       "nordvpn"
       "pritunl"
       "rancher"
