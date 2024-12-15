@@ -13,10 +13,11 @@
 
   home.packages = with pkgs; [
     _1password-gui
-    docker
     dropbox
     firefox
     kubernetes
+    pritunl-client
+    rancher
     whatsapp-for-linux
   ];
 }

@@ -148,19 +148,18 @@
   programs.zsh.enable = true;
   programs.fish.enable = true;
 
+  # Docker
+  virtualisation.docker.enable = true;
+
   # Fonts
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
     etBook
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "JetBrainsMono"
-        "DroidSansMono"
-        "NerdFontsSymbolsOnly"
-        "Ubuntu"
-      ];
-    })
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.symbols-only
+    nerd-fonts.ubuntu
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
