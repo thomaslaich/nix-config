@@ -10,8 +10,8 @@
 
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-nixos.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
-    nixpkgs-nixos-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-24.11-darwin";
+    nixpkgs-nixos-stable.url = "github:nixos/nixpkgs/nixos-24.11";
 
     # home manager
     home-manager.url = "github:nix-community/home-manager";

@@ -279,7 +279,7 @@
         lspconfig
         lush
         metals
-        neorg
+        # neorg
         nvim-lint
         oil
         omnisharp-extended-lsp
