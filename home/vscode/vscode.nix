@@ -358,11 +358,11 @@
       # open-vsx-release.rust-lang.rust-analyzer
 
       # .NET
-      ms-dotnettools.vscode-dotnet-pack
-      ms-dotnettools.csharp
-      ms-dotnettools.csdevkit
-      ms-dotnettools.dotnet-interactive-vscode
-      ms-dotnettools.vscode-dotnet-runtime
+      # ms-dotnettools.vscode-dotnet-pack
+      # ms-dotnettools.csharp
+      # ms-dotnettools.csdevkit
+      # ms-dotnettools.dotnet-interactive-vscode
+      # ms-dotnettools.vscode-dotnet-runtime
       # ionide.ionide-fsharp
       csharpier.csharpier-vscode # formatter
       # icsharpcode.ilspy-vscode
