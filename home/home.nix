@@ -158,7 +158,7 @@ in
       ghc
       httpie
       jq # json parser
-      k9s
+      # k9s
       killall
       krb5
       kubelogin
@@ -232,7 +232,7 @@ in
         inputs.hcat.packages.${system}.default
       ];
 
-  # secrets from agenix 
+  # secrets from agenix
   age.secrets = {
     gcal-clientid = {
       file = ../secrets/gcal-clientid.age;

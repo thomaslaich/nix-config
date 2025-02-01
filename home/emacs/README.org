@@ -1221,10 +1221,31 @@ TODO
     "g?" 'kubernetes-config-popup
     "gr" 'kubernetes-refresh
     "C-n" 'kubernetes-set-namespace
+    "C-x" 'kubernetes-contexts-use-context
     "ge" 'kubernetes-edit
     "gl" 'kubernetes-logs
     "gd" 'kubernetes-describe
     "gc" 'kubernetes-display-config)
+
+  (use-package kubed
+    :config
+    (keymap-global-set "C-c k" 'kubed-prefix-map))
+  (general-evil-define-key 'normal kubed-list-mode-map
+    "?" 'kubed-list-transient
+    "RET" 'kubed-list-select-resource
+    "o" 'kubed-list-select-resource-other-window
+    "C-o" 'kubed-list-display-resource
+    "D" 'kubed-list-delete
+    "e" 'kubed-list-edit
+    "P" 'kubed-list-patch
+    "g" 'kubed-list-update
+    "/" 'kubed-list-set-filter
+    "d" 'kubed-list-mark-for-deletion
+    "x" 'kubed-list-delete-marked
+    "u" 'kubed-list-unmark
+    "w" 'kubed-list-copy-as-kill
+    "{" 'tabulated-list-narrow-current-column
+    "}" 'tabulated-list-widen-current-column)
   #+end_src
 
 
