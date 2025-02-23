@@ -236,6 +236,13 @@
               in
               [
                 {
+                  name = "rebuild-${machine.name}";
+                  value = {
+                    type = "app";
+                    program = "${rebuildScript}";
+                  };
+                }
+                {
                   name = "hm-switch-${machine.name}-dark";
                   value = {
                     type = "app";
