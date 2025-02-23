@@ -325,6 +325,7 @@
           "debug.console.fontSize" = pkgs.lib.mkForce 12.0;
           "markdown.preview.fontSize" = pkgs.lib.mkForce 12.0;
           "terminal.integrated.fontSize" = pkgs.lib.mkForce 12.0;
+          "workbench.sideBar.location" = "right";
         };
 
         extensions = with pkgs.vscode-marketplace; [
