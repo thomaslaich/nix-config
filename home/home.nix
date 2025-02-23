@@ -214,7 +214,7 @@ in
       yamlfmt
 
       # Galaxus
-      dg-cli
+      # dg-cli
       watchman # relay GQL incremental compilation
     ]
     ++

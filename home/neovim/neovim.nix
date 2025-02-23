@@ -277,7 +277,7 @@
         haskell-tools
         kubectl
         lspconfig
-        lush
+        # lush
         metals
         # neorg
         nvim-lint
