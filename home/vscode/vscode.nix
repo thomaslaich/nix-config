@@ -3,6 +3,7 @@
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
+    mutableExtensionsDir = false;
     profiles = {
       default = {
         enableUpdateCheck = false;
@@ -365,10 +366,10 @@
 
           # .NET
           # ms-dotnettools.vscode-dotnet-pack
-          # ms-dotnettools.csharp
-          # ms-dotnettools.csdevkit
+          pkgs.vscode-extensions.ms-dotnettools.csharp # coming from overlay
+          pkgs.vscode-extensions.ms-dotnettools.csdevkit # coming from overlay
           # ms-dotnettools.dotnet-interactive-vscode
-          # ms-dotnettools.vscode-dotnet-runtime
+          ms-dotnettools.vscode-dotnet-runtime
           # ionide.ionide-fsharp
           csharpier.csharpier-vscode # formatter
           # icsharpcode.ilspy-vscode
