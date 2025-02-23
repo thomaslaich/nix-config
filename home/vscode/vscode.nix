@@ -26,7 +26,8 @@
       {
         "key" = "enter";
         "command" = "-renameFile";
-        "when" = "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus";
+        "when" =
+          "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus";
       }
       {
         "key" = "enter";
@@ -314,6 +315,7 @@
       "claptrap.configEndpoint" = "${config.age.secrets.claptrap.path}";
       "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
       "python.analysis.typeCheckingMode" = "standard";
+      "dotnet.workingWithTestSignedSdk" = true;
     };
 
     extensions = with pkgs.vscode-marketplace; [
@@ -372,8 +374,9 @@
       sumneko.lua
 
       # Nix
-      bbenoist.nix
-      brettm12345.nixfmt-vscode
+      # bbenoist.nix
+      # brettm12345.nixfmt-vscode
+      jnoortheen.nix-ide
 
       # Dockerols.vscode-docker
       ms-kubernetes-tools.vscode-kubernetes-tools
