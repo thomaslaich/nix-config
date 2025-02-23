@@ -320,7 +320,6 @@
           "claptrap.configEndpoint" = "${config.age.secrets.claptrap.path}";
           "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
           "python.analysis.typeCheckingMode" = "standard";
-          "dotnet.workingWithTestSignedSdk" = true;
         };
 
         extensions = with pkgs.vscode-marketplace; [
