@@ -24,6 +24,7 @@ in
     ./email/email.nix
     ./fish/fish.nix
     ./kitty/kitty.nix
+    ./ghostty/ghostty.nix
     ./neovim/neovim.nix
     ./tmux/tmux.nix
     ./vscode/vscode.nix
@@ -191,6 +192,7 @@ in
       discord
       kitty
       spotify
+      ghostty
 
       # lsps and formatters
       bash-language-server
