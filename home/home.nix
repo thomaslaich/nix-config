@@ -21,6 +21,7 @@ in
     # inputs.nix-colorscheme.homeModules.colorscheme
     inputs.agenix.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
+    ../extras/stylix.nix
     ./emacs/emacs.nix
     ./email/email.nix
     ./fish/fish.nix

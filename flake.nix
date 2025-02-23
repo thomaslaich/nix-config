@@ -111,50 +111,6 @@
         treefmt-nix.lib.evalModule pkgs ./treefmt.nix
       );
 
-      stylixConfig =
-        mode:
-        { pkgs, ... }:
-        let
-          schemes = {
-            light = ./extras/kauz-light.yml;
-            dark = ./extras/kauz-dark.yml;
-          };
-        in
-        {
-          stylix = {
-            enable = true;
-            base16Scheme = schemes.${mode};
-            polarity = mode;
-            opacity.terminal = 1.0;
-            image = pkgs.fetchurl {
-              url = "https://images.unsplash.com/photo-1524889777220-eae0b973ec80";
-              sha256 = "sha256-Njkv8yt4RMZIo0poTtc2Avz8q1WZjREa9zwqLdYwtgE=";
-            };
-            fonts = {
-              serif = {
-                package = pkgs.dejavu_fonts;
-                name = "DejaVu Serif";
-              };
-
-              sansSerif = {
-                package = pkgs.dejavu_fonts;
-                name = "DejaVu Sans";
-              };
-
-              monospace = {
-                package = pkgs.dejavu_fonts;
-                name = "DejaVu Sans Mono";
-              };
-
-              emoji = {
-                package = pkgs.noto-fonts-emoji;
-                name = "Noto Color Emoji";
-              };
-
-            };
-          };
-        };
-
     in
     rec {
       inherit overlays;
@@ -174,14 +130,6 @@
                   languages.lua.enable = true;
                   languages.nix.enable = true;
                   packages = with pkgs; [ just ];
-                  scripts.rebuild.exec = ''
-                    hostname=$(hostname)
-                    nix run .#rebuild-$hostname
-                  '';
-                  scripts.hm-switch.exec = ''
-                    hostname=$(hostname)
-                    nix run .#hm-switch-$hostname
-                  '';
                 }
               )
             ];
@@ -203,12 +151,13 @@
           value = lib.nixosSystem {
             inherit (machine) system;
             specialArgs = {
-              inherit inputs outputs;
+              inherit inputs;
+              inherit outputs;
+              mode = "light";
             };
             modules = [
               ./system/configuration-nixos.nix
               ./system/configuration-${machine.name}.nix
-              (stylixConfig "light") # dark/light should have virtually no effect at OS level?
             ];
           };
         }) nixosMachines
@@ -220,38 +169,46 @@
           value = darwin.lib.darwinSystem {
             inherit (machine) system;
             specialArgs = {
-              inherit inputs outputs;
+              inherit inputs;
+              inherit outputs;
+              mode = "light";
             };
             modules = [
               ./system/configuration-darwin.nix
               ./system/configuration-${machine.name}.nix
-              (stylixConfig "light") # dark/light should have virtually no effect at OS level?
             ];
           };
         }) darwinMachines
       );
 
       homeConfigurations = builtins.listToAttrs (
-        builtins.map (machine: {
-          inherit (machine) name;
-          value = home-manager.lib.homeManagerConfiguration {
-            pkgs = pkgsBySystem.${machine.system};
-            extraSpecialArgs = {
-              inherit inputs outputs;
-            };
-            modules = [
-              {
-                home.username = machine.user;
-                home.homeDirectory =
-                  if (isDarwin machine.system) then "/Users/${machine.user}" else "/home/${machine.user}";
-              }
-              ./home/home.nix
-              ./home/home-${if (isDarwin machine.system) then "darwin" else "nixos"}.nix
-              ./home/home-${machine.name}.nix
-              (stylixConfig "light")
-            ];
-          };
-        }) machines
+        builtins.concatMap
+          (
+            mode:
+            builtins.map (machine: {
+              name = "${machine.name}-${mode}";
+              value = home-manager.lib.homeManagerConfiguration {
+                pkgs = pkgsBySystem.${machine.system};
+                extraSpecialArgs = {
+                  inherit inputs outputs mode;
+                };
+                modules = [
+                  {
+                    home.username = machine.user;
+                    home.homeDirectory =
+                      if (isDarwin machine.system) then "/Users/${machine.user}" else "/home/${machine.user}";
+                  }
+                  ./home/home.nix
+                  ./home/home-${if (isDarwin machine.system) then "darwin" else "nixos"}.nix
+                  ./home/home-${machine.name}.nix
+                ];
+              };
+            }) machines
+          )
+          [
+            "light"
+            "dark"
+          ]
       );
 
       apps = builtins.mapAttrs (
@@ -270,23 +227,26 @@
                   else
                     "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}"
                 );
-                hmSwitchScript = pkgs.writeShellScript "hm-switch-${machine.name}" "${
+                hmSwitchScriptLight = pkgs.writeShellScript "hm-switch-${machine.name}-light" "${
                   inputs.home-manager.packages.${system}.home-manager
-                }/bin/home-manager switch --flake ${self}#${machine.name}";
+                }/bin/home-manager switch --flake ${self}#${machine.name}-light";
+                hmSwitchScriptDark = pkgs.writeShellScript "hm-switch-${machine.name}-dark" "${
+                  inputs.home-manager.packages.${system}.home-manager
+                }/bin/home-manager switch --flake ${self}#${machine.name}-dark";
               in
               [
                 {
-                  name = "rebuild-${machine.name}";
+                  name = "hm-switch-${machine.name}-dark";
                   value = {
                     type = "app";
-                    program = "${rebuildScript}";
+                    program = "${hmSwitchScriptDark}";
                   };
                 }
                 {
-                  name = "hm-switch-${machine.name}";
+                  name = "hm-switch-${machine.name}-light";
                   value = {
                     type = "app";
-                    program = "${hmSwitchScript}";
+                    program = "${hmSwitchScriptLight}";
                   };
                 }
               ]

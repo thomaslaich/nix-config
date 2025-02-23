@@ -17,6 +17,7 @@
   imports = [
     inputs.agenix.darwinModules.default
     inputs.stylix.darwinModules.stylix
+    ../extras/stylix.nix
   ];
 
   nixpkgs = {

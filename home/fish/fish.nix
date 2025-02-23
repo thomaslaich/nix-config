@@ -14,6 +14,35 @@
       any-nix-shell fish --info-right | source
     '';
 
+    functions = {
+
+      reload_all_fish_instances = {
+        body = ''
+          # Get the process IDs of all running fish processes except the current one
+          set fish_pids (pgrep -x fish | grep -v $fish_pid)
+
+          # Check if there are any fish processes to reload
+          if test -n "$fish_pids"
+              # Send SIGHUP to each process
+              for pid in $fish_pids
+                  kill -SIGHUP $pid
+              end
+              echo "Reloaded configuration for fish processes: $fish_pids"
+          else
+              echo "No other fish processes found to reload."
+          end
+        '';
+      };
+
+    };
+
+    shellAbbrs = {
+
+      fish-reload-config = "source ~/.config/fish/**/*.fish";
+      tmux-reload-config = "tmux source-file ~/.config/tmux/tmux.conf";
+
+    };
+
     shellAliases = {
       # git
       gs = "git status";
@@ -44,8 +73,6 @@
       # cd
       z = "zoxide";
 
-      # just for testing dg-cli installation using shell alias
-      dg-alt = "nix run git+ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/Playground/Dg.Nix?ref=v1.12.7-r1#dg-cli-full";
     };
   };
 }
