@@ -25,7 +25,6 @@ in
     ./emacs/emacs.nix
     ./email/email.nix
     ./fish/fish.nix
-    ./kitty/kitty.nix
     ./ghostty/ghostty.nix
     ./neovim/neovim.nix
     ./tmux/tmux.nix
@@ -52,21 +51,6 @@ in
   programs.zsh = {
     enable = true;
   };
-
-  # # Kauz colorscheme
-  # kauz = {
-  #   fish.enable = true;
-  #   kitty.enable = true;
-  #   neovim.enable = true;
-  #   tmux.enable = true;
-  # };
-
-  # stylix instead
-  # colorscheme = {
-  #   enable = true;
-  #   name = "catppuccin-frappe";
-  #   # name = "doom-one";
-  # };
 
   # private dropbox
   services.syncthing = {
@@ -193,7 +177,6 @@ in
 
       # GUI apps
       discord
-      kitty
       spotify
       # ghostty # currently broken in nixpkgs
 

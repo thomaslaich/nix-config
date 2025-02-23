@@ -5,7 +5,3 @@ oil.setup({
     show_hidden = true,
   },
 })
-
-vim.keymap.set("n", "<leader>-", oil.open, { desc = "Browse parent directory" })
--- inspired by doom emacs
-vim.keymap.set("n", "<leader>.", oil.open, { desc = "Browse parent directory" })

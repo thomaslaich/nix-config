@@ -1,13 +1,9 @@
 local lsp_config = require("lspconfig")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
 lsp_config.util.default_config =
   vim.tbl_extend("force", lsp_config.util.default_config, { capabilities = capabilities })
-
-lsp_config.smithy_ls.setup({
-  cmd = { "cs", "launch", "com.disneystreaming.smithy:smithy-language-server:latest.stable", "--", "0" },
-})
 
 -- don't need this -> haskell-tools.nvim instead
 -- lsp_config.hls.setup {}
@@ -30,8 +26,10 @@ lsp_config.pylsp.setup({
     },
   },
 })
-lsp_config.gopls.setup({})
 lsp_config.html.setup({})
+lsp_config.pyright.setup({})
+lsp_config.smithy_ls.setup({})
+lsp_config.taplo.setup({})
 lsp_config.ts_ls.setup({
   filetypes = {
     "javascript",

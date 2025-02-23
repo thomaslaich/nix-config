@@ -1,7 +1,7 @@
 host := `hostname`
 
 default:
-    --list
+    @just --list
 
 rebuild:
     nix run .#rebuild-{{ host }}

@@ -320,6 +320,11 @@
           "claptrap.configEndpoint" = "${config.age.secrets.claptrap.path}";
           "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
           "python.analysis.typeCheckingMode" = "standard";
+          "editor.fontSize" = pkgs.lib.mkForce 12.0;
+          "chat.editor.fontSize" = pkgs.lib.mkForce 12.0;
+          "debug.console.fontSize" = pkgs.lib.mkForce 12.0;
+          "markdown.preview.fontSize" = pkgs.lib.mkForce 12.0;
+          "terminal.integrated.fontSize" = pkgs.lib.mkForce 12.0;
         };
 
         extensions = with pkgs.vscode-marketplace; [

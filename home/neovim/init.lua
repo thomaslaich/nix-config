@@ -9,9 +9,13 @@ local global_opt = vim.opt_global
 g.mapleader = " "
 g.maplocalleader = ","
 
+local oil = require("oil")
+local fzf = require("fzf-lua")
+local conform = require("conform")
+local tscontext = require("treesitter-context")
+
 -- cmd.language("en_US")
 
-global_opt.shortmess:remove("F") -- recommended for nvim-metals
 global_opt.completeopt = { "menu", "menuone", "noselect" } -- Completion options
 global_opt.hidden = true -- Enable modified buffers in background
 global_opt.ignorecase = true -- Ignore case
@@ -45,7 +49,15 @@ opt.swapfile = false
 
 opt.conceallevel = 2 -- Hide * markup for bold and italic (Neorg)
 
+
+-- KEYBINDINGS
+vim.keymap.set("n", "<leader>-", oil.open, { desc = "Browse parent directory" })
+-- inspired by doom emacs
+vim.keymap.set("n", "<leader>.", oil.open, { desc = "Browse parent directory" })
+
 map("n", "<leader>cf", "<cmd>edit $MYVIMRC<CR>", { desc = "open init.lua" })
+
+map("n", "<leader>ctx", tscontext.toggle, { desc = "toggle treesitter context" })
 
 -- leaving this for reference, but adjusting this to conform to lsp-zero standards
 -- map("n", "<localleader>a", vim.lsp.buf.code_action, { desc = "lsp code action" })
@@ -69,11 +81,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Enable completion triggered by <c-x><c-o>
     vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-
-    -- In this case, we create a function that lets us more easily define mappings specific
-    -- for LSP related items. It sets the mode, buffer and description for us each time.
     local nmap = function(keys, func, desc)
       if desc then
         desc = "LSP: " .. desc
@@ -84,39 +91,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     -- general
     nmap("gd", vim.lsp.buf.definition, "Goto Definition")
-    -- nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-    nmap("gr", require("telescope.builtin").lsp_references, "Goto References")
-    nmap("gI", require("telescope.builtin").lsp_implementations, "Goto Implementation")
-    nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type Definition")
-    nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "Document Symbols")
-    -- TODO: find mapping under something else than "w"
-    -- nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
-
-    -- See `:help K` for why this keymap
+    -- nmap('gd', fzf.lsp_definitions, '[G]oto [D]efinition')
+    nmap("gr", fzf.lsp_references, "Goto References")
+    nmap("gI", fzf.lsp_implementations, "Goto Implementation")
+    -- nmap("<leader>D", fzf.lsp_type_definitions, "Type Definition")
+    -- nmap("<leader>ds", fzf.lsp_document_symbols, "Document Symbols")
     nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-    -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
-
-    -- Lesser used LSP functionality
     nmap("gD", vim.lsp.buf.declaration, "Goto Declaration")
-    -- TODO: find mapping under something else than "w"
-    -- nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-    -- nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-    -- nmap('<leader>wl', function()
-    --   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    -- end, '[W]orkspace [L]ist Folders')
-
-    -- code action
     nmap("<localleader>a", vim.lsp.buf.code_action, "Code Action")
-
-    -- rename
     nmap("<localleader>m", vim.lsp.buf.rename, "Rename")
-
-    -- formatting
     map({ "n", "v" }, "<localleader>f", function()
-      require("conform").format({ async = true, lsp_fallback = true })
+      conform.format({ async = true, lsp_fallback = true })
     end, { desc = "format" })
-
-    -- F-keys
     nmap("<F2>", vim.lsp.buf.rename, "Rename")
     map({ "n", "v" }, "<F3>", vim.lsp.buf.format, { desc = "LSP: Format" })
     nmap("<F4>", vim.lsp.buf.code_action, "Code Action")
@@ -153,13 +139,10 @@ map("n", "<leader>wc", "<C-W>q", { desc = "Close Window" })
 map("n", "<leader>bk", ":bdelete<CR>", { desc = "Kill buffer" })
 map("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 map("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
-map("n", "<leader>bb", ":Telescope buffers<CR>", { desc = "Switch buffer" })
+-- map("n", "<leader>bb", ":Telescope buffers<CR>", { desc = "Switch buffer" })
 
 -- [f] FIND KEYBINDINGS
 
--- general search
--- Telescope live_grep in git root
--- Function to find the git root directory based on the current buffer's path
 local function find_git_root()
   -- Use the current buffer's path as the starting point for the git search
   local current_file = vim.api.nvim_buf_get_name(0)
@@ -182,63 +165,44 @@ local function find_git_root()
   return git_root
 end
 
--- Custom live_grep function to search in git root
-local function live_grep_git_root()
-  local git_root = find_git_root()
-  if git_root then
-    require("telescope.builtin").live_grep({
-      search_dirs = { git_root },
-    })
-  end
-end
+vim.keymap.set("n", "<leader>?", fzf.man_pages, { desc = "[?] Find in help" })
+vim.keymap.set("n", "<leader><space>", fzf.buffers, { desc = "[ ] Find existing buffers" })
+-- vim.keymap.set("n", "<leader>/", function()
+--   -- You can pass additional configuration to telescope to change theme, layout, etc.
+--   fzf.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+--     winblend = 10,
+--     previewer = false,
+--   }))
+-- end, { desc = "[/] Fuzzily search in current buffer" })
 
-vim.api.nvim_create_user_command("LiveGrepGitRoot", live_grep_git_root, {})
-
-local telescope_builtin = require("telescope.builtin")
-
--- See `:help telescope.builtin`
-vim.keymap.set("n", "<leader>?", telescope_builtin.man_pages, { desc = "[?] Find in help" })
-vim.keymap.set("n", "<leader><space>", telescope_builtin.buffers, { desc = "[ ] Find existing buffers" })
-vim.keymap.set("n", "<leader>/", function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  telescope_builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-    winblend = 10,
-    previewer = false,
-  }))
-end, { desc = "[/] Fuzzily search in current buffer" })
-
-vim.keymap.set("n", "<leader>ff", telescope_builtin.find_files, { desc = "Search Files" })
+vim.keymap.set("n", "<leader>ff", fzf.files, { desc = "Search Files" })
 
 vim.keymap.set("n", "<leader>fa", function()
-  telescope_builtin.find_files({ no_ignore = true, hidden = true })
+  fzf.find_files({ no_ignore = true, hidden = true })
 end, { desc = "Find all Files" })
-vim.keymap.set("n", "<leader>fh", telescope_builtin.help_tags, { desc = "Search Help" })
-vim.keymap.set("n", "<leader>fw", telescope_builtin.grep_string, { desc = "Search current Word" })
-vim.keymap.set("n", "<leader>fg", telescope_builtin.live_grep, { desc = "Search by Grep" })
+vim.keymap.set("n", "<leader>fh", fzf.help_tags, { desc = "Search Help" })
+-- vim.keymap.set("n", "<leader>fw", telescope_builtin.grep_string, { desc = "Search current Word" })
+vim.keymap.set("n", "<leader>fg", function()
+  fzf.live_grep({})
+end, { desc = "Search by Grep" })
 vim.keymap.set("n", "<leader>fG", ":LiveGrepGitRoot<cr>", { desc = "Search by Grep on Git Root" })
-vim.keymap.set("n", "<leader>fd", telescope_builtin.diagnostics, { desc = "Search Diagnostics" })
-vim.keymap.set("n", "<leader>fr", telescope_builtin.resume, { desc = "Search Resume" })
-vim.keymap.set("n", "<leader>fc", telescope_builtin.commands, { desc = "Search Commands" })
-vim.keymap.set("n", "<leader>fy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
-vim.keymap.set("n", "<leader>fo", telescope_builtin.oldfiles, { desc = "Find recently opened files" })
+vim.keymap.set("n", "<leader>fd", fzf.diagnostics_document, { desc = "Search Diagnostics" })
+vim.keymap.set("n", "<leader>fr", fzf.resume, { desc = "Search Resume" })
+vim.keymap.set("n", "<leader>fc", fzf.commands, { desc = "Search Commands" })
+-- vim.keymap.set("n", "<leader>fy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
+vim.keymap.set("n", "<leader>fo", fzf.oldfiles, { desc = "Find recently opened files" })
 
-vim.keymap.set("n", "<leader>ft", telescope_builtin.treesitter, { desc = "Search Treesitter" })
+vim.keymap.set("n", "<leader>ft", fzf.treesitter, { desc = "Search Treesitter" })
 
 -- [g] GIT KEYBINDINGS
 
-vim.keymap.set("n", "<leader>gf", telescope_builtin.git_files, { desc = "Search Git Files" })
-vim.keymap.set("n", "<leader>gc", telescope_builtin.git_commits, { desc = "Git Commits" })
-vim.keymap.set("n", "<leader>gb", telescope_builtin.git_branches, { desc = "Git Branches" })
-vim.keymap.set("n", "<leader>gs", telescope_builtin.git_status, { desc = "Git Status" })
+vim.keymap.set("n", "<leader>gf", fzf.git_files, { desc = "Search Git Files" })
+vim.keymap.set("n", "<leader>gc", fzf.git_commits, { desc = "Git Commits" })
+vim.keymap.set("n", "<leader>gb", fzf.git_branches, { desc = "Git Branches" })
+vim.keymap.set("n", "<leader>gs", fzf.git_status, { desc = "Git Status" })
 
 -- [t] Toggle
 vim.keymap.set("n", "<leader>tb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
-
--- MISC
-map("n", "<leader>cs", function()
-  telescope_builtin.colorscheme({ enable_preview = true })
-end, { desc = "Change colorscheme" })
-vim.keymap.set("n", "<leader>mc", require("telescope").extensions.metals.commands, { desc = "metals commands" })
 
 -- enable spell checking for text files
 local spell_augroup = vim.api.nvim_create_augroup("spell", { clear = true })

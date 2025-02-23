@@ -2,6 +2,7 @@
 {
   programs.neovim = {
     enable = true;
+    package = pkgs.neovim-unwrapped;
     viAlias = true;
     vimAlias = true;
     defaultEditor = true;
@@ -12,6 +13,16 @@
           plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
           type = "lua";
           config = builtins.readFile ./plugins/treesitter.lua;
+        };
+
+        ts-context = {
+          plugin = pkgs.vimPlugins.nvim-treesitter-context;
+          type = "lua";
+          config = ''
+            require'treesitter-context'.setup({
+              enable = false
+            })
+          '';
         };
 
         lspconfig = {
@@ -25,19 +36,34 @@
           '';
         };
 
-        cmp = with pkgs.vimPlugins; [
-          {
-            plugin = nvim-cmp;
-            type = "lua";
-            config = builtins.readFile ./plugins/cmp.lua;
-          }
-          { plugin = cmp-buffer; }
-          { plugin = cmp-path; }
-          { plugin = cmp-vsnip; }
-          { plugin = cmp-nvim-lsp; }
-          { plugin = cmp-nvim-lsp-signature-help; }
-          { plugin = vim-vsnip; }
-        ];
+        # https://github.com/Saghen/blink.cmp
+        blink-cmp = {
+          plugin = pkgs.vimPlugins.blink-cmp;
+          type = "lua";
+          config = builtins.readFile ./plugins/blink-cmp.lua;
+        };
+
+        # https://github.com/folke/snacks.nvim
+        snacks = {
+          plugin = pkgs.vimPlugins.snacks-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/snacks.lua;
+        };
+
+        fzf-lua = {
+          plugin = pkgs.vimPlugins.fzf-lua;
+          type = "lua";
+          config = builtins.readFile ./plugins/fzf-lua.lua;
+        };
+
+        # https://github.com/MagicDuck/grug-far.nvim
+        grug-far = {
+          plugin = pkgs.vimPlugins.grug-far-nvim;
+          type = "lua";
+          config = ''
+            require('grug-far').setup({});
+          '';
+        };
 
         # linting for some languages (when no lsp available)
         nvim-lint = {
@@ -64,22 +90,6 @@
           plugin = pkgs.vimPlugins.plenary-nvim;
         };
 
-        # fuzzy finder and live grep
-        telescope = [
-          {
-            plugin = pkgs.vimPlugins.telescope-nvim;
-            type = "lua";
-            config = builtins.readFile ./plugins/telescope.lua;
-          }
-          { plugin = pkgs.vimPlugins.telescope-symbols-nvim; }
-        ];
-
-        aerial = {
-          plugin = pkgs.vimPlugins.aerial-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/aerial.lua;
-        };
-
         core-motion-plugins = [
           # manipulate surrouding characters (e.g. brackets)
           {
@@ -88,11 +98,6 @@
             config = ''
               require"nvim-surround".setup {}
             '';
-          }
-          # move around fast in the current buffer
-          {
-            plugin = pkgs.vimPlugins.lightspeed-nvim;
-            type = "lua";
           }
           # comment/uncomment with gcc
           {
@@ -110,24 +115,50 @@
               require"better_escape".setup {}
             '';
           }
-          # heuristically set options for buffer (e.g. indentation)
-          { plugin = pkgs.vimPlugins.vim-sleuth; }
 
           { plugin = pkgs.vimPlugins.vim-tmux-navigator; }
         ];
 
         ui-plugins =
           let
-            # a dashboard for neovim (TODO make this nicer)
-            dashboard = {
-              plugin = pkgs.vimPlugins.dashboard-nvim;
+            # https://github.com/romgrk/barbar.nvim/
+            barbar = {
+              plugin = pkgs.vimPlugins.barbar-nvim;
               type = "lua";
-              config = builtins.readFile ./plugins/dashboard.lua;
+              config = ''
+                vim.g.barbar_auto_setup = false
+                require('barbar').setup({})
+              '';
+            };
+            # https://github.com/j-hui/fidget.nvim
+            fidget = {
+              plugin = pkgs.vimPlugins.fidget-nvim;
+              type = "lua";
+              config = ''
+                require("fidget").setup({})
+              '';
             };
 
             # nice popup windows
             dressing = {
               plugin = pkgs.vimPlugins.dressing-nvim;
+            };
+
+            # https://github.com/echasnovski/mini.icons
+            mini-icons = {
+              plugin = pkgs.vimPlugins.mini-icons;
+              type = "lua";
+              config = ''
+                require('mini.icons').setup({})
+              '';
+            };
+
+            mini-colors = {
+              plugin = pkgs.vimPlugins.mini-colors;
+              type = "lua";
+              config = ''
+                require('mini.colors').setup()
+              '';
             };
 
             web-devicons = {
@@ -174,12 +205,15 @@
             };
           in
           pkgs.lib.lists.flatten [
-            dashboard
+            barbar
             dressing
+            fidget
             indent-blank-line
             lsp-kind
             lsp-progress
             lualine
+            mini-colors
+            mini-icons
             trouble
             web-devicons
             which-key
@@ -205,6 +239,13 @@
             plugin = pkgs.vimPlugins.neogit;
             type = "lua";
             config = builtins.readFile ./plugins/neogit.lua;
+          }
+          {
+            plugin = pkgs.vimPlugins.diffview-nvim;
+            type = "lua";
+            config = ''
+              require("diffview").setup({})
+            '';
           }
         ];
 
@@ -242,21 +283,11 @@
           }
         ];
 
-        lush = {
-          plugin = pkgs.vimPlugins.lush-nvim;
-          type = "lua";
-        };
-
         # TODO remove once I move to https://github.com/jmederosalvarado/roslyn.nvim
         omnisharp-extended-lsp = {
           plugin = pkgs.vimPlugins.omnisharp-extended-lsp-nvim;
           type = "lua";
           config = "";
-        };
-        metals = {
-          plugin = pkgs.vimPlugins.nvim-metals;
-          type = "lua";
-          config = builtins.readFile ./plugins/metals.lua;
         };
         haskell-tools = {
           plugin = pkgs.vimPlugins.haskell-tools-nvim;
@@ -268,25 +299,27 @@
         };
       in
       pkgs.lib.lists.flatten [
-        aerial
-        cmp
+        # neorg
+        blink-cmp
         conform-nvim
         copilot
-        core-motion-plugins
+        fzf-lua
         git-plugins
+        grug-far
         haskell-tools
         kubectl
         lspconfig
-        # lush
-        metals
-        # neorg
         nvim-lint
         oil
         omnisharp-extended-lsp
         orgmode
         plenary
-        telescope
+        snacks
         treesitter
+        ts-context
+
+        core-motion-plugins
+
         ui-plugins
       ];
 
