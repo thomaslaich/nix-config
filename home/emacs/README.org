@@ -125,6 +125,7 @@ Disable all unnecessary UI elements such as tool bar, menu bar, scroll bar, etc.
 ** Theme and Fonts
 First, let's install the [[https://github.com/doomemacs/themes][doom themes]] and activate ~doom-one~:
 #+begin_src emacs-lisp
+  ;; let stylix take care of everything -> commented all out for now
   ;; (use-package doom-themes
   ;;   :config
   ;;   ;; Global settings (defaults)
@@ -138,11 +139,11 @@ First, let's install the [[https://github.com/doomemacs/themes][doom themes]] an
   ;;   ;; Corrects (and improves) org-mode's native fontification.
   ;;   (doom-themes-org-config))
 
-  (use-package catppuccin-theme
-    :config
-    (load-theme 'catppuccin :no-confirm)
-    (setq catppuccin-flavor 'frappe) ;; or 'latte, 'frappe, or 'mocha or 'macchiato
-    (catppuccin-reload))
+  ;; (use-package catppuccin-theme
+  ;;   :config
+  ;;   (load-theme 'catppuccin :no-confirm)
+  ;;   (setq catppuccin-flavor 'frappe) ;; or 'latte, 'frappe, or 'mocha or 'macchiato
+  ;;   (catppuccin-reload))
 #+end_src
 
 Next, we enable the ~JetBrainsMono Nerd Font~ everywhere:

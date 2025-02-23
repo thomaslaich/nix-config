@@ -18,8 +18,9 @@ in
 {
   imports = [
     # inputs.kauz.homeModules.default
-    inputs.nix-colorscheme.homeModules.colorscheme
+    # inputs.nix-colorscheme.homeModules.colorscheme
     inputs.agenix.homeManagerModules.default
+    inputs.stylix.homeManagerModules.stylix
     ./emacs/emacs.nix
     ./email/email.nix
     ./fish/fish.nix
@@ -59,11 +60,12 @@ in
   #   tmux.enable = true;
   # };
 
-  colorscheme = {
-    enable = true;
-    name = "catppuccin-frappe";
-    # name = "doom-one";
-  };
+  # stylix instead
+  # colorscheme = {
+  #   enable = true;
+  #   name = "catppuccin-frappe";
+  #   # name = "doom-one";
+  # };
 
   # private dropbox
   services.syncthing = {

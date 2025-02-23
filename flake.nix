@@ -2,7 +2,7 @@
   description = "My Nix configs";
 
   inputs = {
-    # utils 
+    # utils
     flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     devenv.url = "github:cachix/devenv";
@@ -34,10 +34,10 @@
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
 
-    # themes
-    # kauz.url = "github:buntec/kauz";
-    nix-colorscheme.url = "github:buntec/nix-colorscheme";
+    # theming
+    stylix.url = "github:danth/stylix";
 
+    # my own little test
     hcat.url = "github:thomaslaich/hcat";
 
     # dg-cli, etc.
@@ -110,6 +110,51 @@
         in
         treefmt-nix.lib.evalModule pkgs ./treefmt.nix
       );
+
+      stylixConfig =
+        mode:
+        { pkgs, ... }:
+        let
+          schemes = {
+            light = ./extras/kauz-light.yml;
+            dark = ./extras/kauz-dark.yml;
+          };
+        in
+        {
+          stylix = {
+            enable = true;
+            base16Scheme = schemes.${mode};
+            polarity = mode;
+            opacity.terminal = 1.0;
+            image = pkgs.fetchurl {
+              url = "https://images.unsplash.com/photo-1524889777220-eae0b973ec80";
+              sha256 = "sha256-Njkv8yt4RMZIo0poTtc2Avz8q1WZjREa9zwqLdYwtgE=";
+            };
+            fonts = {
+              serif = {
+                package = pkgs.dejavu_fonts;
+                name = "DejaVu Serif";
+              };
+
+              sansSerif = {
+                package = pkgs.dejavu_fonts;
+                name = "DejaVu Sans";
+              };
+
+              monospace = {
+                package = pkgs.dejavu_fonts;
+                name = "DejaVu Sans Mono";
+              };
+
+              emoji = {
+                package = pkgs.noto-fonts-emoji;
+                name = "Noto Color Emoji";
+              };
+
+            };
+          };
+        };
+
     in
     rec {
       inherit overlays;
@@ -163,6 +208,7 @@
             modules = [
               ./system/configuration-nixos.nix
               ./system/configuration-${machine.name}.nix
+              (stylixConfig "light") # dark/light should have virtually no effect at OS level?
             ];
           };
         }) nixosMachines
@@ -179,6 +225,7 @@
             modules = [
               ./system/configuration-darwin.nix
               ./system/configuration-${machine.name}.nix
+              (stylixConfig "light") # dark/light should have virtually no effect at OS level?
             ];
           };
         }) darwinMachines
@@ -201,6 +248,7 @@
               ./home/home.nix
               ./home/home-${if (isDarwin machine.system) then "darwin" else "nixos"}.nix
               ./home/home-${machine.name}.nix
+              (stylixConfig "light")
             ];
           };
         }) machines

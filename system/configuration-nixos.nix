@@ -25,6 +25,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     inputs.agenix.nixosModules.default
+    inputs.stylix.nixosModules.stylix
   ];
 
   # Bootloader.
@@ -152,15 +153,17 @@
   virtualisation.docker.enable = true;
 
   # Fonts
-  fonts.fontDir.enable = true;
-  fonts.packages = with pkgs; [
-    etBook
-    nerd-fonts.droid-sans-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-    nerd-fonts.symbols-only
-    nerd-fonts.ubuntu
-  ];
+  # NOTE: managed by stylix
+  # fonts.fontDir.enable = true;
+  # fonts.packages = with pkgs; [
+  #   etBook
+  #   nerd-fonts.droid-sans-mono
+  #   nerd-fonts.jetbrains-mono
+  #   nerd-fonts.fira-code
+  #   nerd-fonts.symbols-only
+  #   nerd-fonts.ubuntu
+  # ];
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

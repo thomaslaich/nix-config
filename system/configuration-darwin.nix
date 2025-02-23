@@ -14,7 +14,10 @@
     extra-substituters = https://nix-community.cachix.org https://devenv.cachix.org https://cache.iog.io 
   '';
 
-  imports = [ inputs.agenix.darwinModules.default ];
+  imports = [
+    inputs.agenix.darwinModules.default
+    inputs.stylix.darwinModules.stylix
+  ];
 
   nixpkgs = {
     overlays = [
@@ -75,16 +78,16 @@
   };
 
   # Fonts
-  fonts.packages = with pkgs; [
-    ubuntu_font_family
-    etBook
-    nerd-fonts.droid-sans-mono
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-    nerd-fonts.symbols-only
-    nerd-fonts.ubuntu
-
-  ];
+  # NOTE: managed by stylix
+  # fonts.packages = with pkgs; [
+  #   ubuntu_font_family
+  #   etBook
+  #   nerd-fonts.droid-sans-mono
+  #   nerd-fonts.jetbrains-mono
+  #   nerd-fonts.fira-code
+  #   nerd-fonts.symbols-only
+  #   nerd-fonts.ubuntu
+  # ];
 
   # some GUI apps need to be installed with homebrew (but not all!)
   homebrew = {
