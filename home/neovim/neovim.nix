@@ -255,18 +255,11 @@
           config = builtins.readFile ./plugins/copilot.lua;
         };
 
-        neorg = with pkgs; [
-          {
-            plugin = vimPlugins.neorg;
-            type = "lua";
-            config = builtins.readFile ./plugins/neorg.lua;
-          }
-          {
-            plugin = vimPlugins.neorg-telescope;
-            type = "lua";
-            config = builtins.readFile ./plugins/neorg-telescope.lua;
-          }
-        ];
+        neorg = with pkgs; {
+          plugin = vimPlugins.neorg;
+          type = "lua";
+          config = builtins.readFile ./plugins/neorg.lua;
+        };
 
         orgmode = with pkgs; [
           {
@@ -299,7 +292,7 @@
         };
       in
       pkgs.lib.lists.flatten [
-        # neorg
+        neorg
         blink-cmp
         conform-nvim
         copilot

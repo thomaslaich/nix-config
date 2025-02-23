@@ -947,16 +947,15 @@
         "norg-meta": "norg-meta"
       },
       "locked": {
-        "lastModified": 1731841906,
-        "narHash": "sha256-rUtaN7ixulzMKCpoMkVpvc60pehHpi4JNWxeNSNNwYU=",
+        "lastModified": 1740327468,
+        "narHash": "sha256-bUH9y5bo77UDIKi0Y+CIKsXH7xv4x9kNyYYEW6xu4Oo=",
         "owner": "nvim-neorg",
         "repo": "nixpkgs-neorg-overlay",
-        "rev": "9557ac5d478e82974012e53044f1f856a69fee13",
+        "rev": "3534774289ac352b585d31bb351cbaaffb5c3a77",
         "type": "github"
       },
       "original": {
         "owner": "nvim-neorg",
-        "ref": "pull/11/head",
         "repo": "nixpkgs-neorg-overlay",
         "type": "github"
       }

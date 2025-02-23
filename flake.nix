@@ -29,8 +29,7 @@
     emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
-    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay?ref=pull/11/head"; # latest master is currently broken, TODO: undo this change
-    # nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions?rev=8e091c59f250bcc1f6e73350fcacc59b36769ade";
+    neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
 
