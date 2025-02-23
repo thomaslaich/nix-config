@@ -192,7 +192,7 @@ in
       discord
       kitty
       spotify
-      ghostty
+      # ghostty # currently broken in nixpkgs
 
       # lsps and formatters
       bash-language-server

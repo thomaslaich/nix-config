@@ -100,6 +100,7 @@
       "banana-cake-pop"
       "dropbox"
       "firefox"
+      "ghostty"
       "google-chrome"
       "microsoft-teams"
       "mongodb-compass"
