@@ -49,11 +49,10 @@ opt.swapfile = false
 
 opt.conceallevel = 2 -- Hide * markup for bold and italic (Neorg)
 
-
 -- KEYBINDINGS
-vim.keymap.set("n", "<leader>-", oil.open, { desc = "Browse parent directory" })
+map("n", "<leader>-", oil.open, { desc = "Browse parent directory" })
 -- inspired by doom emacs
-vim.keymap.set("n", "<leader>.", oil.open, { desc = "Browse parent directory" })
+map("n", "<leader>.", oil.open, { desc = "Browse parent directory" })
 
 map("n", "<leader>cf", "<cmd>edit $MYVIMRC<CR>", { desc = "open init.lua" })
 
@@ -86,7 +85,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         desc = "LSP: " .. desc
       end
 
-      vim.keymap.set("n", keys, func, { buffer = ev.buf, desc = desc })
+      map("n", keys, func, { buffer = ev.buf, desc = desc })
     end
 
     -- general
@@ -139,7 +138,7 @@ map("n", "<leader>wc", "<C-W>q", { desc = "Close Window" })
 map("n", "<leader>bk", ":bdelete<CR>", { desc = "Kill buffer" })
 map("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 map("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
--- map("n", "<leader>bb", ":Telescope buffers<CR>", { desc = "Switch buffer" })
+map("n", "<leader>bb", fzf.buffers, { desc = "Switch buffer" })
 
 -- [f] FIND KEYBINDINGS
 
@@ -165,9 +164,9 @@ local function find_git_root()
   return git_root
 end
 
-vim.keymap.set("n", "<leader>?", fzf.man_pages, { desc = "[?] Find in help" })
-vim.keymap.set("n", "<leader><space>", fzf.buffers, { desc = "[ ] Find existing buffers" })
--- vim.keymap.set("n", "<leader>/", function()
+map("n", "<leader>?", fzf.man_pages, { desc = "[?] Find in help" })
+map("n", "<leader><space>", fzf.buffers, { desc = "[ ] Find existing buffers" })
+-- map("n", "<leader>/", function()
 --   -- You can pass additional configuration to telescope to change theme, layout, etc.
 --   fzf.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
 --     winblend = 10,
@@ -175,34 +174,34 @@ vim.keymap.set("n", "<leader><space>", fzf.buffers, { desc = "[ ] Find existing 
 --   }))
 -- end, { desc = "[/] Fuzzily search in current buffer" })
 
-vim.keymap.set("n", "<leader>ff", fzf.files, { desc = "Search Files" })
+map("n", "<leader>ff", fzf.files, { desc = "Search Files" })
 
-vim.keymap.set("n", "<leader>fa", function()
+map("n", "<leader>fa", function()
   fzf.find_files({ no_ignore = true, hidden = true })
 end, { desc = "Find all Files" })
-vim.keymap.set("n", "<leader>fh", fzf.help_tags, { desc = "Search Help" })
--- vim.keymap.set("n", "<leader>fw", telescope_builtin.grep_string, { desc = "Search current Word" })
-vim.keymap.set("n", "<leader>fg", function()
+map("n", "<leader>fh", fzf.help_tags, { desc = "Search Help" })
+-- map("n", "<leader>fw", telescope_builtin.grep_string, { desc = "Search current Word" })
+map("n", "<leader>fg", function()
   fzf.live_grep({})
 end, { desc = "Search by Grep" })
-vim.keymap.set("n", "<leader>fG", ":LiveGrepGitRoot<cr>", { desc = "Search by Grep on Git Root" })
-vim.keymap.set("n", "<leader>fd", fzf.diagnostics_document, { desc = "Search Diagnostics" })
-vim.keymap.set("n", "<leader>fr", fzf.resume, { desc = "Search Resume" })
-vim.keymap.set("n", "<leader>fc", fzf.commands, { desc = "Search Commands" })
--- vim.keymap.set("n", "<leader>fy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
-vim.keymap.set("n", "<leader>fo", fzf.oldfiles, { desc = "Find recently opened files" })
+map("n", "<leader>fG", ":LiveGrepGitRoot<cr>", { desc = "Search by Grep on Git Root" })
+map("n", "<leader>fd", fzf.diagnostics_document, { desc = "Search Diagnostics" })
+map("n", "<leader>fr", fzf.resume, { desc = "Search Resume" })
+map("n", "<leader>fc", fzf.commands, { desc = "Search Commands" })
+-- map("n", "<leader>fy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
+map("n", "<leader>fo", fzf.oldfiles, { desc = "Find recently opened files" })
 
-vim.keymap.set("n", "<leader>ft", fzf.treesitter, { desc = "Search Treesitter" })
+map("n", "<leader>ft", fzf.treesitter, { desc = "Search Treesitter" })
 
 -- [g] GIT KEYBINDINGS
 
-vim.keymap.set("n", "<leader>gf", fzf.git_files, { desc = "Search Git Files" })
-vim.keymap.set("n", "<leader>gc", fzf.git_commits, { desc = "Git Commits" })
-vim.keymap.set("n", "<leader>gb", fzf.git_branches, { desc = "Git Branches" })
-vim.keymap.set("n", "<leader>gs", fzf.git_status, { desc = "Git Status" })
+map("n", "<leader>gf", fzf.git_files, { desc = "Search Git Files" })
+map("n", "<leader>gc", fzf.git_commits, { desc = "Git Commits" })
+map("n", "<leader>gb", fzf.git_branches, { desc = "Git Branches" })
+map("n", "<leader>gs", fzf.git_status, { desc = "Git Status" })
 
 -- [t] Toggle
-vim.keymap.set("n", "<leader>tb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
+map("n", "<leader>tb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
 
 -- enable spell checking for text files
 local spell_augroup = vim.api.nvim_create_augroup("spell", { clear = true })
