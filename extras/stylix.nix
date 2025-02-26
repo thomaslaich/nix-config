@@ -27,8 +27,10 @@ in
       };
 
       monospace = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans Mono";
+        package = pkgs.nerd-fonts.dejavu-sans-mono;
+        name = "DejaVuSansMono Nerd Font";
+        # package = pkgs.dejavu_fonts;
+        # name = "DejaVu Sans Mono";
       };
 
       emoji = {

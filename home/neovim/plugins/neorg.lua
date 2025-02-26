@@ -15,12 +15,6 @@ require("neorg").setup({
         default_workspace = "work",
       },
     },
-    -- completion
-    ["core.completion"] = {
-      config = {
-        engine = "nvim-cmp",
-      },
-    },
     -- nice icons, and folding
     ["core.concealer"] = {},
     -- automtatically summarize workspaces
