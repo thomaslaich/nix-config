@@ -328,107 +328,102 @@
           "workbench.sideBar.location" = "right";
         };
 
-        extensions = with pkgs.vscode-marketplace; [
-          # Theme
-          # enkia.tokyo-night
-          # keifererikson.nightfox
-          # catppuccin.catppuccin-vsc
-          # catppuccin.catppuccin-vsc-icons
+        extensions =
+          # From vscode overlay
+          with pkgs.vscode-marketplace;
+          [
+            # Misc
+            eamodio.gitlens
+            github.copilot
+            github.copilot-chat
+            postman.postman-for-vscode
+            rrudi.vscode-dired
+            mkhl.direnv
+            editorconfig.editorconfig # needed?
+            github.vscode-github-actions
+            kokakiwi.vscode-just
+            humao.rest-client
+            vscodevim.vim
 
-          # Misc
-          eamodio.gitlens
-          github.copilot
-          github.copilot-chat
-          postman.postman-for-vscode
-          rrudi.vscode-dired
-          mkhl.direnv
-          editorconfig.editorconfig # needed?
-          github.vscode-github-actions
-          kokakiwi.vscode-just
-          humao.rest-client
-          vscodevim.vim
+            # JS/TS
+            ms-vscode.vscode-typescript-next
+            svelte.svelte-vscode
+            dbaeumer.vscode-eslint
+            unifiedjs.vscode-mdx
+            esbenp.prettier-vscode
 
-          # JS/TS
-          ms-vscode.vscode-typescript-next
-          svelte.svelte-vscode
-          dbaeumer.vscode-eslint
-          unifiedjs.vscode-mdx
-          esbenp.prettier-vscode
+            # Python
+            ms-python.python
+            ms-toolsai.jupyter
+            ms-python.vscode-pylance
+            ms-python.debugpy
+            charliermarsh.ruff
 
-          # Python
-          ms-python.python
-          ms-toolsai.jupyter
-          ms-python.vscode-pylance
-          ms-python.debugpy
+            # Go
+            golang.go
 
-          # Go
-          golang.go
+            # Rust
+            rust-lang.rust-analyzer
+            # example of using open-vsx instead
+            # open-vsx-release.rust-lang.rust-analyzer
 
-          # Rust
-          rust-lang.rust-analyzer
-          # example of using open-vsx instead
-          # open-vsx-release.rust-lang.rust-analyzer
+            # .NET
+            ms-dotnettools.vscode-dotnet-runtime
+            csharpier.csharpier-vscode # formatter
+            tintoy.msbuild-project-tools
 
-          # .NET
-          # ms-dotnettools.vscode-dotnet-pack
-          pkgs.vscode-extensions.ms-dotnettools.csharp # coming from overlay
-          pkgs.vscode-extensions.ms-dotnettools.csdevkit # coming from overlay
-          # ms-dotnettools.dotnet-interactive-vscode
-          ms-dotnettools.vscode-dotnet-runtime
-          # ionide.ionide-fsharp
-          csharpier.csharpier-vscode # formatter
-          # icsharpcode.ilspy-vscode
-          tintoy.msbuild-project-tools
+            # Lua
+            sumneko.lua
 
-          # Lua
-          sumneko.lua
+            # Nix
+            jnoortheen.nix-ide
 
-          # Nix
-          # bbenoist.nix
-          # brettm12345.nixfmt-vscode
-          jnoortheen.nix-ide
+            # Dockerols.vscode-docker
+            ms-kubernetes-tools.vscode-kubernetes-tools
 
-          # Dockerols.vscode-docker
-          ms-kubernetes-tools.vscode-kubernetes-tools
+            # XML, YAML, TOML
+            redhat.vscode-yaml
+            be5invis.toml
+            redhat.vscode-xml
+            bluebrown.yamlfmt
 
-          # XML, YAML, TOML
-          redhat.vscode-yaml
-          be5invis.toml
-          redhat.vscode-xml
-          bluebrown.yamlfmt
+            # GraphQL
+            graphql.vscode-graphql-syntax
+            graphql.vscode-graphql
+            meta.relay
 
-          # GraphQL
-          graphql.vscode-graphql-syntax
-          graphql.vscode-graphql
-          meta.relay
+            # C/C++
+            # ms-vscode.makefile-tools
+            # ms-vscode.cpptools
 
-          # C/C++
-          # ms-vscode.makefile-tools
-          # ms-vscode.cpptools
+            # Lisp
+            mattn.lisp
 
-          # Lisp
-          mattn.lisp
+            # Haskell
+            haskell.haskell
+            justusadam.language-haskell
 
-          # Haskell
-          haskell.haskell
-          justusadam.language-haskell
+            # Azure
+            ms-azuretools.vscode-azureresourcegroups
+            ms-vscode.azure-account
+            ms-azuretools.vscode-azurefunctions
 
-          # Azure
-          ms-azuretools.vscode-azureresourcegroups
-          ms-vscode.azure-account
-          ms-azuretools.vscode-azurefunctions
+            # Galaxus
+            dg-infinity.claptrap
+            # Avro
+            streetsidesoftware.avro
 
-          # Galaxus
-          dg-infinity.claptrap
-          # Avro
-          streetsidesoftware.avro
+            # Powershell
+            # ms-vscode.powershell
 
-          # Powershell
-          # ms-vscode.powershell
-
-          # Shell
-          timonwong.shellcheck
-        ];
+            # Shell
+            timonwong.shellcheck
+          ]
+          ++ (with pkgs.vscode-extensions; [
+            ms-toolsai.jupyter
+            ms-dotnettools.csharp
+            ms-dotnettools.csdevkit
+          ]);
       };
     };
   };
