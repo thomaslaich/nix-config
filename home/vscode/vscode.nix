@@ -334,8 +334,6 @@
           [
             # Misc
             eamodio.gitlens
-            github.copilot
-            github.copilot-chat
             postman.postman-for-vscode
             rrudi.vscode-dired
             mkhl.direnv
@@ -354,7 +352,6 @@
 
             # Python
             ms-python.python
-            ms-toolsai.jupyter
             ms-python.vscode-pylance
             ms-python.debugpy
             charliermarsh.ruff
@@ -368,7 +365,8 @@
             # open-vsx-release.rust-lang.rust-analyzer
 
             # .NET
-            ms-dotnettools.vscode-dotnet-runtime
+            ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
+            ms-dotnettools.vscode-dotnet-runtime # .NET install tool
             csharpier.csharpier-vscode # formatter
             tintoy.msbuild-project-tools
 
@@ -423,6 +421,8 @@
             ms-toolsai.jupyter
             ms-dotnettools.csharp
             ms-dotnettools.csdevkit
+            github.copilot
+            github.copilot-chat
           ]);
       };
     };
