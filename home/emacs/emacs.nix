@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 {
   programs.emacs = {
-    enable = true;
+    enable = false;
     package = pkgs.emacsWithPackagesFromUsePackage {
       # We use the README.org directly. The file will be tangled automatically,
       # that is, the source code blocks are going to be extracted.
