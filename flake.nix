@@ -150,39 +150,51 @@
       );
 
       nixosConfigurations = builtins.listToAttrs (
-        builtins.map (machine: {
-          inherit (machine) name;
-          value = lib.nixosSystem {
-            inherit (machine) system;
-            specialArgs = {
-              inherit inputs;
-              inherit outputs;
-              mode = "light";
-            };
-            modules = [
-              ./system/configuration-nixos.nix
-              ./system/configuration-${machine.name}.nix
-            ];
-          };
-        }) nixosMachines
+        builtins.concatMap
+          (
+            mode:
+            builtins.map (machine: {
+              name = "${machine.name}-${mode}";
+              value = lib.nixosSystem {
+                inherit (machine) system;
+                specialArgs = {
+                  inherit inputs outputs mode;
+                };
+                modules = [
+                  ./system/configuration-nixos.nix
+                  ./system/configuration-${machine.name}.nix
+                ];
+              };
+            }) nixosMachines
+          )
+          [
+            "light"
+            "dark"
+          ]
       );
 
       darwinConfigurations = builtins.listToAttrs (
-        builtins.map (machine: {
-          inherit (machine) name;
-          value = darwin.lib.darwinSystem {
-            inherit (machine) system;
-            specialArgs = {
-              inherit inputs;
-              inherit outputs;
-              mode = "light";
-            };
-            modules = [
-              ./system/configuration-darwin.nix
-              ./system/configuration-${machine.name}.nix
-            ];
-          };
-        }) darwinMachines
+        builtins.concatMap
+          (
+            mode:
+            builtins.map (machine: {
+              name = "${machine.name}-${mode}";
+              value = darwin.lib.darwinSystem {
+                inherit (machine) system;
+                specialArgs = {
+                  inherit inputs outputs mode;
+                };
+                modules = [
+                  ./system/configuration-darwin.nix
+                  ./system/configuration-${machine.name}.nix
+                ];
+              };
+            }) darwinMachines
+          )
+          [
+            "light"
+            "dark"
+          ]
       );
 
       homeConfigurations = builtins.listToAttrs (
@@ -223,13 +235,21 @@
               machine:
               let
                 pkgs = pkgsBySystem.${system};
-                rebuildScript = pkgs.writeShellScript "rebuild-${machine.name}" (
+                rebuildScriptLight = pkgs.writeShellScript "rebuild-${machine.name}-light" (
                   if (isDarwin machine.system) then
                     "${
                       self.darwinConfigurations.${machine.name}.system
-                    }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}"
+                    }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}-light"
                   else
-                    "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}"
+                    "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}-light"
+                );
+                rebuildScriptDark = pkgs.writeShellScript "rebuild-${machine.name}-dark" (
+                  if (isDarwin machine.system) then
+                    "${
+                      self.darwinConfigurations.${machine.name}.system
+                    }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}-dark"
+                  else
+                    "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}-dark"
                 );
                 hmSwitchScriptLight = pkgs.writeShellScript "hm-switch-${machine.name}-light" "${
                   inputs.home-manager.packages.${system}.home-manager
@@ -240,10 +260,17 @@
               in
               [
                 {
-                  name = "rebuild-${machine.name}";
+                  name = "rebuild-${machine.name}-light";
                   value = {
                     type = "app";
-                    program = "${rebuildScript}";
+                    program = "${rebuildScriptLight}";
+                  };
+                }
+                {
+                  name = "rebuild-${machine.name}-dark";
+                  value = {
+                    type = "app";
+                    program = "${rebuildScriptDark}";
                   };
                 }
                 {
