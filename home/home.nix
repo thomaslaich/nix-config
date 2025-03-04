@@ -10,8 +10,8 @@ let
   dotnet-packages =
     with pkgs.dotnetCorePackages;
     combinePackages [
-      sdk_8_0
-      sdk_9_0
+      sdk_9_0-bin
+      sdk_8_0-bin
     ];
   inherit (config.home) homeDirectory;
 in
