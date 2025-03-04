@@ -26,7 +26,7 @@
     ./hardware-configuration.nix
     inputs.agenix.nixosModules.default
     inputs.stylix.nixosModules.stylix
-    ../extras/stylix.nix
+    ../stylix.nix
   ];
 
   # Bootloader.

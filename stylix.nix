@@ -1,8 +1,13 @@
-{ pkgs, mode, ... }:
+{
+  pkgs,
+  mode,
+  inputs,
+  ...
+}:
 let
   schemes = {
-    light = ./kauz-light.yml;
-    dark = ./kauz-dark.yml;
+    light = "${inputs.kauz}/base24/kauz-light.yml";
+    dark = "${inputs.kauz}/base24/kauz-dark.yml";
   };
 in
 {

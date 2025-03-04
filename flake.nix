@@ -30,7 +30,7 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions?rev=35ff5dce04469e7b4e56a9d997e5201bfce52ae3"; # TODO remove this pin
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
 
     # theming
@@ -43,8 +43,10 @@
     dg-nix.url = "git+ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/devinite/Chabis.Nix";
     dg-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-
-    
+    kauz = {
+      url = "github:buntec/kauz";
+      flake = false;
+    };
   };
 
   nixConfig = {

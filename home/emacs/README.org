@@ -932,48 +932,48 @@ does not allow us to display event blocks graphically.
 Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we have to define them ourselves:
 
 #+begin_src emacs-lisp
-  (use-package org-timeblock
-    :hook ((org-timeblock-mode org-timeblock-list-mode) . my/org-timeblock-evil-map)
-    :init
-    (defun my/org-timeblock-evil-map ()
-      "Set the keybindings for 'org-timeblock' to be compatible with evil mode"
-      (general-evil-define-key 'normal org-timeblock-mode-map
-        "+" 'org-timeblock-new-task
-        "j" 'org-timeblock-forward-block
-        "l" 'org-timeblock-forward-column
-        "h" 'org-timeblock-backward-column
-        "k" 'org-timeblock-backward-block
-        "}" 'org-timeblock-day-later
-        "{" 'org-timeblock-day-earlier
-        "RET" 'org-timeblock-goto
-        "TAB" 'org-timeblock-goto-other-window
-        "d" 'org-timeblock-set-duration
-        "r" 'org-timeblock-redraw-buffers
-        "gd" 'org-timeblock-jump-to-day
-        "s" 'org-timeblock-schedule
-        "t" 'org-timeblock-toggle-timeblock-list
-        "v" 'org-timeblock-switch-scaling
-        "V" 'org-timeblock-switch-view)
-      (general-evil-define-key 'normal org-timeblock-list-mode-map
-        "+" 'org-timeblock-new-task
-        "j" 'org-timeblock-list-next-line
-        "k" 'org-timeblock-list-previous-line
-        "}" 'org-timeblock-day-later
-        "{" 'org-timeblock-day-earlier
-        "C-s" 'org-timeblock-list-save
-        "M-<down>" 'org-timeblock-list-drag-line-forward
-        "M-<up>" 'org-timeblock-list-drag-line-backward
-        "RET" 'org-timeblock-list-goto
-        "TAB" 'org-timeblock-list-goto-other-window
-        "S" 'org-timeblock-list-toggle-sort-function
-        "d" 'org-timeblock-list-set-duration
-        "r" 'org-timeblock-redraw-buffers
-        "gd" 'org-timeblock-jump-to-day
-        "q" 'org-timeblock-quit
-        "s" 'org-timeblock-list-schedule
-        "t" 'org-timeblock-list-toggle-timeblock
-        "v" 'org-timeblock-switch-scaling
-        "V" 'org-timeblock-switch-view)))
+  ;; (use-package org-timeblock
+  ;;   :hook ((org-timeblock-mode org-timeblock-list-mode) . my/org-timeblock-evil-map)
+  ;;   :init
+  ;;   (defun my/org-timeblock-evil-map ()
+  ;;     "Set the keybindings for 'org-timeblock' to be compatible with evil mode"
+  ;;     (general-evil-define-key 'normal org-timeblock-mode-map
+  ;;       "+" 'org-timeblock-new-task
+  ;;       "j" 'org-timeblock-forward-block
+  ;;       "l" 'org-timeblock-forward-column
+  ;;       "h" 'org-timeblock-backward-column
+  ;;       "k" 'org-timeblock-backward-block
+  ;;       "}" 'org-timeblock-day-later
+  ;;       "{" 'org-timeblock-day-earlier
+  ;;       "RET" 'org-timeblock-goto
+  ;;       "TAB" 'org-timeblock-goto-other-window
+  ;;       "d" 'org-timeblock-set-duration
+  ;;       "r" 'org-timeblock-redraw-buffers
+  ;;       "gd" 'org-timeblock-jump-to-day
+  ;;       "s" 'org-timeblock-schedule
+  ;;       "t" 'org-timeblock-toggle-timeblock-list
+  ;;       "v" 'org-timeblock-switch-scaling
+  ;;       "V" 'org-timeblock-switch-view)
+  ;;     (general-evil-define-key 'normal org-timeblock-list-mode-map
+  ;;       "+" 'org-timeblock-new-task
+  ;;       "j" 'org-timeblock-list-next-line
+  ;;       "k" 'org-timeblock-list-previous-line
+  ;;       "}" 'org-timeblock-day-later
+  ;;       "{" 'org-timeblock-day-earlier
+  ;;       "C-s" 'org-timeblock-list-save
+  ;;       "M-<down>" 'org-timeblock-list-drag-line-forward
+  ;;       "M-<up>" 'org-timeblock-list-drag-line-backward
+  ;;       "RET" 'org-timeblock-list-goto
+  ;;       "TAB" 'org-timeblock-list-goto-other-window
+  ;;       "S" 'org-timeblock-list-toggle-sort-function
+  ;;       "d" 'org-timeblock-list-set-duration
+  ;;       "r" 'org-timeblock-redraw-buffers
+  ;;       "gd" 'org-timeblock-jump-to-day
+  ;;       "q" 'org-timeblock-quit
+  ;;       "s" 'org-timeblock-list-schedule
+  ;;       "t" 'org-timeblock-list-toggle-timeblock
+  ;;       "v" 'org-timeblock-switch-scaling
+  ;;       "V" 'org-timeblock-switch-view)))
 #+end_src
 
 ** Org GTD
@@ -1339,7 +1339,7 @@ we enter ~python-mode~:
 
 To enable linting with ~ruff~, we have to add:
 #+begin_src emacs-lisp
-  (use-package 'flymake-ruff
+  (use-package flymake-ruff
     :hook
     (python-ts-mode . flymake-ruff-load))
 #+end_src

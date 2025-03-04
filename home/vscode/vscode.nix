@@ -366,6 +366,7 @@
 
             # .NET
             ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
+            ms-dotnettools.vscode-dotnet-runtime # .NET install tool
             csharpier.csharpier-vscode # formatter
             tintoy.msbuild-project-tools
 
@@ -388,10 +389,6 @@
             graphql.vscode-graphql-syntax
             graphql.vscode-graphql
             meta.relay
-
-            # C/C++
-            # ms-vscode.makefile-tools
-            # ms-vscode.cpptools
 
             # Lisp
             mattn.lisp
@@ -420,7 +417,6 @@
             ms-toolsai.jupyter
             ms-dotnettools.csharp
             ms-dotnettools.csdevkit
-            ms-dotnettools.vscode-dotnet-runtime # .NET install tool
             github.copilot
             github.copilot-chat
           ]);
