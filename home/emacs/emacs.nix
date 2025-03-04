@@ -1,11 +1,26 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   programs.emacs = {
-    enable = false;
+    enable = true;
     package = pkgs.emacsWithPackagesFromUsePackage {
       # We use the README.org directly. The file will be tangled automatically,
       # that is, the source code blocks are going to be extracted.
-      config = ./README.org;
+      # config = ./README.org;
+
+      # workaround for making stylix work with emacs-overlay
+      config = pkgs.writeTextFile {
+        text = ''
+          ${builtins.readFile ./README.org}
+          #+begin_src emacs-lisp
+          ${config.programs.emacs.extraConfig}
+          #+end_src'';
+        name = "config.org";
+      };
 
       # Include the config as a default init file
       defaultInitFile = true;
@@ -33,7 +48,9 @@
 
       # Optionally provide extra packages not in the configuration file.
       extraEmacsPackages =
-        epkgs: with epkgs; [
+        epkgs:
+        with epkgs;
+        [
           # packages from melpa (pre-requisites)
           # TODO can I just move them into config.el?
           treesit-grammars.with-all-grammars
@@ -42,7 +59,9 @@
 
           # custom built packages
           lsp-install-servers # TODO <- this does not seem to work
-        ];
+        ]
+        # workaround for making stylix work with emacs-overlay
+        ++ (config.programs.emacs.extraPackages epkgs);
 
       # Optionally override derivations.
       override =
