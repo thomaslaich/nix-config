@@ -78,8 +78,6 @@ in
       inputs.epkgs-overlay.overlays.default
       # Emacs overlay
       inputs.emacs-overlay.overlays.default
-      # dg-cli overlay
-      inputs.dg-nix.overlays.default
       # vscode overlay
       inputs.nix-vscode-extensions.overlays.default
 
@@ -201,8 +199,6 @@ in
       vscode-langservers-extracted
       yamlfmt
 
-      # Galaxus
-      # dg-cli
       watchman # relay GQL incremental compilation
     ]
     ++

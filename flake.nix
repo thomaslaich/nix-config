@@ -39,10 +39,6 @@
     # my own little test
     hcat.url = "github:thomaslaich/hcat";
 
-    # dg-cli, etc.
-    dg-nix.url = "git+ssh://git@ssh.dev.azure.com/v3/DigitecGalaxus/devinite/Chabis.Nix";
-    dg-nix.inputs.nixpkgs.follows = "nixpkgs";
-
     kauz = {
       url = "github:buntec/kauz";
       flake = false;
