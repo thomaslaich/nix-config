@@ -352,7 +352,6 @@
 
             # Python
             ms-python.python
-            ms-python.vscode-pylance
             ms-python.debugpy
             charliermarsh.ruff
 
@@ -412,13 +411,19 @@
 
             # Shell
             timonwong.shellcheck
+
+            # GCP
+            ashishalex.dataform-lsp-vscode
           ]
           ++ (with pkgs.vscode-extensions; [
-            ms-toolsai.jupyter
             ms-dotnettools.csharp
             ms-dotnettools.csdevkit
+
             github.copilot
             github.copilot-chat
+
+            ms-python.vscode-pylance
+            ms-toolsai.jupyter
           ]);
       };
     };

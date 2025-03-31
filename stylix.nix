@@ -20,10 +20,6 @@ in
       url = "https://images.unsplash.com/photo-1524889777220-eae0b973ec80";
       sha256 = "sha256-Njkv8yt4RMZIo0poTtc2Avz8q1WZjREa9zwqLdYwtgE=";
     };
-    # targets.vscode = {
-    #   enable = true;
-    #   profileNames = [ "default" ];
-    # };
     fonts = {
       serif = {
         package = pkgs.dejavu_fonts;

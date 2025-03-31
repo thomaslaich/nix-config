@@ -22,6 +22,12 @@ in
     inputs.agenix.homeManagerModules.default
     inputs.stylix.homeManagerModules.stylix
     ../stylix.nix
+    {
+      stylix.targets.vscode = {
+        enable = true;
+        profileNames = [ "default" ];
+      };
+    }
     ./emacs/emacs.nix
     ./email/email.nix
     ./fish/fish.nix
@@ -118,16 +124,16 @@ in
     let
       python-packages =
         ps: with ps; [
-          jupyter
-          numpy
-          pandas
-          pyarrow
-          python-lsp-server
-          requests
-          scipy
-          matplotlib
+          # jupyter
+          # numpy
+          # pandas
+          # pyarrow
+          # python-lsp-server
+          # requests
+          # scipy
+          # matplotlib
         ];
-      python-with-packages = pkgs.python3.withPackages python-packages;
+      python-with-packages = pkgs.python311.withPackages python-packages;
     in
     with pkgs;
     [
@@ -166,6 +172,7 @@ in
       ripgrep # better grep
       scala-cli
       scc # analyse codebases
+      terraform
       tldr # simpler manpages
       vifm
       wget

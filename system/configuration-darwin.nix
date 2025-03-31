@@ -97,6 +97,9 @@
       autoUpdate = true;
       cleanup = "zap";
     };
+    taps = [
+      "pantsbuild/homebrew-tap"
+    ];
     casks = [
       "1password"
       "amethyst"
@@ -109,7 +112,9 @@
       "microsoft-teams"
       "mongodb-compass"
       "nordvpn"
+      "pantsbuild/homebrew-tap/pants"
       "pritunl"
+      "pycharm"
       "rancher"
       "skype"
       "studio-3t"
