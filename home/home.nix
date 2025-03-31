@@ -124,14 +124,14 @@ in
     let
       python-packages =
         ps: with ps; [
-          # jupyter
-          # numpy
-          # pandas
-          # pyarrow
-          # python-lsp-server
-          # requests
-          # scipy
-          # matplotlib
+          jupyter
+          numpy
+          pandas
+          pyarrow
+          python-lsp-server
+          requests
+          scipy
+          matplotlib
         ];
       python-with-packages = pkgs.python311.withPackages python-packages;
     in
