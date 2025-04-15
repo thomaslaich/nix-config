@@ -133,7 +133,7 @@ in
           scipy
           matplotlib
         ];
-      python-with-packages = pkgs.python311.withPackages python-packages;
+      python-with-packages = pkgs.python312.withPackages python-packages;
     in
     with pkgs;
     [
@@ -142,13 +142,17 @@ in
       amber
       any-nix-shell
       bat # better cat
+      bazel
+      clang # for bazel
       curl # http requests from command line
       eza # better ls (bound to `l` and `la` in fish)
       fd
       fzf
       gh # github CLI
       ghc
+      google-cloud-sdk
       httpie
+      libcxx
       jq # json parser
       # k9s
       killall
@@ -165,7 +169,6 @@ in
       nodejs
       openssl
       pixi
-      poetry # currently not working :(
       postgresql
       python-with-packages
       restic
@@ -174,6 +177,7 @@ in
       scc # analyse codebases
       terraform
       tldr # simpler manpages
+      uv
       vifm
       wget
       yarn

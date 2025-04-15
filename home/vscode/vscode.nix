@@ -353,6 +353,7 @@
             # Python
             ms-python.python
             ms-python.debugpy
+            ms-python.autopep8
             charliermarsh.ruff
 
             # Go
@@ -380,7 +381,7 @@
 
             # XML, YAML, TOML
             redhat.vscode-yaml
-            be5invis.toml
+            tamasfe.even-better-toml
             redhat.vscode-xml
             bluebrown.yamlfmt
 
