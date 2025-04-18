@@ -333,7 +333,6 @@
           with pkgs.vscode-marketplace;
           [
             # Misc
-            eamodio.gitlens
             postman.postman-for-vscode
             rrudi.vscode-dired
             mkhl.direnv
@@ -353,7 +352,6 @@
             # Python
             ms-python.python
             ms-python.debugpy
-            ms-python.autopep8
             charliermarsh.ruff
 
             # Go
@@ -425,6 +423,8 @@
 
             ms-python.vscode-pylance
             ms-toolsai.jupyter
+
+            eamodio.gitlens
           ]);
       };
     };

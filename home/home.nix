@@ -116,7 +116,7 @@ in
   ];
 
   home.sessionVariables = {
-    DOTNET_ROOT = "${dotnet-packages}";
+    DOTNET_ROOT = "${dotnet-packages}/share/dotnet";
     KRB5_CONFIG = "${homeDirectory}/.config/krb5.conf";
   };
 
