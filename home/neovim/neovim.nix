@@ -116,6 +116,17 @@
             '';
           }
 
+          # vim motions hints
+          {
+            plugin = pkgs.vimPlugins.precognition-nvim;
+            type = "lua";
+            config = ''
+              require('precognition').setup({
+                startVisible = false
+              })
+            '';
+          }
+
           { plugin = pkgs.vimPlugins.vim-tmux-navigator; }
         ];
 

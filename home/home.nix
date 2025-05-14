@@ -128,7 +128,6 @@ in
           numpy
           pandas
           pyarrow
-          python-lsp-server
           requests
           scipy
           matplotlib
@@ -142,7 +141,8 @@ in
       amber
       any-nix-shell
       bat # better cat
-      bazel
+      # bazel
+      bazelisk
       clang # for bazel
       curl # http requests from command line
       eza # better ls (bound to `l` and `la` in fish)
@@ -150,10 +150,11 @@ in
       fzf
       gh # github CLI
       ghc
+      gitu
       google-cloud-sdk
       httpie
-      libcxx
       jq # json parser
+      libcxx
       # k9s
       killall
       krb5
@@ -202,10 +203,12 @@ in
       nodePackages.typescript-language-server
       omnisharp-roslyn
       prettierd
+      pyright
       ruff
       ruff-lsp
       statix
       stylua
+      taplo
       vale
       vscode-langservers-extracted
       yamlfmt

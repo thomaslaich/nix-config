@@ -338,7 +338,7 @@
             mkhl.direnv
             editorconfig.editorconfig # needed?
             github.vscode-github-actions
-            kokakiwi.vscode-just
+            nefrob.vscode-just-syntax
             humao.rest-client
             vscodevim.vim
 
@@ -374,8 +374,10 @@
             # Nix
             jnoortheen.nix-ide
 
-            # Dockerols.vscode-docker
+            # Docker
+            ms-azuretools.vscode-docker
             ms-kubernetes-tools.vscode-kubernetes-tools
+            hashicorp.hcl
 
             # XML, YAML, TOML
             redhat.vscode-yaml
