@@ -36,13 +36,25 @@
     # theming
     stylix.url = "github:danth/stylix";
 
-    # my own little test
-    hcat.url = "github:thomaslaich/hcat";
+    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
 
     kauz = {
       url = "github:buntec/kauz";
       flake = false;
     };
+
+    # my own little test
+    hcat.url = "github:thomaslaich/hcat";
   };
 
   nixConfig = {
@@ -77,6 +89,12 @@
           name = "lenovo-desktop";
           user = "thomaslaich";
           system = flake-utils.lib.system.x86_64-linux;
+        }
+        # My Digitec device
+        {
+          name = "DG-BYOD-8119";
+          user = "thomaslaich";
+          system = flake-utils.lib.system.aarch64-darwin;
         }
       ];
       isDarwin = system: (builtins.match ".*darwin" system) != null;
@@ -183,6 +201,19 @@
                 modules = [
                   ./system/configuration-darwin.nix
                   ./system/configuration-${machine.name}.nix
+                  inputs.nix-homebrew.darwinModules.nix-homebrew
+                  {
+                    nix-homebrew = {
+                      inherit (machine) user;
+                      enable = true;
+                      enableRosetta = true;
+                      taps = {
+                        "homebrew/homebrew-core" = inputs.homebrew-core;
+                        "homebrew/homebrew-cask" = inputs.homebrew-cask;
+                      };
+                      autoMigrate = true; # Automatically migrate existing Homebrew installations
+                    };
+                  }
                 ];
               };
             }) darwinMachines

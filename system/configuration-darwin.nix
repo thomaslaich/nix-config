@@ -67,7 +67,7 @@
 
     # Used for backwards compatibility, please read the changelog before changing.
     # $ darwin-rebuild changelog
-    stateVersion = 4;
+    stateVersion = 5;
   };
 
   # `home-manager` currently has issues adding them to `~/Applications`
@@ -97,29 +97,15 @@
       autoUpdate = true;
       cleanup = "zap";
     };
-    taps = [
-      "pantsbuild/homebrew-tap"
-    ];
     casks = [
       "1password"
       "amethyst"
       "azure-data-studio"
-      "banana-cake-pop"
       "dropbox"
       "firefox"
       "ghostty"
       "google-chrome"
-      "microsoft-teams"
-      "mongodb-compass"
-      "nordvpn"
-      "pantsbuild/homebrew-tap/pants"
-      "pritunl"
-      "pycharm"
-      "rancher"
-      "skype"
       "studio-3t"
-      "telegram"
-      "whatsapp"
     ];
   };
 

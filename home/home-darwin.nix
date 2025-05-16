@@ -7,6 +7,12 @@
   ...
 }:
 {
+  home.packages = with pkgs; [
+    mos # smooth scrolling
+
+    pinentry_mac # gpg
+  ];
+
   home.activation = {
     rsync-home-manager-applications = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       rsyncArgs="--archive --checksum --copy-unsafe-links --delete"
@@ -18,8 +24,4 @@
       ${pkgs.rsync}/bin/rsync $rsyncArgs "$apps_source/" "$app_target"
     '';
   };
-
-  home.packages = with pkgs; [
-    mos # smooth scrolling
-  ];
 }
