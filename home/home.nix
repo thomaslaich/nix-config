@@ -205,7 +205,6 @@ in
       prettierd
       pyright
       ruff
-      ruff-lsp
       statix
       stylua
       taplo

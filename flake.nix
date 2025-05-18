@@ -30,11 +30,12 @@
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions?rev=35ff5dce04469e7b4e56a9d997e5201bfce52ae3"; # TODO remove this pin
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
 
     # theming
-    stylix.url = "github:danth/stylix";
+    stylix.url = "github:danth/stylix?rev=aaf976a8198be266a5d33b202e1a68363983f4a0"; # TODO remove this pin
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
 
@@ -55,11 +56,6 @@
 
     # my own little test
     hcat.url = "github:thomaslaich/hcat";
-  };
-
-  nixConfig = {
-    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
-    extra-substituters = "https://devenv.cachix.org";
   };
 
   outputs =
@@ -280,7 +276,7 @@
                 );
                 hmSwitchScriptLight = pkgs.writeShellScript "hm-switch-${machine.name}-light" "${
                   inputs.home-manager.packages.${system}.home-manager
-                }/bin/home-manager switch --flake ${self}#${machine.name}-light";
+                }/bin/home-manager switch --flake ${self}#${machine.name}-light --show-trace";
                 hmSwitchScriptDark = pkgs.writeShellScript "hm-switch-${machine.name}-dark" "${
                   inputs.home-manager.packages.${system}.home-manager
                 }/bin/home-manager switch --flake ${self}#${machine.name}-dark";

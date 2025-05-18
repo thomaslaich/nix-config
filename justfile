@@ -11,7 +11,7 @@ nixos-switch mode='light':
 # rebuild nix darwin configuration and switch. mode = 'dark' or 'light'
 [macos]
 nix-darwin-switch mode='light':
-    nix run .#rebuild-{{ host }}-{{ mode }}
+    sudo nix run .#rebuild-{{ host }}-{{ mode }}
 
 # rebuild Home Manager config and switch. mode = 'dark' or 'light'
 [unix]

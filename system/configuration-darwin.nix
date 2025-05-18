@@ -37,6 +37,7 @@
   # Add ability to used TouchID for sudo authentication
   security.pam.services.sudo_local.touchIdAuth = true;
   system = {
+    primaryUser = "thomaslaich";
     keyboard.enableKeyMapping = true;
     keyboard.remapCapsLockToControl = true;
 
@@ -126,4 +127,6 @@
     home = "/Users/thomaslaich";
     # shell = pkgs.fish;
   };
+
+  ids.gids.nixbld = 30000;
 }

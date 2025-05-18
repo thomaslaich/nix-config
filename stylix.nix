@@ -13,9 +13,10 @@ in
 {
   stylix = {
     enable = true;
+    enableReleaseChecks = false;
     base16Scheme = schemes.${mode};
     polarity = mode;
-    opacity.terminal = 1.0;
+    opacity.terminal = 0.8;
     image = pkgs.fetchurl {
       url = "https://images.unsplash.com/photo-1524889777220-eae0b973ec80";
       sha256 = "sha256-Njkv8yt4RMZIo0poTtc2Avz8q1WZjREa9zwqLdYwtgE=";
