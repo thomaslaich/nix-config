@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   outputs,
   pkgs,
@@ -18,6 +19,7 @@
     inputs.agenix.darwinModules.default
     inputs.stylix.darwinModules.stylix
     ../stylix.nix
+    ./yabai/yabai.nix
   ];
 
   nixpkgs = {
@@ -63,6 +65,7 @@
         NSAutomaticSpellingCorrectionEnabled = false;
         NSAutomaticPeriodSubstitutionEnabled = false;
         NSAutomaticQuoteSubstitutionEnabled = false;
+        ApplePressAndHoldEnabled = false;
       };
     };
 
@@ -81,15 +84,15 @@
 
   # Fonts
   # NOTE: managed by stylix
-  # fonts.packages = with pkgs; [
-  #   ubuntu_font_family
-  #   etBook
-  #   nerd-fonts.droid-sans-mono
-  #   nerd-fonts.jetbrains-mono
-  #   nerd-fonts.fira-code
-  #   nerd-fonts.symbols-only
-  #   nerd-fonts.ubuntu
-  # ];
+  fonts.packages = with pkgs; [
+    ubuntu_font_family
+    etBook
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.symbols-only
+    nerd-fonts.ubuntu
+  ];
 
   # some GUI apps need to be installed with homebrew (but not all!)
   homebrew = {
@@ -98,9 +101,9 @@
       autoUpdate = true;
       cleanup = "zap";
     };
+    taps = builtins.attrNames config.nix-homebrew.taps;
     casks = [
       "1password"
-      "amethyst"
       "azure-data-studio"
       "dropbox"
       "firefox"
@@ -127,6 +130,4 @@
     home = "/Users/thomaslaich";
     # shell = pkgs.fish;
   };
-
-  ids.gids.nixbld = 30000;
 }

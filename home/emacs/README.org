@@ -1083,9 +1083,9 @@ we have to define our own bindings here:
 [[https://github.com/copilot-emacs/copilot.el][copilot.el]] is the emacs plugin for GitHub Copilot support in Emacs. Note that this package
 is not available on Melpa as of now, so I bundled it in my [[https://github.com/thomaslaich/epkgs-overlay][epkgs-overlay]].
 #+begin_src emacs-lisp
-  (use-package copilot)
-  (add-hook 'prog-mode-hook 'copilot-mode)
-  (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+  ;; (use-package copilot)
+  ;; (add-hook 'prog-mode-hook 'copilot-mode)
+  ;; (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
 #+end_src
 
 ** LSP Integration

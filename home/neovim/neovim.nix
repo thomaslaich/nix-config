@@ -214,6 +214,14 @@
                 require"lsp-progress".setup {}
               '';
             };
+            
+            transparent = {
+              plugin = pkgs.vimPlugins.transparent-nvim;
+              type = "lua";
+              config = ''
+                require"transparent".setup {}
+              '';
+            };
           in
           pkgs.lib.lists.flatten [
             barbar
@@ -228,6 +236,7 @@
             trouble
             web-devicons
             which-key
+            transparent
           ];
 
         git-plugins = [

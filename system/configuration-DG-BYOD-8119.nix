@@ -9,4 +9,6 @@
   ];
 
   networking.hostName = "DG-BYOD-8119";
+
+  ids.gids.nixbld = 350;
 }

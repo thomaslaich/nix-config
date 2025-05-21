@@ -353,6 +353,7 @@
             ms-python.python
             ms-python.debugpy
             charliermarsh.ruff
+            astral-sh.ty
 
             # Go
             golang.go
