@@ -353,7 +353,7 @@
             ms-python.python
             ms-python.debugpy
             charliermarsh.ruff
-            astral-sh.ty
+            # astral-sh.ty # re-activate once ty works with pixi
 
             # Go
             golang.go
