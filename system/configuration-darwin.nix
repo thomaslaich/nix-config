@@ -20,6 +20,7 @@
     inputs.stylix.darwinModules.stylix
     ../stylix.nix
     ./yabai/yabai.nix
+    ./skhd/skhd.nix
   ];
 
   nixpkgs = {
