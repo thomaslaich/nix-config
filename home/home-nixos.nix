@@ -21,4 +21,8 @@
     whatsapp-for-linux
     ghostty
   ];
+  
+  home.sessionVariables = {
+    NIXOS_OZONE_WL = 1; # for vscode
+  };
 }
