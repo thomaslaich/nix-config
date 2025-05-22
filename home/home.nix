@@ -37,6 +37,29 @@ in
     ./vscode/vscode.nix
   ];
 
+  nixpkgs = {
+    # You can add overlays here
+    overlays = [
+      # Add overlays your own flake exports (from overlays and pkgs dir):
+      # outputs.overlays.additions
+      outputs.overlays.modifications
+      outputs.overlays.stable-packages
+
+      inputs.neorg-overlay.overlays.default
+      inputs.vimplugins-overlay.overlays.default
+      inputs.epkgs-overlay.overlays.default
+      inputs.emacs-overlay.overlays.default
+      inputs.nix-vscode-extensions.overlays.default
+    ];
+    # Configure your nixpkgs instance
+    config = {
+      # Disable if you don't want unfree packages
+      allowUnfree = true;
+      # Workaround for https://github.com/nix-community/home-manager/issues/2942
+      allowUnfreePredicate = _: true;
+    };
+  };
+
   home.stateVersion = "22.11";
 
   # Let Home Manager install and manage itself.
@@ -58,176 +81,191 @@ in
     enable = true;
   };
 
-  # private dropbox
-  services.syncthing = {
+  # # private dropbox
+  # services.syncthing = {
+  #   enable = true;
+  #   extraOptions = [ ];
+  # };
+
+  programs.htop.enable = true;
+  programs.htop.settings.show_program_path = true;
+
+  programs.gpg = {
     enable = true;
-    extraOptions = [ ];
-  };
-
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # Add overlays your own flake exports (from overlays and pkgs dir):
-      # outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.stable-packages
-
-      # from inputs
-
-      # Kauz colorscheme overlay
-      # inputs.kauz.overlays.default
-      # Neorg Overlay
-      inputs.neorg-overlay.overlays.default
-      # this adds a few vimplugins unavailable in nixpkgs
-      inputs.vimplugins-overlay.overlays.default
-      # this adds a few emacs packages unavailable in nixpkgs
-      inputs.epkgs-overlay.overlays.default
-      # Emacs overlay
-      inputs.emacs-overlay.overlays.default
-      # vscode overlay
-      inputs.nix-vscode-extensions.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-      # Workaround for https://github.com/nix-community/home-manager/issues/2942
-      allowUnfreePredicate = _: true;
-
-      # there is a bug in gnupg 2.4.1, so we need to downgrade to gnupag 2.2.x
-      # in turn gnupg 2.2.x has an insecure dep
-      # TODO remove when gnupg gets upgraded to >= 2.4.3
-      # permittedInsecurePackages = [ "libgcrypt-1.8.10" ];
+    # package = pkgs.gnupg22;
+    settings = {
+      # allow pw fill in applications like emacs without popups
+      pinentry-mode = "loopback";
+      # allow-loopback-entry = true;
     };
   };
 
-  # I use this for pipx installations now
-  # Of course I should not use pipx and instead install all CLI tools from source
-  home.sessionPath = [
-    "${homeDirectory}/.local/bin"
-    "${homeDirectory}/.rd/bin"
-  ];
-
-  home.sessionVariables = {
-    DOTNET_ROOT = "${dotnet-packages}/share/dotnet";
-    KRB5_CONFIG = "${homeDirectory}/.config/krb5.conf";
-  };
+  programs.zoxide.enable = true;
 
   home.packages =
     let
-      python-packages =
+      dotnet-language-support = with pkgs; [
+        dotnet-packages
+        csharpier
+        omnisharp-roslyn # LSP for use in Neovim and Emacs
+      ];
+
+      python-with-packages = pkgs.python312.withPackages (
         ps: with ps; [
           jupyter
+          matplotlib
           numpy
           pandas
           pyarrow
           requests
           scipy
-          matplotlib
-        ];
-      python-with-packages = pkgs.python312.withPackages python-packages;
+        ]
+      );
+      python-language-support = with pkgs; [
+        conda # the conda package manager, used sometimes even though I prefer pixi
+        pixi # dep management with Conda
+        pyright # LSP (TODO replace with ty once stable)
+        python-with-packages
+        ruff # formatter
+        uv # dep management with PyPI
+      ];
+      nix-tools = with pkgs; [
+        any-nix-shell
+        nil # LSP
+        nixfmt-rfc-style # formatter
+        statix # linter
+      ];
+      haskell-language-support = with pkgs; [
+        haskell-language-server # LSP
+        haskellPackages.fourmolu # formatter
+      ];
+      lua-language-support = with pkgs; [
+        lua # interpreter
+        lua-language-server # LSP
+        stylua # formatter
+      ];
+      go-language-support = with pkgs; [
+        go # compiler, formatter, dep management
+        gopls # LSP
+      ];
+      cpp-c-language-support = with pkgs; [
+        clang # compiler
+        clang-tools # LSP, formatter, linter
+        libcxx # needed for bazel?
+      ];
+      web-dev-support = with pkgs; [
+        nodePackages.prettier # formatter
+        nodePackages.typescript-language-server # LSP for JS/TS
+        nodejs # JS/TS
+        prettierd # formatter
+        stylelint # CSS linter
+        watchman # relay GQL incremental compilation
+        yarn # dep management
+      ];
+      bash-language-support = with pkgs; [
+        bash-language-server
+        shfmt # formatter
+      ];
+      rust-language-support = with pkgs; [
+        rust-analyzer # LSP
+        rustfmt # formatter
+        cargo # compiler / dep management
+      ];
+      java-language-support = with pkgs; [
+        jdk # compiler / JVM
+      ];
+      misc-langauge-tools = with pkgs; [
+        taplo # TOML tools
+        vale # markdown linter
+        vscode-langservers-extracted # LSPs for various config formats
+        yamlfmt # YAML formatter
+      ];
+      gui-apps = with pkgs; [
+        # ghostty # currently broken in nixpkgs
+        discord
+        spotify
+      ];
+      git-tools = with pkgs; [
+        gh # github CLI
+        gitu # Magit clone for the command line
+      ];
+      json-tools = with pkgs; [
+        fx
+        jless
+        jq # JSON parser
+      ];
+      network-tools = with pkgs; [
+        curl
+        hey
+        wget
+        xh
+      ];
+      cloud-tools = with pkgs; [
+        azure-cli
+        google-cloud-sdk
+        k9s
+        kubelogin
+        kubernetes-helm
+        lazydocker
+        terraform
+      ];
+      database-tools = with pkgs; [
+        postgresql
+      ];
+      build-tools = with pkgs; [
+        bazelisk # bazel wrapper (similar to NVM)
+      ];
+      misc = with pkgs; [
+        # _1password-cli # pw manager
+        age # file encryption tool, used togehter with agenix - https://github.com/FiloSottile/age
+        agenix-cli
+        amber # search & replace - https://github.com/dalance/amber
+        bat # better cat - https://github.com/sharkdp/bat
+        eza # better ls (bound to `l` and `la` in fish)
+        fd
+        fzf
+        httpie
+        killall
+        libnotify
+        ncdu
+        openssl
+        restic
+        ripgrep # better grep
+        scc # analyse codebases
+        tldr # simpler manpages
+        vifm
+        yazi # file manager
+      ];
     in
-    with pkgs;
-    [
-      _1password-cli # pw manager
-      age
-      amber
-      any-nix-shell
-      bat # better cat
-      # bazel
-      bazelisk
-      clang # for bazel
-      curl # http requests from command line
-      eza # better ls (bound to `l` and `la` in fish)
-      fd
-      fzf
-      gh # github CLI
-      ghc
-      gitu
-      google-cloud-sdk
-      httpie
-      jq # json parser
-      libcxx
-      # k9s
-      killall
-      krb5
-      kubelogin
-      kubernetes-helm
-      lazydocker
-      libnotify
-      lua
-      mu # maildir indexer
-      ncdu
-      nixfmt-rfc-style
-      nixpkgs-fmt
-      nodejs
-      openssl
-      pixi
-      postgresql
-      python-with-packages
-      restic
-      ripgrep # better grep
-      scala-cli
-      scc # analyse codebases
-      terraform
-      tldr # simpler manpages
-      uv
-      vifm
-      wget
-      yarn
-      yazi
-      zoxide # better cd (bound to `z` in fish)
+    pkgs.lib.lists.flatten [
+      # language support
+      dotnet-language-support
+      python-language-support
+      nix-tools
+      haskell-language-support
+      lua-language-support
+      go-language-support
+      cpp-c-language-support
+      web-dev-support
+      bash-language-support
+      rust-language-support
+      java-language-support
+      misc-langauge-tools
 
       # GUI apps
-      discord
-      spotify
-      # ghostty # currently broken in nixpkgs
+      gui-apps
 
-      # lsps and formatters
-      bash-language-server
-      clang-tools
-      csharpier # needed for emacs (format-all-the-code and neoformat)
-      gopls
-      haskell-language-server
-      haskellPackages.fourmolu # haskell formatter
-      lua-language-server
-      nil
-      nodePackages.prettier
-      nodePackages.typescript-language-server
-      omnisharp-roslyn
-      prettierd
-      pyright
-      ruff
-      statix
-      stylua
-      taplo
-      vale
-      vscode-langservers-extracted
-      yamlfmt
+      # Other
+      git-tools
+      json-tools
+      network-tools
+      cloud-tools
+      database-tools
+      build-tools
+      misc
 
-      watchman # relay GQL incremental compilation
-    ]
-    ++
-
-      # stable packages
-      (with pkgs.stable; [
-        azure-cli
-      ])
-    ++
-
-      # other packages
-      [
-        dotnet-packages
-        inputs.agenix.packages.${system}.default
-        inputs.hcat.packages.${system}.default
-      ];
+      # inputs.hcat.packages.${system}.default
+    ];
 
   # secrets from agenix
   age.secrets = {
@@ -252,16 +290,7 @@ in
     };
   };
 
-  programs.htop.enable = true;
-  programs.htop.settings.show_program_path = true;
-
-  programs.gpg = {
-    enable = true;
-    # package = pkgs.gnupg22;
-    settings = {
-      # allow pw fill in applications like emacs without popups
-      pinentry-mode = "loopback";
-      # allow-loopback-entry = true;
-    };
+  home.sessionVariables = {
+    DOTNET_ROOT = "${dotnet-packages}/share/dotnet";
   };
 }

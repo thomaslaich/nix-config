@@ -276,7 +276,7 @@
                 );
                 hmSwitchScriptLight = pkgs.writeShellScript "hm-switch-${machine.name}-light" "${
                   inputs.home-manager.packages.${system}.home-manager
-                }/bin/home-manager switch --flake ${self}#${machine.name}-light --show-trace";
+                }/bin/home-manager switch --flake ${self}#${machine.name}-light";
                 hmSwitchScriptDark = pkgs.writeShellScript "hm-switch-${machine.name}-dark" "${
                   inputs.home-manager.packages.${system}.home-manager
                 }/bin/home-manager switch --flake ${self}#${machine.name}-dark";

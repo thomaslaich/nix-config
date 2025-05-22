@@ -16,8 +16,8 @@ in
     enableReleaseChecks = false;
     base16Scheme = schemes.${mode};
     polarity = mode;
-    opacity.terminal = 0.8;
-    opacity.applications = 0.8;
+    opacity.terminal = 0.85;
+    opacity.applications = 0.85;
     image = pkgs.fetchurl {
       url = "https://images.unsplash.com/photo-1524889777220-eae0b973ec80";
       sha256 = "sha256-Njkv8yt4RMZIo0poTtc2Avz8q1WZjREa9zwqLdYwtgE=";
