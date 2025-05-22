@@ -34,7 +34,7 @@
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
 
     # theming
-    stylix.url = "github:danth/stylix?rev=aaf976a8198be266a5d33b202e1a68363983f4a0"; # TODO remove this pin
+    stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
