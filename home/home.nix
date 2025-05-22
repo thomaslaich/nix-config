@@ -122,7 +122,6 @@ in
         ]
       );
       python-language-support = with pkgs; [
-        conda # the conda package manager, used sometimes even though I prefer pixi
         pixi # dep management with Conda
         pyright # LSP (TODO replace with ty once stable)
         python-with-packages
