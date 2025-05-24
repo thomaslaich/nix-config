@@ -58,35 +58,35 @@
           # emacsql-sqlite
 
           # custom built packages
-          lsp-install-servers # TODO <- this does not seem to work
+          # lsp-install-servers # TODO <- this does not seem to work
         ]
         # workaround for making stylix work with emacs-overlay
         ++ (config.programs.emacs.extraPackages epkgs);
 
       # Optionally override derivations.
-      override =
-        epkgs:
-        epkgs
-        // {
-          lsp-install-servers = epkgs.trivialBuild {
-            pname = "lsp-install-servers";
-            version = "1.0";
-            src = pkgs.writeText "lsp-install-servers.el" ''
-              (eval-after-load 'lsp-mode
-               '(progn
-                 (lsp-dependency 'omnisharp '(:system "${pkgs.omnisharp-roslyn}/bin/omnisharp"))
-                 (lsp-dependency 'lua-language-server '(:system "${pkgs.lua-language-server}/bin/lua-language-server"))))
-
-              (provide 'lsp-install-servers)
-            '';
-            packageRequires = [ epkgs.lsp-mode ];
-          };
-
-          # unfortunately, I have to add the packages from the epkgs-overlay
-          # here manually. Apparently, emacs-overlay does not take them
-          # into account on its own.
-          inherit (pkgs.emacsPackages) copilot;
-        };
+      # override =
+      #   epkgs:
+      #   epkgs
+      #   // {
+      #     lsp-install-servers = epkgs.trivialBuild {
+      #       pname = "lsp-install-servers";
+      #       version = "1.0";
+      #       src = pkgs.writeText "lsp-install-servers.el" ''
+      #         (eval-after-load 'lsp-mode
+      #          '(progn
+      #            (lsp-dependency 'omnisharp '(:system "${pkgs.omnisharp-roslyn}/bin/omnisharp"))
+      #            (lsp-dependency 'lua-language-server '(:system "${pkgs.lua-language-server}/bin/lua-language-server"))))
+      #
+      #         (provide 'lsp-install-servers)
+      #       '';
+      #       packageRequires = [ epkgs.lsp-mode ];
+      #     };
+      #
+      #     # unfortunately, I have to add the packages from the epkgs-overlay
+      #     # here manually. Apparently, emacs-overlay does not take them
+      #     # into account on its own.
+      #     inherit (pkgs.emacsPackages) copilot;
+      #   };
     };
   };
 }

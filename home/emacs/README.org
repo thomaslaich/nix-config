@@ -123,34 +123,11 @@ Disable all unnecessary UI elements such as tool bar, menu bar, scroll bar, etc.
 #+end_src
 
 ** Theme and Fonts
-First, let's install the [[https://github.com/doomemacs/themes][doom themes]] and activate ~doom-one~:
+Theming and fonts is managed by [[https://github.com/nix-community/stylix][stylix]].
+
+We still have to enable ligatures:
+
 #+begin_src emacs-lisp
-  ;; let stylix take care of everything -> commented all out for now
-  ;; (use-package doom-themes
-  ;;   :config
-  ;;   ;; Global settings (defaults)
-  ;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-  ;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  ;;   (load-theme 'doom-one t)
-  ;;   ;; (load-theme 'doom-nord-light	 t)
-
-  ;;   ;; Enable flashing mode-line on errors
-  ;;   (doom-themes-visual-bell-config)
-  ;;   ;; Corrects (and improves) org-mode's native fontification.
-  ;;   (doom-themes-org-config))
-
-  ;; (use-package catppuccin-theme
-  ;;   :config
-  ;;   (load-theme 'catppuccin :no-confirm)
-  ;;   (setq catppuccin-flavor 'frappe) ;; or 'latte, 'frappe, or 'mocha or 'macchiato
-  ;;   (catppuccin-reload))
-#+end_src
-
-Next, we enable the ~JetBrainsMono Nerd Font~ everywhere:
-#+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 140)
-  (set-face-attribute 'fixed-pitch nil :font "JetBrainsMono Nerd Font" :height 140)
-
   (use-package ligature
     :config
     ;; Enable the "www" ligature in every possible major mode
@@ -173,9 +150,9 @@ Next, we enable the ~JetBrainsMono Nerd Font~ everywhere:
                                         "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                                         "\\\\" "://"))
     (global-ligature-mode t))
-  #+end_src
+#+end_src
 
-Make commented text and keywords italics:
+We simply enable italics for commented text and keywords:
   #+begin_src emacs-lisp
   (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
   (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)
@@ -186,7 +163,7 @@ Let's also adjust the line height (mostly for ~org-modern~ to work correctly):
   (setq-default line-spacing 0.15)
 #+end_src
 
-Enable [[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons.el]]:
+Last, we enable [[https://github.com/rainstormstudio/nerd-icons.el][nerd-icons.el]]:
 #+begin_src emacs-lisp
   (use-package nerd-icons)
 #+end_src
@@ -1210,44 +1187,6 @@ TODO
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 #+end_src
 
-** Kubernetes
-
-#+begin_src emacs-lisp
-  (use-package kubernetes
-    :commands (kubernetes-overview)
-    :config
-    (setq kubernetes-poll-frequency 3600
-          kubernetes-redraw-frequency 3600))
-  (general-evil-define-key 'normal kubernetes-mode-map
-    "g?" 'kubernetes-config-popup
-    "gr" 'kubernetes-refresh
-    "C-n" 'kubernetes-set-namespace
-    "C-x" 'kubernetes-contexts-use-context
-    "ge" 'kubernetes-edit
-    "gl" 'kubernetes-logs
-    "gd" 'kubernetes-describe
-    "gc" 'kubernetes-display-config)
-
-  (use-package kubed
-    :config
-    (keymap-global-set "C-c k" 'kubed-prefix-map))
-  (general-evil-define-key 'normal kubed-list-mode-map
-    "?" 'kubed-list-transient
-    "RET" 'kubed-list-select-resource
-    "o" 'kubed-list-select-resource-other-window
-    "C-o" 'kubed-list-display-resource
-    "D" 'kubed-list-delete
-    "e" 'kubed-list-edit
-    "P" 'kubed-list-patch
-    "g" 'kubed-list-update
-    "/" 'kubed-list-set-filter
-    "d" 'kubed-list-mark-for-deletion
-    "x" 'kubed-list-delete-marked
-    "u" 'kubed-list-unmark
-    "w" 'kubed-list-copy-as-kill
-    "{" 'tabulated-list-narrow-current-column
-    "}" 'tabulated-list-widen-current-column)
-  #+end_src
 
 
 * Programming Languages Setup
@@ -1373,135 +1312,6 @@ Emacs ships with ~c-mode~. We just activate the LSP (~clangd~) like so:
 Projectile consult integration:
 #+begin_src emacs-lisp
   (use-package consult-projectile)
-#+end_src
-
-* Email
-[[https://github.com/emacsmirror/mu4e][mu4e]] is an email client for Emacs, designed for handling large volumes of email efficiently.
-It integrates with the mu email search engine, supports various email protocols,
-and offers features like tagging, threading, and fast searches, all within the Emacs environment.
-#+begin_src emacs-lisp
-  (use-package mu4e
-    :config
-    ;; This is set to 't' to avoid mail syncing issues when using mbsync
-    (setq mu4e-change-filenames-when-moving t)
-
-    ;; Refresh mail using isync every 10 minutes
-    (setq mu4e-update-interval (* 10 60))
-    (setq mu4e-get-mail-command "mbsync -a")
-    (setq mu4e-maildir "~/Maildir/gmail")
-
-    ;; Further customization:
-    (setq mu4e-html2text-command "w3m -T text/html" ; how to hanfle html-formatted emails
-          mu4e-headers-auto-update t    ; avoid to type `g' to update
-          mu4e-view-show-images t       ; show images in the view buffer
-          mu4e-compose-signature-auto-include nil ; I don't want a message signature
-          mu4e-use-fancy-chars t)   ; allow fancy icons for mail threads
-
-    (setq mu4e-inbox-folder "/inbox")
-    (setq mu4e-drafts-folder "/Drafts")
-    (setq mu4e-sent-folder   "/Sent Mail")
-    (setq mu4e-refile-folder "/All Mail")
-    (setq mu4e-trash-folder  "/Trash")
-
-    (setq user-full-name "Thomas Laich")
-    (setq user-mail-address "thomaslaich@gmail.com")
-
-    (setq mu4e-maildir-shortcuts
-          '(("/inbox"     . ?i)
-            ("/CatPrimary"   . ?p)
-            ("/CatUpdates"   . ?u)
-            ("/Starred"   . ?r)
-            ("/All Mail"  . ?a)
-            ("/Sent Mail" . ?s)
-            ("/Drafts"    . ?d)
-            ("/Trash"     . ?t)))
-
-    ;; Display options
-    (setq mu4e-view-show-images t)
-    (setq mu4e-view-show-addresses 't)
-
-    ;; Use mu4e for sending e-mail
-    (setq mail-user-agent 'mu4e-user-agent
-          message-send-mail-function 'smtpmail-send-it
-          smtpmail-smtp-server "smtp.gmail.com"
-          ;; only used for auth-source-1password
-          smtpmail-smtp-user "thomaslaich@gmail.com"
-          ;; smtpmail-smtp-service 465
-          smtpmail-smtp-service 587
-          smtpmail-stream-type 'starttls)
-
-    ;; Some styling
-    (add-to-list 'mu4e-header-info-custom
-                 '(:empty . (:name "Empty"
-                                   :shortname ""
-                                   :function (lambda (msg) "  "))))
-    (setq mu4e-headers-fields '((:empty         .   10)
-                                (:human-date    .   12)
-                                (:flags         .    6)
-                                (:mailing-list  .   10)
-                                (:from          .   22)
-                                (:subject       .   nil)))
-    (setq mu4e-headers-unread-mark    '("u" . "📩 "))
-    (setq mu4e-headers-draft-mark     '("D" . "🚧 "))
-    (setq mu4e-headers-flagged-mark   '("F" . "🚩 "))
-    (setq mu4e-headers-new-mark       '("N" . "✨ "))
-    (setq mu4e-headers-passed-mark    '("P" . "↪ "))
-    (setq mu4e-headers-replied-mark   '("R" . "↩ "))
-    (setq mu4e-headers-seen-mark      '("S" . " "))
-    (setq mu4e-headers-trashed-mark   '("T" . "🗑️"))
-    (setq mu4e-headers-attach-mark    '("a" . "📎 "))
-    (setq mu4e-headers-encrypted-mark '("x" . "🔑 "))
-    (setq mu4e-headers-signed-mark    '("s" . "🔏 "))
-    (setq mu4e-headers-calendar-mark  '("c" . "📅 "))
-    (setq mu4e-headers-personal-mark '("p" . "👤 "))
-    (setq mu4e-headers-mailing-list-mark '("l" . "📧 ")))
-#+end_src
-
-[[https://github.com/iqbalansari/mu4e-alert][mu4e-alert]] allow desktop notifications for emails.
-#+begin_src emacs-lisp
-  (use-package mu4e-alert
-    :config
-    (mu4e-alert-set-default-style 'libnotify)
-    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications))
-#+end_src
-
-* Calendar Integration
-I sync my Google calendars to Emacs ~org-mode~. NOTE: I do not mix GTD calendar appointments with gcal appointments
-On my phone everything is synched to apple calendar through beorg.
-
-First, we need to read client id and secret for google calendar.
-Those are provided in the ~~/.emacs.d/~ directory by ~agenix~ (see my Nix config).
-#+begin_src emacs-lisp
-  (with-temp-buffer
-    (insert-file-contents "~/.emacs.d/gcal-clientid")
-    (setq org-gcal-client-id (replace-regexp-in-string "\n$" "" (buffer-string))))
-  (with-temp-buffer
-    (insert-file-contents "~/.emacs.d/gcal-clientsecret")
-    (setq org-gcal-client-secret (replace-regexp-in-string "\n$" "" (buffer-string))))
-#+end_src
-
-Then I sync two calendars to Emacs: The first is my private calendar, the second is my
-company calendar. The company calendar is synced to google calendar via my [[https://github.com/thomaslaich/outlook-ical-proxy][outlook-ical-proxy]] server.
-#+begin_src emacs-lisp
-  ;; (use-package org-gcal
-  ;;   :config
-  ;;   (setq org-gcal-fetch-file-alist
-  ;;         '(("thomaslaich@gmail.com" .  "~/Dropbox/notes/gcal-appointments.org")
-  ;;           ("6eft51mpf8n0tbic0v9cf56pq75uttas@import.calendar.google.com" . "~/Dropbox/notes/digitec-appointments.org")))
-  ;;   (org-gcal-reload-client-id-secret))
-#+end_src
-
-A few more configuration is needed:
-- We have to explicitly set the timezone
-- We have to provide some config for epg
-#+begin_src emacs-lisp
-  (setq org-show-notification-handler 'message)
-  (setq org-gcal-local-timezone "Europe/Zurich")
-
-  ;; enter pinentry password directly from emacs (no popup)
-  (setq epg-pinentry-mode 'loopback)
-  ;; prevent logging in all the time
-  (setq-default plstore-cache-passphrase-for-symmetric-encryption t)
 #+end_src
 
 * RSS Feeds with elfeed

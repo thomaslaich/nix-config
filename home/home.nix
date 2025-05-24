@@ -20,7 +20,7 @@ in
     # inputs.kauz.homeModules.default
     # inputs.nix-colorscheme.homeModules.colorscheme
     inputs.agenix.homeManagerModules.default
-    inputs.stylix.homeManagerModules.stylix
+    inputs.stylix.homeModules.stylix
     ../stylix.nix
     {
       stylix.targets.vscode = {
@@ -86,6 +86,9 @@ in
   #   enable = true;
   #   extraOptions = [ ];
   # };
+
+  # for some reason fish enables this by default. This siginificantly slows down hm-switch when enabled.
+  programs.man.generateCaches = false;
 
   programs.htop.enable = true;
   programs.htop.settings.show_program_path = true;

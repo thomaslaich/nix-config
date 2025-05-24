@@ -325,7 +325,7 @@
         nvim-lint
         oil
         omnisharp-extended-lsp
-        # orgmode
+        orgmode
         plenary
         snacks
         treesitter
