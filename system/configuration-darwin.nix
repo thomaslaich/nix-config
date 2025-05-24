@@ -119,9 +119,6 @@
 
   # environment.shells = [ pkgs.fish ];
 
-  nix.package = pkgs.nix; # this is the default
-  # nix.package = pkgs.nixVersions.nix_2_20; # manually go for newest version for now
-
   # Create /etc/zshrc that loads the nix-darwin environment.
   programs.zsh.enable = true;
   programs.fish.enable = true;

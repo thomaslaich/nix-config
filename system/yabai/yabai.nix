@@ -64,7 +64,7 @@
 
       yabai -m rule --add app="Visual Studio Code" space=code
       yabai -m rule --add app="Ghostty" space=code
-      
+
       yabai -m rule --add app="Visual Studio Code" opacity=0.7
     '';
   };

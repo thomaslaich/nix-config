@@ -214,7 +214,7 @@
                 require"lsp-progress".setup {}
               '';
             };
-            
+
             transparent = {
               plugin = pkgs.vimPlugins.transparent-nvim;
               type = "lua";
