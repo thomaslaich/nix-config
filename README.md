@@ -55,7 +55,7 @@ sudo scutil --set HostName <new_hostname>
 ```
 
 3. Install nix. I would highly recommend **not** to use the official nix shell script, but instead use the
-   (nix installer)[https://github.com/DeterminateSystems/nix-installer] from determinate systems.
+   [nix installer](https://github.com/DeterminateSystems/nix-installer) from determinate systems.
    For macOS there is a GUI installer available which is the recommended way to install nix.
 
 4. Open the terminal application, clone this git repo, and `cd` into it.
@@ -74,7 +74,7 @@ just hm-switch
 ```
 
 6. After successful installation, again `cd` into the git repo and type `direnv allow`. This will start the devshell automatically
-   when entering the folder.
+   whenever you enter the config folder.
 
 ## Theming with stylix
 
