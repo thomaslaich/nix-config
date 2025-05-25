@@ -1,10 +1,13 @@
 # My personal Nix configuration flake
 
-Configuration for my personal machines (both macOS and NixOS). 
+Configuration for my personal machines (both macOS and NixOS).
 
 Credits to [buntec/nix-config](https://github.com/buntec/nix-config); my config started as a clone of that repo.
 
+I also highly recommend to checkout [Misterio77/nix-starter-configs](https://github.com/Misterio77/nix-starter-configs) to get inspiration for your flake config.
+
 ## Fresh NixOS install
+
 After installing NixOS from a USB drive, follow these steps:
 
 1. Clone this repo and `cd` into it. Use `nix-shell -p git` to access git.
@@ -12,6 +15,7 @@ After installing NixOS from a USB drive, follow these steps:
 2. Copy `/etc/nixos/hardware-configuration.nix` into `./system` (OK to overwrite existing dummy file).
 
 3. Build and activate NixOS config:
+
 ```bash
 sudo nixos-rebuild switch --flake .#lenovo-desktop # the fragment can be dropped if it matches your current host name
 
@@ -20,62 +24,62 @@ sudo nix run .#rebuild-lenovo-desktop
 ```
 
 4. Activate home-manager:
+
 ```bash
 sudo nix run .#hm-switch-lenovo-desktop
 ```
 
 5. After the initial installation, again `cd` into the repo, and activate direnv by typing `direnv allow`. Now you can use the simpler commands
-to for rebuild and hm switch:
-```bash
-# rebuild switch
-sudo just rebuild
+   to for rebuild and hm switch:
 
-# hm switch
+```bash
+sudo just nixos-switch
 just hm-switch
+```
+
+See all available recipes with:
+
+```bash
+just --list
 ```
 
 ## Fresh macOS install
-(Heavily inspired by this [gist](https://gist.github.com/jmatsushita/5c50ef14b4b96cb24ae5268dab613050))
 
-To bootstrap a fresh macOS install, follow these steps:
+1. Re-install macOS from scratch. Open the terminal and enter `git`. This will prompt you to install XCode developer tools.
+   Proceed with the installation.
 
-1. Install Homebrew (only needed for managing GUI apps via casks)
+2. Change your `hostname` either in the config or on your machine. To change the `hostname` on your machine, type
+
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+sudo scutil --set HostName <new_hostname>
 ```
 
-2. Install Nix:
+3. Install nix. I would highly recommend **not** to use the official nix shell script, but instead use the
+   (nix installer)[https://github.com/DeterminateSystems/nix-installer] from determinate systems.
+   For macOS there is a GUI installer available which is the recommended way to install nix.
+
+4. Open the terminal application, clone this git repo, and `cd` into it.
+
+5. Enter the devshell:
+
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+nix develop --impure
 ```
 
-3. Clone this repo, `cd` into it, then build and activate with one command:
-```bash
-nix run .#rebuild-macbook-pro-m1 # nix-darwin
-nix run .#hm-switch-macbook-pro-m1 # home-manager
-```
+6. Once in the devshell, install system configuration and home manager applications:
 
-4. After the initial installation, again `cd` into the repo, and activate direnv by typing `direnv allow`. Now you can use the simpler commands
-to for rebuild and hm switch:
 ```bash
-# rebuild switch
-just rebuild
-
-# hm switch
+just nix-darwin-switch
 just hm-switch
-
-# rebuild & hm-switch
-just
 ```
 
-## Migrating an existing macOS install to Nix
-1. Uninstall Homebrew:
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
-```
+6. After successful installation, again `cd` into the git repo and type `direnv allow`. This will start the devshell automatically
+   when entering the folder.
 
-2. Delete everything under `~/.config` and any other "dot files" in your home directory.
+## Theming with stylix
 
-3. Delete all applications that are listed as Homebrew casks in `./system/configuration-darwin.nix`
+TODO
 
-4. Follow the steps for a fresh macOS install.
+## Secrets with agenix
+
+TODO
