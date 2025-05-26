@@ -78,7 +78,26 @@ just hm-switch
 
 ## Theming with stylix
 
-TODO
+For theming I use [stylix](https://github.com/nix-community/stylix). This allows me to use a single base24-color-scheme
+and let stylix magically apply this color theme to everything:
+- Gnome
+- Ghostty/tmux
+- neovim
+- VSCode
+- etc.
+
+All my installation scripts also allow for applying a "light" or "dark" variant. Simply run:
+```bash
+just nixos-switch "dark" # or "light" (default)
+just nix-darwin-switch "dark" # or "light" (default)
+just hm-switch "dark" # or "light" (default)
+```
+
+This is what it ends up looking on my MacBook with the dark theme (here Ghostty and VSCode):
+
+![Screenshot](https://raw.githubusercontent.com/thomaslaich/nix-config/main/.github/images/screenshot.png)
+
+I currently use [buntec/kauz](https://github.com/buntec/kauz) as my color scheme.
 
 ## Secrets with agenix
 

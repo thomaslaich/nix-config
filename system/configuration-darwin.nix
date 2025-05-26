@@ -114,9 +114,6 @@
     ];
   };
 
-  # TODO add rancher to path
-  # "${home.homeDirectory}/.rd/bin"
-
   # environment.shells = [ pkgs.fish ];
 
   # Create /etc/zshrc that loads the nix-darwin environment.
