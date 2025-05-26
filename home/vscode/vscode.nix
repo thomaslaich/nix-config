@@ -50,19 +50,12 @@
           "editor.semanticHighlighting.enabled" = true;
           "terminal.integrated.minimumContrastRatio" = 1;
           "window.titleBarStyle" = "custom";
-          # theming should be done by nix-colorscheme hm module
-          # "workbench.colorTheme" = "Tokyo Night Storm";
-          # "workbench.colorTheme" = "Catppuccin Macchiato";
-          # "workbench.colorTheme" = "Catppuccin Frappé";
-          # "workbench.preferredHighContrastColorTheme" = "Catppuccin Frappé";
-          # "workbench.iconTheme" = "catppuccin-frappe";
+          # font and theme is set by stylix
 
           # editor basics
           "editor.tabSize" = 2;
           "editor.lineNumbers" = "relative";
           "files.autoSave" = "off";
-          # set by stylix
-          # "editor.fontFamily" = "JetBrainsMono Nerd Font";
           "editor.fontLigatures" = true;
           "editor.minimap.enabled" = false;
           "workbench.editor.showTabs" = "none"; # no tabs (like my emacs and vim)
@@ -370,7 +363,7 @@
             tintoy.msbuild-project-tools
 
             # Lua
-            # sumneko.lua
+            sumneko.lua
 
             # Nix
             jnoortheen.nix-ide
