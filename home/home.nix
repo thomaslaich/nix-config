@@ -28,7 +28,6 @@ in
         profileNames = [ "default" ];
       };
     }
-    ./emacs/emacs.nix
     ./email/email.nix
     ./fish/fish.nix
     ./ghostty/ghostty.nix
@@ -47,8 +46,6 @@ in
 
       inputs.neorg-overlay.overlays.default
       inputs.vimplugins-overlay.overlays.default
-      inputs.epkgs-overlay.overlays.default
-      inputs.emacs-overlay.overlays.default
       inputs.nix-vscode-extensions.overlays.default
     ];
     # Configure your nixpkgs instance
@@ -184,8 +181,6 @@ in
       ];
       gui-apps = with pkgs; [
         # ghostty # currently broken in nixpkgs
-        discord
-        spotify
       ];
       git-tools = with pkgs; [
         gh # github CLI
@@ -204,7 +199,14 @@ in
       ];
       cloud-tools = with pkgs; [
         azure-cli
-        google-cloud-sdk
+        (google-cloud-sdk.withExtraComponents (
+          with google-cloud-sdk.components;
+          [
+            kubectl
+            gke-gcloud-auth-plugin
+            bq
+          ]
+        ))
         k9s
         kubelogin
         kubernetes-helm

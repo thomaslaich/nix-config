@@ -8,6 +8,7 @@
     devenv.url = "github:cachix/devenv";
     devenv.inputs.nixpkgs.follows = "nixpkgs";
 
+    # nixpkgs channels
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-nixos.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
@@ -26,36 +27,28 @@
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
     # overlays
-    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
-    epkgs-overlay.url = "github:thomaslaich/epkgs-overlay";
     neorg-overlay.url = "github:nvim-neorg/nixpkgs-neorg-overlay";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
-    # theming
-    stylix.url = "github:danth/stylix";
-    stylix.inputs.nixpkgs.follows = "nixpkgs";
-
+    # nix-homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
-
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
 
+    # theming
+    stylix.url = "github:danth/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
     kauz = {
       url = "github:buntec/kauz";
       flake = false;
     };
-
-    # my own little test
-    hcat.url = "github:thomaslaich/hcat";
   };
 
   outputs =
@@ -86,7 +79,7 @@
           user = "thomaslaich";
           system = flake-utils.lib.system.x86_64-linux;
         }
-        # My Digitec device
+        # My Galaxus device
         {
           name = "DG-BYOD-8119";
           user = "thomaslaich";

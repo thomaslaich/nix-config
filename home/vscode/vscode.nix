@@ -319,6 +319,8 @@
           "markdown.preview.fontSize" = pkgs.lib.mkForce 12.0;
           "terminal.integrated.fontSize" = pkgs.lib.mkForce 12.0;
           "workbench.sideBar.location" = "right";
+
+          "github.copilot.enable" = false; # disable completion as it is annoying
         };
 
         extensions =

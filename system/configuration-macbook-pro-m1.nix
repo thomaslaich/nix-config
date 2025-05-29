@@ -2,8 +2,10 @@
 
 {
   homebrew.casks = [
-    "nordvpn"
+    "discord"
     "docker"
+    "nordvpn"
+    "spotify"
     "telegram"
     "whatsapp"
     "zoom"

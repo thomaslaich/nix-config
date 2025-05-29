@@ -110,6 +110,7 @@
       "firefox"
       "ghostty"
       "google-chrome"
+      "obsidian"
       "studio-3t"
     ];
   };
