@@ -43,6 +43,10 @@
             "command" = "explorer.newFile";
             "when" = "filesExplorerFocus && foldersViewVisible && explorerResourceIsFolder && !inputFocus";
           }
+          {
+            "key" = "tab";
+            "command" = "-extension.vim_tab";
+          }
         ];
         userSettings = {
 
@@ -134,7 +138,7 @@
                 "g"
                 "g"
               ];
-              "commands" = [ "workbench.view.scm" ];
+              "commands" = [ "magit.status" ];
             }
             {
               "before" = [
@@ -309,7 +313,7 @@
           "ilspy.defaultOutputLanguage" = "C# 11.0 / VS 2022.4";
           "files.eol" = "\n";
           "editor.formatOnSave" = false;
-          "github.copilot.editor.enableAutoCompletions" = true;
+          "github.copilot.editor.enableAutoCompletions" = false;
           "claptrap.configEndpoint" = "${config.age.secrets.claptrap.path}";
           "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
           "python.analysis.typeCheckingMode" = "standard";
@@ -319,23 +323,25 @@
           "markdown.preview.fontSize" = pkgs.lib.mkForce 12.0;
           "terminal.integrated.fontSize" = pkgs.lib.mkForce 12.0;
           "workbench.sideBar.location" = "right";
-
-          "github.copilot.enable" = false; # disable completion as it is annoying
         };
 
         extensions =
           # From vscode overlay
           with pkgs.vscode-marketplace;
           [
-            # Misc
-            postman.postman-for-vscode
-            rrudi.vscode-dired
+            # General repo setups
             mkhl.direnv
             editorconfig.editorconfig # needed?
-            github.vscode-github-actions
-            nefrob.vscode-just-syntax
+            skellock.just
+
+            # Networking
+            postman.postman-for-vscode
             humao.rest-client
+
+            # Make VSCode more like vim and emacs
             vscodevim.vim
+            kahole.magit
+            rrudi.vscode-dired
 
             # JS/TS
             ms-vscode.vscode-typescript-next
@@ -355,8 +361,6 @@
 
             # Rust
             rust-lang.rust-analyzer
-            # example of using open-vsx instead
-            # open-vsx-release.rust-lang.rust-analyzer
 
             # .NET
             ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
@@ -370,10 +374,15 @@
             # Nix
             jnoortheen.nix-ide
 
-            # Docker
+            # Docker / DevOps / Cloud
             ms-azuretools.vscode-docker
             ms-kubernetes-tools.vscode-kubernetes-tools
             hashicorp.hcl
+            github.vscode-github-actions
+            ashishalex.dataform-lsp-vscode
+            ms-azuretools.vscode-azureresourcegroups
+            ms-vscode.azure-account
+            ms-azuretools.vscode-azurefunctions
 
             # XML, YAML, TOML
             redhat.vscode-yaml
@@ -386,31 +395,21 @@
             graphql.vscode-graphql
             meta.relay
 
-            # Lisp
-            mattn.lisp
-
             # Haskell
             haskell.haskell
             justusadam.language-haskell
 
-            # Azure
-            ms-azuretools.vscode-azureresourcegroups
-            ms-vscode.azure-account
-            ms-azuretools.vscode-azurefunctions
-
-            # Galaxus
-            dg-infinity.claptrap
             # Avro
             streetsidesoftware.avro
 
             # Powershell
-            # ms-vscode.powershell
+            ms-vscode.powershell
 
             # Shell
             timonwong.shellcheck
 
-            # GCP
-            ashishalex.dataform-lsp-vscode
+            # Galaxus
+            dg-infinity.claptrap
           ]
           ++ (with pkgs.vscode-extensions; [
             ms-dotnettools.csharp
