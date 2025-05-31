@@ -28,7 +28,6 @@ in
         profileNames = [ "default" ];
       };
     }
-    ./email/email.nix
     ./fish/fish.nix
     ./ghostty/ghostty.nix
     ./neovim/neovim.nix

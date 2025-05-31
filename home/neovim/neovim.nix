@@ -269,11 +269,12 @@
           }
         ];
 
-        copilot = {
-          plugin = pkgs.vimPlugins.copilot-lua;
-          type = "lua";
-          config = builtins.readFile ./plugins/copilot.lua;
-        };
+        # copilot is starting to annoy me
+        # copilot = {
+        #   plugin = pkgs.vimPlugins.copilot-lua;
+        #   type = "lua";
+        #   config = builtins.readFile ./plugins/copilot.lua;
+        # };
 
         neorg = with pkgs; {
           plugin = vimPlugins.neorg;
@@ -315,7 +316,7 @@
         neorg
         blink-cmp
         conform-nvim
-        copilot
+        # copilot
         fzf-lua
         git-plugins
         grug-far

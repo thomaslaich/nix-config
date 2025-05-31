@@ -47,6 +47,18 @@
             "key" = "tab";
             "command" = "-extension.vim_tab";
           }
+          {
+            "key" = "x";
+            "command" = "magit.discard-at-point";
+            "when" =
+              "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/";
+          }
+          {
+            "key" = "k";
+            "command" = "-magit.discard-at-point";
+            "when" =
+              "editorTextFocus && editorLangId == 'magit' && vim.mode =~ /^(?!SearchInProgressMode|CommandlineInProgress).*$/";
+          }
         ];
         userSettings = {
 
@@ -313,7 +325,6 @@
           "ilspy.defaultOutputLanguage" = "C# 11.0 / VS 2022.4";
           "files.eol" = "\n";
           "editor.formatOnSave" = false;
-          "github.copilot.editor.enableAutoCompletions" = false;
           "claptrap.configEndpoint" = "${config.age.secrets.claptrap.path}";
           "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
           "python.analysis.typeCheckingMode" = "standard";
@@ -323,6 +334,11 @@
           "markdown.preview.fontSize" = pkgs.lib.mkForce 12.0;
           "terminal.integrated.fontSize" = pkgs.lib.mkForce 12.0;
           "workbench.sideBar.location" = "right";
+
+          "github.copilot.enable" = {
+            "*" = false; # disable suggestions
+            "inlineSuggestions" = false; # disable inline-suggestions
+          };
         };
 
         extensions =
