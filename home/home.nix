@@ -213,6 +213,7 @@ in
         terraform
       ];
       database-tools = with pkgs; [
+        duckdb
         postgresql
       ];
       build-tools = with pkgs; [
