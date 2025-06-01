@@ -23,9 +23,18 @@ in
     inputs.stylix.homeModules.stylix
     ../stylix.nix
     {
-      stylix.targets.vscode = {
-        enable = true;
-        profileNames = [ "default" ];
+      stylix.targets = {
+        neovim = {
+          transparentBackground = {
+            main = true;
+            numberLine = true;
+            signColumn = true;
+          };
+        };
+        vscode = {
+          enable = true;
+          profileNames = [ "default" ];
+        };
       };
     }
     ./fish/fish.nix
