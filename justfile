@@ -17,10 +17,6 @@ nix-darwin-switch mode='light':
 [unix]
 hm-switch mode='light':
     nix run .#hm-switch-{{ host }}-{{ mode }}
-    # reload tmux config
-    tmux source-file ~/.config/tmux/tmux.conf
-    # reload fish config
-    fish -c 'reload_all_fish_instances'
 
 # format all sources in the repository
 format:

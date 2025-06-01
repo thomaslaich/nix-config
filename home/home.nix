@@ -106,7 +106,7 @@ in
       dotnet-language-support = with pkgs; [
         dotnet-packages
         csharpier
-        omnisharp-roslyn # LSP for use in Neovim and Emacs
+        roslyn-ls # LSP for use in Neovim and Emacs
       ];
 
       python-with-packages = pkgs.python312.withPackages (

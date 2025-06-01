@@ -44,10 +44,20 @@ opt.breakindent = true -- Break line indent
 opt.list = true -- Show some invisible characters (tabs...)
 opt.number = true -- Print line number
 opt.relativenumber = true -- Relative line numbers
-opt.wrap = false -- Disable line wrap
+opt.wrap = true
+opt.showbreak = "↪" -- character to show when line is broken
 opt.swapfile = false
 
-opt.conceallevel = 2 -- Hide * markup for bold and italic (Neorg)
+-- opt.conceallevel = 2 -- Hide * markup for bold and italic (Neorg)
+
+vim.diagnostic.config({
+  virtual_text = false,
+  virtual_lines = true,
+  signs = true,
+  update_in_insert = false,
+  underline = true,
+  severity_sort = true,
+})
 
 -- KEYBINDINGS
 map("n", "<leader>-", oil.open, { desc = "Browse parent directory" })

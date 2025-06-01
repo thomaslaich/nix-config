@@ -28,12 +28,7 @@
         lspconfig = {
           plugin = pkgs.vimPlugins.nvim-lspconfig;
           type = "lua";
-          config = ''
-            local pid = vim.fn.getpid()
-            local omnisharpBin = "${pkgs.omnisharp-roslyn}/bin/omnisharp"
-
-            ${builtins.readFile ./plugins/lspconfig.lua}
-          '';
+          config = builtins.readFile ./plugins/lspconfig.lua;
         };
 
         # https://github.com/Saghen/blink.cmp
@@ -145,9 +140,7 @@
             fidget = {
               plugin = pkgs.vimPlugins.fidget-nvim;
               type = "lua";
-              config = ''
-                require("fidget").setup({})
-              '';
+              config = builtins.readFile ./plugins/fidget.lua;
             };
 
             # nice popup windows
@@ -215,13 +208,6 @@
               '';
             };
 
-            transparent = {
-              plugin = pkgs.vimPlugins.transparent-nvim;
-              type = "lua";
-              config = ''
-                require"transparent".setup {}
-              '';
-            };
           in
           pkgs.lib.lists.flatten [
             barbar
@@ -236,7 +222,6 @@
             trouble
             web-devicons
             which-key
-            transparent
           ];
 
         git-plugins = [
@@ -297,12 +282,6 @@
           }
         ];
 
-        # TODO remove once I move to https://github.com/jmederosalvarado/roslyn.nvim
-        omnisharp-extended-lsp = {
-          plugin = pkgs.vimPlugins.omnisharp-extended-lsp-nvim;
-          type = "lua";
-          config = "";
-        };
         haskell-tools = {
           plugin = pkgs.vimPlugins.haskell-tools-nvim;
         };
@@ -325,7 +304,6 @@
         lspconfig
         nvim-lint
         oil
-        omnisharp-extended-lsp
         orgmode
         plenary
         snacks
@@ -337,18 +315,7 @@
         ui-plugins
       ];
 
-    extraPackages = with pkgs; [
-      gopls
-      haskell-language-server
-      lua-language-server
-      nil
-      nodePackages.bash-language-server
-      nodePackages.typescript-language-server
-      omnisharp-roslyn
-      statix
-      vale
-      vscode-langservers-extracted
-    ];
+    extraPackages = [ ];
 
     extraLuaConfig = builtins.readFile ./init.lua;
   };
