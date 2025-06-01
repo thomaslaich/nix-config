@@ -212,6 +212,7 @@ map("n", "<leader>gs", fzf.git_status, { desc = "Git Status" })
 
 -- [t] Toggle
 map("n", "<leader>tb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
+map("n", "<leader>tp", "<cmd>Precognition toggle<cr>", { desc = "Toggle [p]recognition" })
 
 -- enable spell checking for text files
 local spell_augroup = vim.api.nvim_create_augroup("spell", { clear = true })
