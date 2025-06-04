@@ -19,7 +19,7 @@
           plugin = pkgs.vimPlugins.nvim-treesitter-context;
           type = "lua";
           config = ''
-            require'treesitter-context'.setup({
+            require("treesitter-context").setup({
               enable = false
             })
           '';
@@ -56,7 +56,7 @@
           plugin = pkgs.vimPlugins.grug-far-nvim;
           type = "lua";
           config = ''
-            require('grug-far').setup({});
+            require("grug-far").setup({});
           '';
         };
 
@@ -91,7 +91,7 @@
             plugin = pkgs.vimPlugins.nvim-surround;
             type = "lua";
             config = ''
-              require"nvim-surround".setup {}
+              require("nvim-surround").setup({})
             '';
           }
           # comment/uncomment with gcc
@@ -99,7 +99,7 @@
             plugin = pkgs.vimPlugins.comment-nvim;
             type = "lua";
             config = ''
-              require"Comment".setup {}
+              require("Comment").setup({})
             '';
           }
           # use 'jk' and 'jj' to escape insert mode
@@ -107,16 +107,15 @@
             plugin = pkgs.vimPlugins.better-escape-nvim;
             type = "lua";
             config = ''
-              require"better_escape".setup {}
+              require("better_escape").setup({})
             '';
           }
-
           # vim motions hints
           {
             plugin = pkgs.vimPlugins.precognition-nvim;
             type = "lua";
             config = ''
-              require('precognition').setup({
+              require("precognition").setup({
                 startVisible = false
               })
             '';
@@ -133,7 +132,7 @@
               type = "lua";
               config = ''
                 vim.g.barbar_auto_setup = false
-                require('barbar').setup({})
+                require("barbar").setup({})
               '';
             };
             # https://github.com/j-hui/fidget.nvim
@@ -153,7 +152,7 @@
               plugin = pkgs.vimPlugins.mini-icons;
               type = "lua";
               config = ''
-                require('mini.icons').setup({})
+                require"mini.icons".setup {}
               '';
             };
 
@@ -161,7 +160,7 @@
               plugin = pkgs.vimPlugins.mini-colors;
               type = "lua";
               config = ''
-                require('mini.colors').setup()
+                require"mini.colors".setup {}
               '';
             };
 
@@ -212,7 +211,7 @@
               plugin = pkgs.vimPlugins.transparent-nvim;
               type = "lua";
               config = ''
-                require"transparent".setup({})
+                require"transparent".setup {}
               '';
 
             };
@@ -249,7 +248,6 @@
               }
             '';
           }
-          { plugin = pkgs.vimPlugins.vim-fugitive; }
           {
             plugin = pkgs.vimPlugins.neogit;
             type = "lua";
@@ -276,7 +274,6 @@
           type = "lua";
           config = builtins.readFile ./plugins/neorg.lua;
         };
-
         orgmode = with pkgs; [
           {
             plugin = vimPlugins.orgmode;

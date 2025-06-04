@@ -37,6 +37,7 @@ in
         };
       };
     }
+    ./emacs/emacs.nix
     ./fish/fish.nix
     ./ghostty/ghostty.nix
     ./neovim/neovim.nix
@@ -55,6 +56,7 @@ in
       inputs.neorg-overlay.overlays.default
       inputs.vimplugins-overlay.overlays.default
       inputs.nix-vscode-extensions.overlays.default
+      inputs.emacs-overlay.overlays.default
     ];
     # Configure your nixpkgs instance
     config = {
@@ -220,6 +222,7 @@ in
         kubernetes-helm
         lazydocker
         terraform
+        hclfmt # formatter for HCL files (e.g., .tf)
       ];
       database-tools = with pkgs; [
         duckdb

@@ -7,6 +7,7 @@ vim.lsp.enable("roslyn_ls") -- C# (LSP from DevKit)
 vim.lsp.enable("taplo") -- TOML
 vim.lsp.enable("ts_ls") -- Typescript/Javascript
 vim.lsp.enable("ty") -- Python
+vim.lsp.enable("pyright") -- Still needed?
 vim.lsp.enable("hls") -- Haskell
 
 -- extra config below
@@ -50,3 +51,36 @@ vim.lsp.config("ts_ls", {
     "vue",
   },
 })
+
+-- -- LSP kind config
+-- require("lspkind").init({
+--   mode = "symbol_text",
+--   preset = "codicons",
+--   symbol_map = {
+--     Text = "󰉿",
+--     Method = "󰆧",
+--     Function = "󰊕",
+--     Constructor = "",
+--     Field = "󰜢",
+--     Variable = "󰀫",
+--     Class = "󰠱",
+--     Interface = "",
+--     Module = "",
+--     Property = "󰜢",
+--     Unit = "󰑭",
+--     Value = "󰎠",
+--     Enum = "",
+--     Keyword = "󰌋",
+--     Snippet = "",
+--     Color = "󰏘",
+--     File = "󰈙",
+--     Reference = "󰈇",
+--     Folder = "󰉋",
+--     EnumMember = "",
+--     Constant = "󰏿",
+--     Struct = "󰙅",
+--     Event = "",
+--     Operator = "󰆕",
+--     TypeParameter = "",
+--   },
+-- })

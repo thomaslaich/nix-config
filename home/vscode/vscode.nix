@@ -339,6 +339,7 @@
             "*" = false; # disable suggestions
             "inlineSuggestions" = false; # disable inline-suggestions
           };
+          "chat.agent.enabled" = true;
         };
 
         extensions =
@@ -370,7 +371,7 @@
             ms-python.python
             ms-python.debugpy
             charliermarsh.ruff
-            # astral-sh.ty # re-activate once ty works with pixi
+            astral-sh.ty
 
             # Go
             golang.go
