@@ -85,6 +85,12 @@
           plugin = pkgs.vimPlugins.plenary-nvim;
         };
 
+        refactoring = {
+          plugin = pkgs.vimPlugins.refactoring-nvim;
+          type = "lua";
+          config = builtins.readFile ./plugins/refactoring.lua;
+        };
+
         core-motion-plugins = [
           # manipulate surrouding characters (e.g. brackets)
           {
@@ -313,6 +319,7 @@
         oil
         orgmode
         plenary
+        refactoring
         snacks
         treesitter
         ts-context

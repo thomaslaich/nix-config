@@ -10,7 +10,7 @@ whichkey.add({
   { "<leader>d", group = "[D]ocument" },
   { "<leader>g", group = "[G]it" },
   { "<leader>h", group = "More git" },
-  { "<leader>r", group = "[R]ename" },
+  { "<leader>r", group = "[R]efactor" },
   { "<leader>f", group = "[F]ind" },
   { "<leader>p", group = "[P]rojects" },
   { "<leader>w", group = "[W]indows" },
