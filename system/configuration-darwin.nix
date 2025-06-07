@@ -21,7 +21,6 @@
     ../stylix.nix
     ./yabai/yabai.nix
     ./skhd/skhd.nix
-    ./sketchybar/sketchybar.nix
   ];
 
   nixpkgs = {
@@ -112,6 +111,7 @@
       "ghostty"
       "google-chrome"
       "obsidian"
+      "spotify"
       "studio-3t"
     ];
   };
