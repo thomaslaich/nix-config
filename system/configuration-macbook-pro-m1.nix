@@ -8,7 +8,7 @@
     "spotify"
     "telegram"
     "whatsapp"
-    "zoom"
+    # "zoom"
   ];
 
   networking.hostName = "macbook-pro-m1";

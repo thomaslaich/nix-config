@@ -21,6 +21,7 @@
     ../stylix.nix
     ./yabai/yabai.nix
     ./skhd/skhd.nix
+    ./sketchybar/sketchybar.nix
   ];
 
   nixpkgs = {
