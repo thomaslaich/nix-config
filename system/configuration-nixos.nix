@@ -151,16 +151,15 @@
   virtualisation.docker.enable = true;
 
   # Fonts
-  # NOTE: managed by stylix
-  # fonts.fontDir.enable = true;
-  # fonts.packages = with pkgs; [
-  #   etBook
-  #   nerd-fonts.droid-sans-mono
-  #   nerd-fonts.jetbrains-mono
-  #   nerd-fonts.fira-code
-  #   nerd-fonts.symbols-only
-  #   nerd-fonts.ubuntu
-  # ];
+  fonts.fontDir.enable = true;
+  fonts.packages = with pkgs; [
+    etBook
+    nerd-fonts.droid-sans-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.symbols-only
+    nerd-fonts.ubuntu
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
