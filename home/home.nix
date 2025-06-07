@@ -214,7 +214,7 @@ in
         (google-cloud-sdk.withExtraComponents (
           with google-cloud-sdk.components;
           [
-            kubectl
+            # kubectl
             gke-gcloud-auth-plugin
             bq
           ]
