@@ -6,8 +6,9 @@ vim.lsp.enable("nil_ls") -- Nix
 vim.lsp.enable("roslyn_ls") -- C# (LSP from DevKit)
 vim.lsp.enable("taplo") -- TOML
 vim.lsp.enable("ts_ls") -- Typescript/Javascript
-vim.lsp.enable("ty") -- Python
-vim.lsp.enable("pyright") -- Still needed?
+vim.lsp.enable("ty") -- Typechecker/LSP for Python by Astral
+-- vim.lsp.enable("pyright") -- Typechecker/LSP for Python by Microsoft
+vim.lsp.enable("pyrefly") -- Typechecker/LSP for Python by Meta
 vim.lsp.enable("hls") -- Haskell
 
 -- extra config below

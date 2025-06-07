@@ -133,9 +133,11 @@ in
       );
       python-language-support = with pkgs; [
         pixi # dep management with Conda
-        pyright # LSP (TODO replace with ty once stable)
+        # pyrefly # LSP from Meta
+        pyright # LSP from Microsoft
         python-with-packages
         ruff # formatter
+        ty # LSP from Astral
         uv # dep management with PyPI
       ];
       nix-tools = with pkgs; [

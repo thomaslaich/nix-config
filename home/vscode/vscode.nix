@@ -368,10 +368,11 @@
             esbenp.prettier-vscode
 
             # Python
-            ms-python.python
+            # ms-python.python # disable extension pack (adds Pylance)
             ms-python.debugpy
-            charliermarsh.ruff
-            astral-sh.ty
+            meta.pyrefly # typechecker/LSP by Meta
+            astral-sh.ty # typechecker/LSP by Astral
+            charliermarsh.ruff # linter by Astral
 
             # Go
             golang.go
@@ -435,7 +436,7 @@
             github.copilot
             github.copilot-chat
 
-            ms-python.vscode-pylance
+            # ms-python.vscode-pylance # disable Pylance (i.e., Pyright) LSP from Microsoft
             ms-toolsai.jupyter
 
             eamodio.gitlens
