@@ -368,7 +368,7 @@
             esbenp.prettier-vscode
 
             # Python
-            # ms-python.python # disable extension pack (adds Pylance)
+            ms-python.python
             ms-python.debugpy
             meta.pyrefly # typechecker/LSP by Meta
             astral-sh.ty # typechecker/LSP by Astral
