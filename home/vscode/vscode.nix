@@ -370,7 +370,7 @@
             # Python
             ms-python.python
             ms-python.debugpy
-            meta.pyrefly # typechecker/LSP by Meta
+            # meta.pyrefly # typechecker/LSP by Meta
             astral-sh.ty # typechecker/LSP by Astral
             charliermarsh.ruff # linter by Astral
 
