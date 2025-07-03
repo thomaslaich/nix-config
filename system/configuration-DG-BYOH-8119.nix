@@ -8,7 +8,7 @@
     "rancher"
   ];
 
-  networking.hostName = "DG-BYOD-8119";
+  networking.hostName = "DG-BYOH-8119";
 
   ids.gids.nixbld = 350;
 
