@@ -7,10 +7,10 @@ require("neorg").setup({
       config = {
         workspaces = {
           -- TODO move this to dropbox maybe?
-          work = "~/notes/work",
-          home = "~/notes/home",
-          sabbatical = "~/notes/sabbatical",
-          personal = "~/notes/personal",
+          work = "~/Dropbox/notes/neorg/work",
+          home = "~/Dropbox/notes/neorg/home",
+          sabbatical = "~/Dropbox/notes/neorg/sabbatical",
+          personal = "~/Dropbox/notes/neorg/personal",
         },
         default_workspace = "work",
       },

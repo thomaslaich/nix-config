@@ -371,7 +371,7 @@
             ms-python.python
             ms-python.debugpy
             # meta.pyrefly # typechecker/LSP by Meta
-            astral-sh.ty # typechecker/LSP by Astral
+            # astral-sh.ty # typechecker/LSP by Astral
             charliermarsh.ruff # linter by Astral
 
             # Go
@@ -436,7 +436,7 @@
             github.copilot
             github.copilot-chat
 
-            # ms-python.vscode-pylance # disable Pylance (i.e., Pyright) LSP from Microsoft
+            ms-python.vscode-pylance
             ms-toolsai.jupyter
 
             eamodio.gitlens
