@@ -427,7 +427,10 @@
             timonwong.shellcheck
 
             # Galaxus
-            dg-infinity.claptrap
+            # dg-infinity.claptrap
+
+            # DuckDB, parquet
+            lucien-martijn.parquet-visualizer
           ]
           ++ (with pkgs.vscode-extensions; [
             ms-dotnettools.csharp
