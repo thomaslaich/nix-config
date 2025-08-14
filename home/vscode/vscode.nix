@@ -350,6 +350,7 @@
             mkhl.direnv
             editorconfig.editorconfig # needed?
             skellock.just
+            # github.vscode-pull-request-github
 
             # Networking
             postman.postman-for-vscode
@@ -369,6 +370,7 @@
 
             # Python
             ms-python.python
+            ms-python.vscode-python-envs
             ms-python.debugpy
             # meta.pyrefly # typechecker/LSP by Meta
             # astral-sh.ty # typechecker/LSP by Astral
@@ -382,7 +384,8 @@
 
             # .NET
             ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
-            ms-dotnettools.vscode-dotnet-runtime # .NET install tool
+            # ms-dotnettools.vscode-dotnet-runtime # .NET install tool
+            ionide.ionide-fsharp
             csharpier.csharpier-vscode # formatter
             tintoy.msbuild-project-tools
 
@@ -399,8 +402,8 @@
             github.vscode-github-actions
             ashishalex.dataform-lsp-vscode
             ms-azuretools.vscode-azureresourcegroups
-            ms-vscode.azure-account
             ms-azuretools.vscode-azurefunctions
+            hashicorp.terraform
 
             # XML, YAML, TOML
             redhat.vscode-yaml
@@ -433,8 +436,13 @@
             lucien-martijn.parquet-visualizer
           ]
           ++ (with pkgs.vscode-extensions; [
+            github.vscode-pull-request-github
+
             ms-dotnettools.csharp
             ms-dotnettools.csdevkit
+            
+            # ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
+            ms-dotnettools.vscode-dotnet-runtime # .NET install tool
 
             github.copilot
             github.copilot-chat
