@@ -1108,7 +1108,7 @@ Keybindings
 
 This is a custom package that installs all lsp servers that require installation otherwise
 #+begin_src emacs-lisp
-  (use-package lsp-install-servers)
+  ;; (use-package lsp-install-servers) ;; no longer added for now
 #+end_src
 
 ** Diagnostics with flycheck

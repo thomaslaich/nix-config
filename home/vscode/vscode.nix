@@ -370,8 +370,8 @@
 
             # Python
             ms-python.python
-            ms-python.vscode-python-envs
             ms-python.debugpy
+            # ms-python.vscode-python-envs
             # meta.pyrefly # typechecker/LSP by Meta
             # astral-sh.ty # typechecker/LSP by Astral
             charliermarsh.ruff # linter by Astral
@@ -440,7 +440,7 @@
 
             ms-dotnettools.csharp
             ms-dotnettools.csdevkit
-            
+
             # ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
             ms-dotnettools.vscode-dotnet-runtime # .NET install tool
 
