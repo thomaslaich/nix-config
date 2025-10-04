@@ -10,6 +10,7 @@ let
   dotnet-packages =
     with pkgs.dotnetCorePackages;
     combinePackages [
+      sdk_10_0-bin
       sdk_9_0-bin
       sdk_8_0-bin
     ];
@@ -145,6 +146,7 @@ in
         nil # LSP
         nixfmt-rfc-style # formatter
         statix # linter
+        devenv
       ];
       haskell-language-support = with pkgs; [
         haskell-language-server # LSP

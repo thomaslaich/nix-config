@@ -29,6 +29,8 @@ in
   home.sessionPath = [
     # needed for rancher
     "${homeDirectory}/.rd/bin"
+    # needed for pixi global
+    "${homeDirectory}/.pixi/bin"
   ];
 
   home.sessionVariables = {

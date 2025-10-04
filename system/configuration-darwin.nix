@@ -109,6 +109,7 @@
       "dropbox"
       "firefox"
       "ghostty"
+      "github"
       "google-chrome"
       "obsidian"
       "spotify"
