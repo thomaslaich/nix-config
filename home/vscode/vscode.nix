@@ -3,7 +3,7 @@
   programs.vscode = {
     enable = true;
     package = pkgs.vscode;
-    mutableExtensionsDir = false;
+    mutableExtensionsDir = true;
     profiles = {
       default = {
         enableUpdateCheck = false;
@@ -369,8 +369,8 @@
             esbenp.prettier-vscode
 
             # Python
-            ms-python.python
-            ms-python.debugpy
+            # ms-python.python
+            # ms-python.debugpy
             # ms-python.vscode-python-envs
             # meta.pyrefly # typechecker/LSP by Meta
             # astral-sh.ty # typechecker/LSP by Astral
@@ -434,6 +434,7 @@
 
             # DuckDB, parquet
             lucien-martijn.parquet-visualizer
+
           ]
           ++ (with pkgs.vscode-extensions; [
             github.vscode-pull-request-github
@@ -443,13 +444,15 @@
 
             # ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
             ms-dotnettools.vscode-dotnet-runtime # .NET install tool
+            # ms-python.debugpy
 
             github.copilot
             github.copilot-chat
 
             ms-python.vscode-pylance
             ms-toolsai.jupyter
-
+          ])
+          ++ (with pkgs.stable.vscode-extensions; [
             eamodio.gitlens
           ]);
       };

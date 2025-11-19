@@ -75,14 +75,20 @@ in
 
   programs.git = {
     enable = true;
-    userEmail = "thomaslaich@gmail.com";
-    userName = "Thomas Laich";
-    diff-so-fancy.enable = true;
+    settings.user = {
+      email = "thomaslaich@gmail.com";
+      name = "Thomas Laich";
+    };
   };
+
+  programs.diff-so-fancy.enable = true;
 
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+    config = {
+      global.load_dotenv = true;
+    };
   };
 
   programs.zsh = {
@@ -123,17 +129,17 @@ in
 
       python-with-packages = pkgs.python312.withPackages (
         ps: with ps; [
-          jupyter
-          matplotlib
-          numpy
-          pandas
-          pyarrow
-          requests
-          scipy
+          # jupyter
+          # matplotlib
+          # numpy
+          # pandas
+          # pyarrow
+          # requests
+          # scipy
         ]
       );
       python-language-support = with pkgs; [
-        pixi # dep management with Conda
+        # pixi # dep management with Conda
         # pyrefly # LSP from Meta
         pyright # LSP from Microsoft
         python-with-packages
@@ -222,7 +228,7 @@ in
           ]
         ))
         k9s
-        kubelogin
+        # kubelogin
         kubernetes-helm
         lazydocker
         terraform

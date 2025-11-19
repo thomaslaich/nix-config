@@ -86,7 +86,7 @@
   # Fonts
   # NOTE: managed by stylix
   fonts.packages = with pkgs; [
-    ubuntu_font_family
+    ubuntu-classic
     etBook
     nerd-fonts.droid-sans-mono
     nerd-fonts.jetbrains-mono
