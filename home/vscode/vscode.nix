@@ -349,7 +349,7 @@
             # General repo setups
             mkhl.direnv
             editorconfig.editorconfig # needed?
-            skellock.just
+            nefrob.vscode-just-syntax
             # github.vscode-pull-request-github
 
             # Networking

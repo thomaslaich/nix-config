@@ -139,7 +139,7 @@ in
         ]
       );
       python-language-support = with pkgs; [
-        # pixi # dep management with Conda
+        pixi # dep management with Conda
         # pyrefly # LSP from Meta
         pyright # LSP from Microsoft
         python-with-packages
@@ -205,6 +205,7 @@ in
       git-tools = with pkgs; [
         gh # github CLI
         gitu # Magit clone for the command line
+        git-filter-repo
       ];
       json-tools = with pkgs; [
         fx
