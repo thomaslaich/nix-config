@@ -44,6 +44,7 @@ in
     ./neovim/neovim.nix
     ./tmux/tmux.nix
     ./vscode/vscode.nix
+    ./zed/zed.nix
   ];
 
   nixpkgs = {
@@ -142,6 +143,7 @@ in
         pixi # dep management with Conda
         # pyrefly # LSP from Meta
         pyright # LSP from Microsoft
+        basedpyright # Improved pyright
         python-with-packages
         ruff # formatter
         ty # LSP from Astral

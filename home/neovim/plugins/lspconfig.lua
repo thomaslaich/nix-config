@@ -7,7 +7,7 @@ vim.lsp.enable("roslyn_ls") -- C# (LSP from DevKit)
 vim.lsp.enable("taplo") -- TOML
 vim.lsp.enable("ts_ls") -- Typescript/Javascript
 vim.lsp.enable("ty") -- Typechecker/LSP for Python by Astral
-vim.lsp.enable("pyright") -- Typechecker/LSP for Python by Microsoft
+vim.lsp.enable("basedpyright") -- Typechecker/LSP for Python by Microsoft
 -- vim.lsp.enable("pyrefly") -- Typechecker/LSP for Python by Meta
 vim.lsp.enable("hls") -- Haskell
 

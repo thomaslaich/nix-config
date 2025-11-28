@@ -12,15 +12,13 @@
     # Allow binary caches to be trusted
     # currently used for: emacs-overlay,  devenv, and haskell.nix
     extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=
-    extra-substituters = https://nix-community.cachix.org https://devenv.cachix.org https://cache.iog.io 
+    extra-substituters = https://nix-community.cachix.org https://devenv.cachix.org https://cache.iog.io
   '';
 
   imports = [
     inputs.agenix.darwinModules.default
     inputs.stylix.darwinModules.stylix
     ../stylix.nix
-    ./yabai/yabai.nix
-    ./skhd/skhd.nix
   ];
 
   nixpkgs = {
@@ -128,4 +126,8 @@
     home = "/Users/thomaslaich";
     # shell = pkgs.fish;
   };
+
+  ids.gids.nixbld = 30000;
+
+  nix.enable = false; # not needed when using determinate nix
 }
