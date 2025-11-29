@@ -24,13 +24,4 @@
       ${pkgs.rsync}/bin/rsync $rsyncArgs "$apps_source/" "$app_target"
     '';
   };
-
-  programs.aerospace = {
-    enable = true;
-  };
-
-  home.file.".aerospace.toml".text = ''
-    # Start AeroSpace at login
-    start-at-login = true
-  '';
 }
