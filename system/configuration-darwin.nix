@@ -19,7 +19,7 @@
     inputs.agenix.darwinModules.default
     inputs.stylix.darwinModules.stylix
     ../stylix.nix
-    # ./aerospace/aerospace.nix
+    ./aerospace/aerospace.nix
   ];
 
   nixpkgs = {

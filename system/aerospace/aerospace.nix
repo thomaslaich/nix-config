@@ -2,76 +2,73 @@ _: {
   services.aerospace = {
     enable = true;
     settings = {
-      # config-version = 2;
-      start-at-login = true;
-      #
-      # enable-normalization-flatten-containers = true;
-      # enable-normalization-opposite-orientation-for-nested-containers = true;
-      #
-      # accordion-padding = 30;
-      #
-      # default-root-container-layout = "tiles";
-      # default-root-container-orientation = "auto";
-      #
-      # on-focused-monitor-changed = [
-      #   "move-mouse monitor-lazy-center"
-      # ];
-      #
-      # automatically-unhide-macos-hidden-apps = false;
-      #
-      # persistent-workspaces = [
-      #   "1"
-      #   "2"
-      #   "3"
-      #   "4"
-      #   "5"
-      #   "6"
-      #   "7"
-      #   "8"
-      #   "9"
-      #   "A"
-      #   "B"
-      #   "C"
-      #   "D"
-      #   "E"
-      #   "F"
-      #   "G"
-      #   "H"
-      #   "I"
-      #   "J"
-      #   "K"
-      #   "L"
-      #   "M"
-      #   "N"
-      #   "O"
-      #   "P"
-      #   "Q"
-      #   "R"
-      #   "S"
-      #   "T"
-      #   "U"
-      #   "V"
-      #   "W"
-      #   "X"
-      #   "Y"
-      #   "Z"
-      # ];
-      # on-mode-changed = [ ];
-      # key-mapping = {
-      #   preset = "qwerty";
-      # };
+      config-version = 2;
+      enable-normalization-flatten-containers = true;
+      enable-normalization-opposite-orientation-for-nested-containers = true;
+
+      accordion-padding = 30;
+
+      default-root-container-layout = "tiles";
+      default-root-container-orientation = "auto";
+
+      on-focused-monitor-changed = [
+        "move-mouse monitor-lazy-center"
+      ];
+
+      automatically-unhide-macos-hidden-apps = false;
+
+      persistent-workspaces = [
+        "1"
+        "2"
+        "3"
+        "4"
+        "5"
+        "6"
+        "7"
+        "8"
+        "9"
+        "A"
+        "B"
+        "C"
+        "D"
+        "E"
+        "F"
+        "G"
+        "H"
+        "I"
+        "J"
+        "K"
+        "L"
+        "M"
+        "N"
+        "O"
+        "P"
+        "Q"
+        "R"
+        "S"
+        "T"
+        "U"
+        "V"
+        "W"
+        "X"
+        "Y"
+        "Z"
+      ];
+      on-mode-changed = [ ];
+      key-mapping = {
+        preset = "qwerty";
+      };
       gaps = {
-        # Your overrides:
         outer = {
-          left = 8;
-          bottom = 8;
-          top = 8;
-          right = 8;
+          left = 6;
+          bottom = 6;
+          top = 6;
+          right = 6;
         };
 
         # Defaults:
-        inner.horizontal = 8;
-        inner.vertical = 8;
+        inner.horizontal = 6;
+        inner.vertical = 6;
       };
 
       mode = {
@@ -166,43 +163,47 @@ _: {
           };
         };
 
-        # service = {
-        #   binding = {
-        #     esc = [
-        #       "reload-config"
-        #       "mode main"
-        #     ];
-        #     r = [
-        #       "flatten-workspace-tree"
-        #       "mode main"
-        #     ];
-        #     f = [
-        #       "layout floating tiling"
-        #       "mode main"
-        #     ];
-        #     backspace = [
-        #       "close-all-windows-but-current"
-        #       "mode main"
-        #     ];
-        #
-        #     alt-shift-h = [
-        #       "join-with left"
-        #       "mode main"
-        #     ];
-        #     alt-shift-j = [
-        #       "join-with down"
-        #       "mode main"
-        #     ];
-        #     alt-shift-k = [
-        #       "join-with up"
-        #       "mode main"
-        #     ];
-        #     alt-shift-l = [
-        #       "join-with right"
-        #       "mode main"
-        #     ];
-        #   };
-        # };
+        service = {
+          binding = {
+            esc = [
+              "reload-config"
+              "mode main"
+            ];
+            r = [
+              "flatten-workspace-tree"
+              "mode main"
+            ];
+            f = [
+              "layout floating tiling"
+              "mode main"
+            ];
+            backspace = [
+              "close-all-windows-but-current"
+              "mode main"
+            ];
+            c = [
+              "close"
+              "mode main"
+            ];
+
+            alt-shift-h = [
+              "join-with left"
+              "mode main"
+            ];
+            alt-shift-j = [
+              "join-with down"
+              "mode main"
+            ];
+            alt-shift-k = [
+              "join-with up"
+              "mode main"
+            ];
+            alt-shift-l = [
+              "join-with right"
+              "mode main"
+            ];
+          };
+        };
       };
     };
   };
