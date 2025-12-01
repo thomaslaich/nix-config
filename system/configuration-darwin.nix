@@ -113,6 +113,7 @@
       "obsidian"
       "spotify"
       "studio-3t"
+      "whatsapp"
     ];
   };
 

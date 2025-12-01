@@ -15,14 +15,6 @@
           config = builtins.readFile ./plugins/treesitter.lua;
         };
 
-        neoconf = {
-          plugin = pkgs.vimPlugins.neoconf-nvim;
-          type = "lua";
-          config = ''
-            require("neoconf").setup({})
-          '';
-        };
-
         ts-context = {
           plugin = pkgs.vimPlugins.nvim-treesitter-context;
           type = "lua";
@@ -221,15 +213,6 @@
               '';
             };
 
-            transparent = {
-              plugin = pkgs.vimPlugins.transparent-nvim;
-              type = "lua";
-              config = ''
-                require"transparent".setup {}
-              '';
-
-            };
-
           in
           pkgs.lib.lists.flatten [
             barbar
@@ -244,7 +227,6 @@
             trouble
             web-devicons
             which-key
-            transparent
           ];
 
         git-plugins = [
@@ -313,7 +295,6 @@
         };
       in
       pkgs.lib.lists.flatten [
-        neoconf
         neorg
         blink-cmp
         conform-nvim

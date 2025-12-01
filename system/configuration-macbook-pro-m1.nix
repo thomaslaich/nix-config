@@ -6,7 +6,6 @@
     "docker"
     "nordvpn"
     "telegram"
-    "whatsapp"
     "zoom"
   ];
 
