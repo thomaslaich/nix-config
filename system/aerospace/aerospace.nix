@@ -11,8 +11,12 @@ _: {
       default-root-container-layout = "tiles";
       default-root-container-orientation = "auto";
 
-      on-focused-monitor-changed = [
-        "move-mouse monitor-lazy-center"
+      # on-focused-monitor-changed = [
+      #   "move-mouse monitor-lazy-center"
+      # ];
+      # change focus on every window change (like Hyprland)
+      on-focus-changed = [
+        "move-mouse window-lazy-center"
       ];
 
       automatically-unhide-macos-hidden-apps = false;
@@ -47,12 +51,6 @@ _: {
         "R"
         "S"
         "T"
-        "U"
-        "V"
-        "W"
-        "X"
-        "Y"
-        "Z"
       ];
       on-mode-changed = [ ];
       key-mapping = {
@@ -117,12 +115,6 @@ _: {
             alt-r = "workspace R";
             alt-s = "workspace S";
             alt-t = "workspace T";
-            alt-u = "workspace U";
-            alt-v = "workspace V";
-            alt-w = "workspace W";
-            alt-x = "workspace X";
-            alt-y = "workspace Y";
-            alt-z = "workspace Z";
 
             alt-shift-1 = "move-node-to-workspace 1";
             alt-shift-2 = "move-node-to-workspace 2";
