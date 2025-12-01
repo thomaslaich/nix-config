@@ -439,11 +439,11 @@
           ++ (with pkgs.vscode-extensions; [
             github.vscode-pull-request-github
 
-            # ms-dotnettools.csharp
-            # ms-dotnettools.csdevkit
+            ms-dotnettools.csharp
+            ms-dotnettools.csdevkit
 
             # ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
-            # ms-dotnettools.vscode-dotnet-runtime # .NET install tool
+            ms-dotnettools.vscode-dotnet-runtime # .NET install tool
             # ms-python.debugpy
 
             github.copilot
