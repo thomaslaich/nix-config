@@ -128,15 +128,15 @@ in
         roslyn-ls # LSP for use in Neovim and Emacs
       ];
 
-      python-with-packages = pkgs.python312.withPackages (
+      python-with-packages = pkgs.python313.withPackages (
         ps: with ps; [
-          # jupyter
-          # matplotlib
-          # numpy
-          # pandas
-          # pyarrow
-          # requests
-          # scipy
+          jupyter
+          matplotlib
+          numpy
+          pandas
+          pyarrow
+          requests
+          scipy
         ]
       );
       python-language-support = with pkgs; [
