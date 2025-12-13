@@ -7,7 +7,9 @@
 let
   schemes = {
     light = "${inputs.kauz}/base24/kauz-light.yml";
-    dark = "${inputs.kauz}/base24/kauz-dark.yml";
+    # dark = "${inputs.kauz}/base24/kauz-dark.yml";
+    # light = "${inputs.tinted-theming-schemes}/base24/catppuccin-latte.yaml";
+    dark = "${inputs.tinted-theming-schemes}/base24/catppuccin-frappe.yaml";
   };
 in
 {

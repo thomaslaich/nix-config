@@ -106,6 +106,8 @@ _: {
 
     extensions = [
       "nix"
+      "csharp"
+      "org"
     ];
   };
 }

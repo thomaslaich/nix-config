@@ -11,8 +11,8 @@
     # nixpkgs channels
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-nixos.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";
-    nixpkgs-nixos-stable.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs-nixos-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -50,6 +50,10 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     kauz = {
       url = "github:buntec/kauz";
+      flake = false;
+    };
+    tinted-theming-schemes = {
+      url = "github:tinted-theming/schemes";
       flake = false;
     };
   };
