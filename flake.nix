@@ -19,7 +19,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # nix darwin
-    darwin.url = "github:lnl7/nix-darwin";
+    darwin.url = "github:nix-darwin/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # secret management with agenix
@@ -208,6 +208,7 @@
                         "homebrew/homebrew-cask" = inputs.homebrew-cask;
                       };
                       autoMigrate = true; # Automatically migrate existing Homebrew installations
+                      mutableTaps = false;
                     };
                   }
                 ];
