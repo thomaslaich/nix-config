@@ -7,6 +7,12 @@
   ...
 }:
 {
+  imports = [
+    ./ghostty/ghostty.nix
+    ./vscode/vscode.nix
+    ./zed/zed.nix
+  ];
+  
   home.packages = with pkgs; [
     mos # smooth scrolling
 

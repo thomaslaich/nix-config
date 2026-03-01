@@ -40,11 +40,8 @@ in
     }
     ./emacs/emacs.nix
     ./fish/fish.nix
-    ./ghostty/ghostty.nix
     ./neovim/neovim.nix
     ./tmux/tmux.nix
-    ./vscode/vscode.nix
-    ./zed/zed.nix
   ];
 
   nixpkgs = {
@@ -152,7 +149,7 @@ in
       nix-tools = with pkgs; [
         any-nix-shell
         nil # LSP
-        nixfmt-rfc-style # formatter
+        nixfmt # formatter
         statix # linter
         devenv
       ];

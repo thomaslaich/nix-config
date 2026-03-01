@@ -81,8 +81,9 @@
           user = "thomaslaich";
           system = flake-utils.lib.system.aarch64-darwin;
         }
+        # my windows desktop (ubuntu wsl)
         {
-          name = "lenovo-desktop";
+          name = "desktop-win11";
           user = "thomaslaich";
           system = flake-utils.lib.system.x86_64-linux;
         }
@@ -156,7 +157,7 @@
         let
           pkgs = pkgsBySystem.${system};
         in
-        treefmtEval.${pkgs.system}.config.build.wrapper
+        treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper
       );
 
       nixosConfigurations = builtins.listToAttrs (
