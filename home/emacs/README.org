@@ -54,7 +54,6 @@
   - [[#formatting-with-format-all][Formatting with format-all]]
   - [[#code-completion-with-corfu][Code Completion with corfu]]
   - [[#debugging-with-dap-mode][Debugging with dap-mode]]
-  - [[#kubernetes][Kubernetes]]
 - [[#programming-languages-setup][Programming Languages Setup]]
   - [[#yamljsontomletc][YAML/JSON/TOML/etc]]
   - [[#lisp][Lisp]]
@@ -66,8 +65,6 @@
   - [[#typescript][Typescript]]
   - [[#c][C/*]]
 - [[#projects-with-projectile][Projects with projectile]]
-- [[#email][Email]]
-- [[#calendar-integration][Calendar Integration]]
 - [[#rss-feeds-with-elfeed][RSS Feeds with elfeed]]
 - [[#agenix][Agenix]]
 - [[#dired][Dired]]
@@ -957,17 +954,28 @@ Note that, since ~org-timeblock~ does not have ~evil-collection~ bindings, we ha
 I use [[https://github.com/Trevoke/org-gtd.el][org-gtd.el]] for task management using the GTD method. Currently, this is a completely separate way of capturing things.
 I have yet to find out whether I need org-capture at all.
 #+begin_src emacs-lisp
-  (setq org-gtd-update-ack "3.0.0")
   (use-package org-gtd
     :after org
     :init
+    (setq org-gtd-update-ack "4.0.0")
     ;; Directories
     (setq org-agenda-files '("~/Dropbox/notes/gcal-appointments.org"
                              "~/Dropbox/notes/digitec-appointments.org"))
     (setq org-gtd-directory "~/Dropbox/notes/org-gtd")
+    :custom
+    ;; Configure TODO keyword states (options like "TODO(t)" or "DONE(d!)" are fine)
+    (org-todo-keywords '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "CNCL")))
+
+    ;; Map GTD semantic states to your keywords
+    (org-gtd-keyword-mapping '((todo . "TODO")
+                             (next . "NEXT")
+                             (wait . "WAIT")
+  			   (done . "DONE")
+                             (canceled . "CNCL")))
     :config
     (setq org-edna-use-inheritance t)
     (org-edna-mode)
+    (setq org-agenda-files (list org-gtd-directory))
     (leader-def
       "d" '(:ignore t :wk "Org GT[D]")
       "d c" '(org-gtd-capture :wk "Capture")

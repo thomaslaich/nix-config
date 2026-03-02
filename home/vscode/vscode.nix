@@ -340,6 +340,7 @@
             "inlineSuggestions" = false; # disable inline-suggestions
           };
           "chat.agent.enabled" = true;
+          "postman.settings.dotenv-detection-notification-visibility" = false;
         };
 
         extensions =
@@ -437,7 +438,7 @@
 
           ]
           ++ (with pkgs.vscode-extensions; [
-            github.vscode-pull-request-github
+            # github.vscode-pull-request-github
 
             ms-dotnettools.csharp
             ms-dotnettools.csdevkit
@@ -454,6 +455,7 @@
           ])
           ++ (with pkgs.stable.vscode-extensions; [
             eamodio.gitlens
+            github.vscode-pull-request-github
           ]);
       };
     };
