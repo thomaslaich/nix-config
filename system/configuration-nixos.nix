@@ -153,7 +153,7 @@
   # Fonts
   fonts.fontDir.enable = true;
   fonts.packages = with pkgs; [
-    etBook
+    et-book
     nerd-fonts.droid-sans-mono
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code

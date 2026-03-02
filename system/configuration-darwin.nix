@@ -86,7 +86,7 @@
   # NOTE: managed by stylix
   fonts.packages = with pkgs; [
     ubuntu-classic
-    etBook
+    et-book
     nerd-fonts.droid-sans-mono
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code

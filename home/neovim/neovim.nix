@@ -12,6 +12,7 @@
         treesitter = {
           plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
           type = "lua";
+          config = builtins.readFile ./plugins/treesitter.lua;
         };
 
         ts-context = {
@@ -320,6 +321,6 @@
 
     extraPackages = [ ];
 
-    extraLuaConfig = builtins.readFile ./init.lua;
+    initLua = builtins.readFile ./init.lua;
   };
 }
