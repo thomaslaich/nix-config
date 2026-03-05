@@ -56,6 +56,7 @@ in
       inputs.vimplugins-overlay.overlays.default
       inputs.nix-vscode-extensions.overlays.default
       inputs.emacs-overlay.overlays.default
+      inputs.claude-code-nix.overlays.default
     ];
     # Configure your nixpkgs instance
     config = {
@@ -241,6 +242,10 @@ in
       build-tools = with pkgs; [
         bazelisk # bazel wrapper (similar to NVM)
       ];
+      agentic-coding = with pkgs; [
+        codex-cli-nix
+        claude-code
+      ];
       misc = with pkgs; [
         # _1password-cli # pw manager
         age # file encryption tool, used togehter with agenix - https://github.com/FiloSottile/age
@@ -288,6 +293,7 @@ in
       cloud-tools
       database-tools
       build-tools
+      agentic-coding
       misc
 
       # inputs.hcat.packages.${system}.default

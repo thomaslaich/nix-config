@@ -8,7 +8,9 @@ let
   isDarwin = system: (builtins.match ".*darwin" system) != null;
 in
 {
-  modifications = final: prev: { };
+  modifications = final: prev: {
+    codex-cli-nix = inputs.codex-cli-nix.packages.${final.stdenv.hostPlatform.system}.default;
+  };
 
   stable-packages = final: _prev: {
     stable =

@@ -449,6 +449,7 @@
 
             github.copilot
             github.copilot-chat
+            openai.chatgpt
 
             ms-python.vscode-pylance
             ms-toolsai.jupyter

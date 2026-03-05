@@ -45,6 +45,10 @@
       flake = false;
     };
 
+    # claude-code and codex-cli
+    codex-cli-nix.url = "github:sadjow/codex-cli-nix";
+    claude-code-nix.url = "github:sadjow/claude-code-nix";
+
     # theming
     stylix.url = "github:nix-community/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
