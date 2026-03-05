@@ -87,7 +87,7 @@
         }
         # my windows desktop (ubuntu wsl)
         {
-          name = "desktop-win11";
+          name = "desktop-ubuntu-wsl";
           user = "thomaslaich";
           system = flake-utils.lib.system.x86_64-linux;
         }
