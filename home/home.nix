@@ -18,8 +18,6 @@ let
 in
 {
   imports = [
-    # inputs.kauz.homeModules.default
-    # inputs.nix-colorscheme.homeModules.colorscheme
     inputs.agenix.homeManagerModules.default
     inputs.stylix.homeModules.stylix
     ../stylix.nix
@@ -173,11 +171,12 @@ in
         libcxx # needed for bazel?
       ];
       web-dev-support = with pkgs; [
-        nodePackages.prettier # formatter
-        nodePackages.typescript-language-server # LSP for JS/TS
+        bun
         nodejs # JS/TS
+        prettier # formatter
         prettierd # formatter
         stylelint # CSS linter
+        typescript-language-server # LSP for JS/TS
         watchman # relay GQL incremental compilation
         yarn # dep management
       ];
@@ -234,6 +233,7 @@ in
         lazydocker
         terraform
         hclfmt # formatter for HCL files (e.g., .tf)
+        lima
       ];
       database-tools = with pkgs; [
         duckdb
@@ -248,8 +248,9 @@ in
       ];
       misc = with pkgs; [
         # _1password-cli # pw manager
-        age # file encryption tool, used togehter with agenix - https://github.com/FiloSottile/age
-        agenix-cli
+        # age # file encryption tool, used togehter with agenix - https://github.com/FiloSottile/age
+        # agenix-cli
+        inputs.agenix.packages.${system}.default
         amber # search & replace - https://github.com/dalance/amber
         bat # better cat - https://github.com/sharkdp/bat
         eza # better ls (bound to `l` and `la` in fish)
@@ -300,25 +301,29 @@ in
     ];
 
   # secrets from agenix
-  age.secrets = {
-    gcal-clientid = {
-      file = ../secrets/gcal-clientid.age;
-      path = "${homeDirectory}/.emacs.d/gcal-clientid";
-    };
-    gcal-clientsecret = {
-      file = ../secrets/gcal-clientsecret.age;
-      path = "${homeDirectory}/.emacs.d/gcal-clientsecret";
-    };
-    authinfo = {
-      file = ../secrets/authinfo.age;
-      path = "${homeDirectory}/.authinfo";
-    };
-    netrc = {
-      file = ../secrets/netrc.age;
-      path = "${homeDirectory}/.netrc";
-    };
-    claptrap = {
-      file = ../secrets/claptrap.age;
+  age = {
+    identityPaths = [ "${homeDirectory}/.ssh/id_ed25519" ];
+    secrets = {
+      # gcal-clientid = {
+      #   file = ../secrets/gcal-clientid.age;
+      #   path = "${homeDirectory}/.emacs.d/gcal-clientid";
+      # };
+      # gcal-clientsecret = {
+      #   file = ../secrets/gcal-clientsecret.age;
+      #   path = "${homeDirectory}/.emacs.d/gcal-clientsecret";
+      # };
+      # authinfo = {
+      #   file = ../secrets/authinfo.age;
+      #   path = "${homeDirectory}/.authinfo";
+      # };
+      # netrc = {
+      #   file = ../secrets/netrc.age;
+      #   path = "${homeDirectory}/.netrc";
+      # };
+      claptrap = {
+        file = ../secrets/claptrap.age;
+        path = "${homeDirectory}/.claptrap";
+      };
     };
   };
 

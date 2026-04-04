@@ -325,7 +325,7 @@
           "ilspy.defaultOutputLanguage" = "C# 11.0 / VS 2022.4";
           "files.eol" = "\n";
           "editor.formatOnSave" = false;
-          "claptrap.configEndpoint" = "${config.age.secrets.claptrap.path}";
+          "claptrap.configEndpoint" = config.age.secrets.claptrap.path;
           "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
           "python.analysis.typeCheckingMode" = "standard";
           "editor.fontSize" = pkgs.lib.mkForce 12.0;
@@ -352,6 +352,7 @@
             editorconfig.editorconfig # needed?
             nefrob.vscode-just-syntax
             # github.vscode-pull-request-github
+            ms-vscode-remote.remote-ssh
 
             # Networking
             postman.postman-for-vscode
@@ -431,7 +432,7 @@
             timonwong.shellcheck
 
             # Galaxus
-            # dg-infinity.claptrap
+            dg-infinity.claptrap
 
             # DuckDB, parquet
             lucien-martijn.parquet-visualizer
