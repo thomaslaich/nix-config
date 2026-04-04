@@ -76,6 +76,7 @@ in
       email = "thomaslaich@gmail.com";
       name = "Thomas Laich";
     };
+    signing.format = "openpgp";
   };
 
   programs.diff-so-fancy.enable = true;
@@ -91,6 +92,8 @@ in
   programs.zsh = {
     enable = true;
   };
+
+  gtk.gtk4.theme = config.gtk.theme;
 
   # # private dropbox
   # services.syncthing = {
@@ -250,7 +253,7 @@ in
         # _1password-cli # pw manager
         # age # file encryption tool, used togehter with agenix - https://github.com/FiloSottile/age
         # agenix-cli
-        inputs.agenix.packages.${system}.default
+        inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default
         amber # search & replace - https://github.com/dalance/amber
         bat # better cat - https://github.com/sharkdp/bat
         eza # better ls (bound to `l` and `la` in fish)

@@ -14,19 +14,19 @@ After installing NixOS from a USB drive, follow these steps:
 
 2. Copy `/etc/nixos/hardware-configuration.nix` into `./system` (OK to overwrite existing dummy file).
 
-3. Build and activate NixOS config:
+3. Build and activate the base system config:
 
 ```bash
-sudo nixos-rebuild switch --flake .#lenovo-desktop # the fragment can be dropped if it matches your current host name
+sudo nixos-rebuild switch --flake .#desktop-ubuntu-wsl-light
 
 # alternatively, using the `apps` provided by the flake:
-sudo nix run .#rebuild-lenovo-desktop
+sudo nix run .#rebuild-desktop-ubuntu-wsl-light
 ```
 
 4. Activate home-manager:
 
 ```bash
-sudo nix run .#hm-switch-lenovo-desktop
+nix run .#hm-switch-desktop-ubuntu-wsl-light
 ```
 
 5. After the initial installation, again `cd` into the repo, and activate direnv by typing `direnv allow`. Now you can use the simpler commands
@@ -101,4 +101,14 @@ I currently use [buntec/kauz](https://github.com/buntec/kauz) as my color scheme
 
 ## Secrets with agenix
 
-TODO
+Secrets are managed with `agenix`.
+
+The rules for which SSH keys can decrypt which secret live in `secrets/secrets.nix`.
+
+To edit an existing secret:
+
+```bash
+nix run github:ryantm/agenix -- -e secrets/claptrap.age
+```
+
+Home Manager decrypts configured secrets during activation. For example, `claptrap.age` is written to `~/.claptrap` by `home/home.nix`.

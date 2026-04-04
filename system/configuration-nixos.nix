@@ -4,25 +4,14 @@
 
 {
   inputs,
-  outputs,
   pkgs,
   ...
 }:
 
 {
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=    
-    extra-substituters = https://nix-community.cachix.org https://cache.iog.io https://devenv.cachix.org
-  '';
-
   imports = [
     # Include the results of the hardware scan.
+    ./shared.nix
     ./hardware-configuration.nix
     inputs.agenix.nixosModules.default
     inputs.stylix.nixosModules.stylix
@@ -118,18 +107,6 @@
     # shell = pkgs.fish;
     # use HM instead
     # packages = with pkgs; [ ];
-  };
-
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.modifications
-      outputs.overlays.stable-packages
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Allow unfree packages
-      allowUnfree = true;
-    };
   };
 
   # List packages installed in system profile. To search, run:

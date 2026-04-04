@@ -26,7 +26,8 @@ check:
     nix flake check --impure
 
 update:
-    nix flake update && rebuild && hm-switch
+    nix flake update
+    just check
 
 # clean up nix store by removing old generations etc.
 [unix]

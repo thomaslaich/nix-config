@@ -1,38 +1,17 @@
 {
   config,
   inputs,
-  outputs,
   pkgs,
   ...
 }:
 {
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-
-    # Allow binary caches to be trusted
-    # currently used for: emacs-overlay, devenv, and haskell.nix
-    extra-trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ= zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU=
-    extra-substituters = https://nix-community.cachix.org https://devenv.cachix.org https://cache.iog.io https://zed.cachix.org
-  '';
-
   imports = [
+    ./shared.nix
     inputs.agenix.darwinModules.default
     inputs.stylix.darwinModules.stylix
     ../stylix.nix
     ./aerospace/aerospace.nix
   ];
-
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.modifications
-      outputs.overlays.stable-packages
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Allow unfree packages
-      allowUnfree = true;
-    };
-  };
 
   # services.emacs.enable = true;
 
@@ -133,4 +112,9 @@
   ids.gids.nixbld = 30000;
 
   nix.enable = false; # not needed when using determinate nix
+
+  nix.settings.extra-trusted-public-keys = [
+    "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="
+  ];
+  nix.settings.extra-substituters = [ "https://zed.cachix.org" ];
 }

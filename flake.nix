@@ -140,17 +140,14 @@
           pkgs = pkgsBySystem.${system};
         in
         {
-          default = devenv.lib.mkShell {
-            inherit inputs pkgs;
-            modules = [
-              (
-                { pkgs, config, ... }:
-                {
-                  languages.lua.enable = true;
-                  languages.nix.enable = true;
-                  packages = with pkgs; [ just ];
-                }
-              )
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              just
+              lua
+              nil
+              nixfmt
+              statix
+              stylua
             ];
           };
         }
@@ -267,7 +264,7 @@
                 rebuildScriptLight = pkgs.writeShellScript "rebuild-${machine.name}-light" (
                   if (isDarwin machine.system) then
                     "${
-                      self.darwinConfigurations.${"${machine.name}-dark"}.system
+                      self.darwinConfigurations.${"${machine.name}-light"}.system
                     }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}-light"
                   else
                     "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}-light"
@@ -293,6 +290,7 @@
                   value = {
                     type = "app";
                     program = "${rebuildScriptLight}";
+                    meta.description = "Switch the ${machine.name} system to the light configuration.";
                   };
                 }
                 {
@@ -300,6 +298,7 @@
                   value = {
                     type = "app";
                     program = "${rebuildScriptDark}";
+                    meta.description = "Switch the ${machine.name} system to the dark configuration.";
                   };
                 }
                 {
@@ -307,6 +306,7 @@
                   value = {
                     type = "app";
                     program = "${hmSwitchScriptDark}";
+                    meta.description = "Switch Home Manager for ${machine.name} to the dark configuration.";
                   };
                 }
                 {
@@ -314,6 +314,7 @@
                   value = {
                     type = "app";
                     program = "${hmSwitchScriptLight}";
+                    meta.description = "Switch Home Manager for ${machine.name} to the light configuration.";
                   };
                 }
               ]
@@ -327,19 +328,28 @@
         (builtins.mapAttrs (
           system: machines:
           builtins.listToAttrs (
-            builtins.map (
+            builtins.concatMap (
               machine:
-              let
-                toplevel =
-                  if (isDarwin machine.system) then
-                    darwinConfigurations.${machine.name}.config.system.build.toplevel
-                  else
-                    nixosConfigurations.${machine.name}.config.system.build.toplevel;
-              in
-              {
-                name = "toplevel-${machine.name}";
-                value = toplevel;
-              }
+              builtins.map
+                (
+                  mode:
+                  let
+                    configurationName = "${machine.name}-${mode}";
+                    toplevel =
+                      if (isDarwin machine.system) then
+                        darwinConfigurations.${configurationName}.config.system.build.toplevel
+                      else
+                        nixosConfigurations.${configurationName}.config.system.build.toplevel;
+                  in
+                  {
+                    name = "toplevel-${configurationName}";
+                    value = toplevel;
+                  }
+                )
+                [
+                  "light"
+                  "dark"
+                ]
             ) machines
           )
         ) machinesBySystem)
