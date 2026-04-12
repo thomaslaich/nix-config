@@ -3,10 +3,10 @@ host := `hostname`
 default:
     @just --list
 
-# rebuild NixOS configuration and switch. mode = 'dark' or 'light'
+# rebuild system-manager configuration and switch. mode = 'dark' or 'light'
 [linux]
-nixos-switch mode='light':
-    sudo nix run .#rebuild-{{ host }}-{{ mode }}
+system-manager-switch mode='light':
+    nix run .#rebuild-{{ host }}-{{ mode }}
 
 # rebuild nix darwin configuration and switch. mode = 'dark' or 'light'
 [macos]

@@ -19,7 +19,7 @@ in
           if (isDarwin final.stdenv.hostPlatform.system) then
             inputs.nixpkgs-darwin-stable
           else
-            inputs.nixpkgs-nixos-stable
+            inputs.nixpkgs-linux-stable
         )
         {
           inherit (final.stdenv.hostPlatform) system;

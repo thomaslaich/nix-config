@@ -10,9 +10,8 @@
 
     # nixpkgs channels
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-nixos.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
-    nixpkgs-nixos-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-linux-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
     # home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -21,6 +20,10 @@
     # nix darwin
     darwin.url = "github:nix-darwin/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+
+    # system-manager
+    system-manager.url = "github:numtide/system-manager";
+    system-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # secret management with agenix
     agenix.url = "github:ryantm/agenix";
@@ -67,7 +70,7 @@
       self,
       darwin,
       nixpkgs,
-      nixpkgs-nixos,
+      system-manager,
       home-manager,
       devenv,
       flake-utils,
@@ -100,7 +103,7 @@
       ];
       isDarwin = system: (builtins.match ".*darwin" system) != null;
       darwinMachines = builtins.filter (machine: isDarwin machine.system) machines;
-      nixosMachines = builtins.filter (machine: !isDarwin machine.system) machines;
+      systemManagerMachines = builtins.filter (machine: !isDarwin machine.system) machines;
       machinesBySystem = builtins.groupBy (machine: machine.system) machines;
       systems = builtins.attrNames machinesBySystem;
 
@@ -112,7 +115,7 @@
       pkgsBySystem = builtins.listToAttrs (
         builtins.map (system: {
           name = system;
-          value = import (if (isDarwin system) then nixpkgs else nixpkgs-nixos) {
+          value = import nixpkgs {
             inherit system;
             # inherit overlays;
             config = {
@@ -161,23 +164,23 @@
         treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper
       );
 
-      nixosConfigurations = builtins.listToAttrs (
+      systemConfigs = builtins.listToAttrs (
         builtins.concatMap
           (
             mode:
             builtins.map (machine: {
               name = "${machine.name}-${mode}";
-              value = lib.nixosSystem {
-                inherit (machine) system;
+              value = system-manager.lib.makeSystemConfig {
                 specialArgs = {
                   inherit inputs outputs mode;
                 };
                 modules = [
-                  ./system/configuration-nixos.nix
+                  { nixpkgs.hostPlatform = machine.system; }
+                  ./system/configuration-system-manager.nix
                   ./system/configuration-${machine.name}.nix
                 ];
               };
-            }) nixosMachines
+            }) systemManagerMachines
           )
           [
             "light"
@@ -241,7 +244,7 @@
                       if (isDarwin machine.system) then "/Users/${machine.user}" else "/home/${machine.user}";
                   }
                   ./home/home.nix
-                  ./home/home-${if (isDarwin machine.system) then "darwin" else "nixos"}.nix
+                  ./home/home-${if (isDarwin machine.system) then "darwin" else "linux"}.nix
                   ./home/home-${machine.name}.nix
                 ];
               };
@@ -267,7 +270,9 @@
                       self.darwinConfigurations.${"${machine.name}-light"}.system
                     }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}-light"
                   else
-                    "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}-light"
+                    "${
+                      inputs.system-manager.packages.${system}.default
+                    }/bin/system-manager switch --flake ${self}#${machine.name}-light --sudo"
                 );
                 rebuildScriptDark = pkgs.writeShellScript "rebuild-${machine.name}-dark" (
                   if (isDarwin machine.system) then
@@ -275,7 +280,9 @@
                       self.darwinConfigurations.${"${machine.name}-dark"}.system
                     }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}-dark"
                   else
-                    "${pkgs.nixos-rebuild}/bin/nixos-rebuild switch --flake ${self}#${machine.name}-dark"
+                    "${
+                      inputs.system-manager.packages.${system}.default
+                    }/bin/system-manager switch --flake ${self}#${machine.name}-dark --sudo"
                 );
                 hmSwitchScriptLight = pkgs.writeShellScript "hm-switch-${machine.name}-light" "${
                   inputs.home-manager.packages.${system}.home-manager
@@ -323,38 +330,41 @@
         )
       ) machinesBySystem;
 
-      # add all nixos and darwin configs to checks
+      # add all system-manager and darwin configs to checks
       checks =
-        (builtins.mapAttrs (
-          system: machines:
-          builtins.listToAttrs (
-            builtins.concatMap (
-              machine:
-              builtins.map
-                (
-                  mode:
-                  let
-                    configurationName = "${machine.name}-${mode}";
-                    toplevel =
-                      if (isDarwin machine.system) then
-                        darwinConfigurations.${configurationName}.config.system.build.toplevel
-                      else
-                        nixosConfigurations.${configurationName}.config.system.build.toplevel;
-                  in
-                  {
-                    name = "toplevel-${configurationName}";
-                    value = toplevel;
-                  }
-                )
-                [
-                  "light"
-                  "dark"
-                ]
-            ) machines
-          )
-        ) machinesBySystem)
-        // eachSystem (system: {
-          formatting = treefmtEval.${system}.config.build.check self;
-        });
+        lib.recursiveUpdate
+          (builtins.mapAttrs (
+            system: machines:
+            builtins.listToAttrs (
+              builtins.concatMap (
+                machine:
+                builtins.map
+                  (
+                    mode:
+                    let
+                      configurationName = "${machine.name}-${mode}";
+                      toplevel =
+                        if (isDarwin machine.system) then
+                          darwinConfigurations.${configurationName}.config.system.build.toplevel
+                        else
+                          systemConfigs.${configurationName};
+                    in
+                    {
+                      name = "toplevel-${configurationName}";
+                      value = toplevel;
+                    }
+                  )
+                  [
+                    "light"
+                    "dark"
+                  ]
+              ) machines
+            )
+          ) machinesBySystem)
+          (
+            eachSystem (system: {
+              formatting = treefmtEval.${system}.config.build.check self;
+            })
+          );
     };
 }

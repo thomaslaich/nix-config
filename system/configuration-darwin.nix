@@ -55,7 +55,7 @@
 
   # `home-manager` currently has issues adding them to `~/Applications`
   # Issue: https://github.com/nix-community/home-manager/issues/1341
-  environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = [ ];
 
   environment.variables = {
     FISH_SHELL = "${pkgs.fish}/bin/fish";
@@ -112,9 +112,4 @@
   ids.gids.nixbld = 30000;
 
   nix.enable = false; # not needed when using determinate nix
-
-  nix.settings.extra-trusted-public-keys = [
-    "zed.cachix.org-1:/pHQ6dpMsAZk2DiP4WCL0p9YDNKWj2Q5FL20bNmw1cU="
-  ];
-  nix.settings.extra-substituters = [ "https://zed.cachix.org" ];
 }

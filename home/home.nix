@@ -169,7 +169,7 @@ in
         gopls # LSP
       ];
       cpp-c-language-support = with pkgs; [
-        # clang # commented -> you should use clang from XCode in macOS, or gcc on NixOS
+        # clang # commented -> you should use clang from XCode in macOS, or gcc on Linux
         clang-tools # LSP, formatter, linter
         libcxx # needed for bazel?
       ];
