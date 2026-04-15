@@ -422,6 +422,10 @@
             haskell.haskell
             justusadam.language-haskell
 
+            # Scala
+            scala-lang.scala
+            scalameta.metals
+
             # Avro
             streetsidesoftware.avro
 
@@ -437,6 +441,8 @@
             # DuckDB, parquet
             lucien-martijn.parquet-visualizer
 
+            # Smithy
+            smithy.smithy-vscode-extension
           ]
           ++ (with pkgs.vscode-extensions; [
             # github.vscode-pull-request-github
