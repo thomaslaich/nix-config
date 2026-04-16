@@ -426,6 +426,14 @@
             scala-lang.scala
             scalameta.metals
 
+            # Java
+            redhat.java
+            vscjava.vscode-gradle
+            vscjava.vscode-java-debug
+            vscjava.vscode-java-dependency
+            vscjava.vscode-java-test
+            vscjava.vscode-maven
+
             # Avro
             streetsidesoftware.avro
 
@@ -434,9 +442,6 @@
 
             # Shell
             timonwong.shellcheck
-
-            # Galaxus
-            dg-infinity.claptrap
 
             # DuckDB, parquet
             lucien-martijn.parquet-visualizer
