@@ -83,7 +83,6 @@
     taps = builtins.attrNames config.nix-homebrew.taps;
     casks = [
       "1password"
-      "azure-data-studio"
       "dropbox"
       "firefox"
       "ghostty"

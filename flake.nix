@@ -96,7 +96,7 @@
         }
         # My Galaxus device
         {
-          name = "DG-BYOH-8119";
+          name = "DG-SM-8119";
           user = "thomaslaich";
           system = flake-utils.lib.system.aarch64-darwin;
         }

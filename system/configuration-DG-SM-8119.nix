@@ -8,5 +8,5 @@
     "rancher"
   ];
 
-  networking.hostName = "DG-BYOH-8119";
+  networking.hostName = "DG-SM-8119";
 }
