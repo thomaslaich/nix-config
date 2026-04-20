@@ -385,9 +385,8 @@
             rust-lang.rust-analyzer
 
             # .NET
-            ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
             ms-dotnettools.vscode-dotnet-runtime # .NET install tool
-            ionide.ionide-fsharp
+            # ionide.ionide-fsharp
             csharpier.csharpier-vscode # formatter
             tintoy.msbuild-project-tools
 
@@ -455,7 +454,6 @@
             ms-dotnettools.csharp
             ms-dotnettools.csdevkit
 
-            # ms-dotnettools.dotnet-interactive-vscode # polyglot notebooks
             # ms-dotnettools.vscode-dotnet-runtime # .NET install tool
             # ms-python.debugpy
 
