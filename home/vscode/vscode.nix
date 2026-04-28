@@ -371,9 +371,11 @@
             esbenp.prettier-vscode
 
             # Python
-            # ms-python.python
-            # ms-python.debugpy
-            # ms-python.vscode-python-envs
+            ms-python.debugpy
+            ms-python.python
+            ms-python.vscode-pylance
+            ms-python.vscode-python-envs
+            renan-r-santos.pixi-code
             # meta.pyrefly # typechecker/LSP by Meta
             # astral-sh.ty # typechecker/LSP by Astral
             charliermarsh.ruff # linter by Astral
@@ -461,7 +463,7 @@
             github.copilot-chat
             openai.chatgpt
 
-            ms-python.vscode-pylance
+            # ms-python.vscode-pylance
             ms-toolsai.jupyter
           ])
           ++ (with pkgs.stable.vscode-extensions; [
