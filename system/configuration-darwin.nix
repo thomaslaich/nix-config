@@ -41,6 +41,7 @@
         KeyRepeat = 2;
 
         NSAutomaticCapitalizationEnabled = false;
+        NSAutomaticDashSubstitutionEnabled = false;
         NSAutomaticSpellingCorrectionEnabled = false;
         NSAutomaticPeriodSubstitutionEnabled = false;
         NSAutomaticQuoteSubstitutionEnabled = false;
@@ -83,6 +84,7 @@
     taps = builtins.attrNames config.nix-homebrew.taps;
     casks = [
       "1password"
+      "dbeaver-community"
       "dropbox"
       "firefox"
       "ghostty"

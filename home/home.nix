@@ -36,7 +36,6 @@ in
         };
       };
     }
-    ./emacs/emacs.nix
     ./fish/fish.nix
     ./neovim/neovim.nix
     ./tmux/tmux.nix
@@ -53,7 +52,6 @@ in
       inputs.neorg-overlay.overlays.default
       inputs.vimplugins-overlay.overlays.default
       inputs.nix-vscode-extensions.overlays.default
-      inputs.emacs-overlay.overlays.default
       inputs.claude-code-nix.overlays.default
     ];
     # Configure your nixpkgs instance
@@ -180,7 +178,7 @@ in
         prettierd # formatter
         stylelint # CSS linter
         typescript-language-server # LSP for JS/TS
-        watchman # relay GQL incremental compilation
+        # watchman # relay GQL incremental compilation
         yarn # dep management
       ];
       bash-language-support = with pkgs; [

@@ -10,8 +10,8 @@
 
     # nixpkgs channels
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
-    nixpkgs-linux-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-darwin-stable.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
+    nixpkgs-linux-stable.url = "github:nixos/nixpkgs/nixos-26.05";
 
     # home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -34,8 +34,6 @@
     vimplugins-overlay.url = "github:thomaslaich/vimplugins-overlay";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
-    emacs-overlay.inputs.nixpkgs.follows = "nixpkgs";
 
     # nix-homebrew
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
