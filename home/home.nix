@@ -91,8 +91,6 @@ in
     enable = true;
   };
 
-  gtk.gtk4.theme = config.gtk.theme;
-
   # # private dropbox
   # services.syncthing = {
   #   enable = true;

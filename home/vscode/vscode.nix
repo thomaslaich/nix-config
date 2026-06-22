@@ -387,7 +387,7 @@
             rust-lang.rust-analyzer
 
             # .NET
-            ms-dotnettools.vscode-dotnet-runtime # .NET install tool
+            # ms-dotnettools.vscode-dotnet-runtime # .NET install tool
             # ionide.ionide-fsharp
             csharpier.csharpier-vscode # formatter
             tintoy.msbuild-project-tools
@@ -453,8 +453,10 @@
           ++ (with pkgs.vscode-extensions; [
             # github.vscode-pull-request-github
 
-            ms-dotnettools.csharp
-            ms-dotnettools.csdevkit
+            # NOTE: build segfaults on darwin with current nixpkgs; install these
+            # directly from the VSCode marketplace instead.
+            # ms-dotnettools.csharp
+            # ms-dotnettools.csdevkit
 
             # ms-dotnettools.vscode-dotnet-runtime # .NET install tool
             # ms-python.debugpy
