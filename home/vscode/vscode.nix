@@ -420,8 +420,8 @@
             meta.relay
 
             # Haskell
-            haskell.haskell
-            justusadam.language-haskell
+            # haskell.haskell # currently broken for darwin
+            # justusadam.language-haskel # currently broken for darwinl
 
             # Scala
             scala-lang.scala
