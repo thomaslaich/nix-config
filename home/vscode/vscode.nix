@@ -78,7 +78,7 @@
           "window.zoomLevel" = 1;
 
           # disable updates & synching
-          "extensions.autoUpdate" = false;
+          "extensions.autoUpdate" = "off";
           "extensions.autoCheckUpdates" = false;
           "update.mode" = "none";
           "settingsSync.keybindingsPerPlatform" = false;
@@ -96,6 +96,27 @@
           # "[typescript]" = {
           #   "editor.defaultFormatter" = "dbaeumer.vscode-eslint";
           # };
+
+          # SQL Server (mssql) setup
+          #
+          # NOTE: home-manager symlinks settings.json read-only into /nix/store, so the
+          # extension cannot persist connection state and hangs on activation. It only
+          # writes when the ROOT group is missing (addOrUpdateRootGroup bails out early
+          # once a group with id "ROOT" exists), so declaring it here keeps it quiet.
+          #
+          # Consequence: connections must be declared below rather than added via the UI,
+          # since that code path targets ConfigurationTarget.Global. Give every entry an
+          # explicit `id` and `groupId` -- populateMissingConnectionMetadata fills those in
+          # when absent, which triggers exactly the write we're avoiding.
+          #
+          # Passwords are NOT stored here; they live in the macOS keychain.
+          "mssql.connectionGroups" = [
+            {
+              "name" = "ROOT";
+              "id" = "ROOT";
+            }
+          ];
+          "mssql.connections" = [ ];
 
           # vim plugin setup
           "vim.easymotion" = true;
@@ -446,6 +467,9 @@
 
             # DuckDB, parquet
             lucien-martijn.parquet-visualizer
+
+            # SQL Server
+            ms-mssql.mssql
 
             # Smithy
             smithy.smithy-vscode-extension

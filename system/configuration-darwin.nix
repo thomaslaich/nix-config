@@ -86,6 +86,7 @@
       "1password"
       "dbeaver-community"
       "dropbox"
+      "elgato-stream-deck"
       "firefox"
       "ghostty"
       "github"
