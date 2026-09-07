@@ -61,6 +61,8 @@
       url = "github:tinted-theming/schemes";
       flake = false;
     };
+
+    btmux.url = "github:buntec/btmux";
   };
 
   outputs =

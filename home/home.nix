@@ -20,6 +20,7 @@ in
   imports = [
     inputs.agenix.homeManagerModules.default
     inputs.stylix.homeModules.stylix
+    inputs.btmux.homeManagerModules.default
     ../stylix.nix
     {
       stylix.targets = {
@@ -89,6 +90,21 @@ in
 
   programs.zsh = {
     enable = true;
+  };
+
+  programs.btmux = {
+    enable = true;
+    settings = {
+      prefix = "C-a";
+      terminal.font-family = "JetBrains Mono";
+      terminal.font-size = 16;
+      vi-mode = true;
+    };
+    service = {
+      host = "127.0.0.1";
+      port = 8004;
+      shell = "${pkgs.fish}/bin/fish";
+    };
   };
 
   # # private dropbox
