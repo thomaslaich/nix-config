@@ -99,6 +99,7 @@ in
       terminal.font-family = "JetBrains Mono";
       terminal.font-size = 16;
       vi-mode = true;
+      shell = "${pkgs.fish}/bin/fish";
     };
     service = {
       host = "127.0.0.1";
