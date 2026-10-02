@@ -19,7 +19,6 @@
   #   pritunl-client
   #   rancher
   #   whatsapp-for-linux
-  #   ghostty
   # ];
   #
   # home.sessionVariables = {

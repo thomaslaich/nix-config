@@ -8,7 +8,6 @@
 }:
 {
   imports = [
-    ./ghostty/ghostty.nix
     ./vscode/vscode.nix
     # ./zed/zed.nix
   ];

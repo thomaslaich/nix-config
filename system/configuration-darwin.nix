@@ -88,7 +88,6 @@
       "dropbox"
       "elgato-stream-deck"
       "firefox"
-      "ghostty"
       "github"
       "google-chrome"
       "obsidian"

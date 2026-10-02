@@ -96,35 +96,16 @@ just --list
 
 For theming I use [stylix](https://github.com/nix-community/stylix). This allows me to use a single base24-color-scheme
 and let stylix magically apply this color theme to everything:
+
 - Gnome
-- Ghostty/tmux
 - neovim
 - VSCode
 - etc.
 
 All my installation scripts also allow for applying a "light" or "dark" variant. Simply run:
+
 ```bash
 just system-manager-switch "dark" # or "light" (default)
 just nix-darwin-switch "dark" # or "light" (default)
 just hm-switch "dark" # or "light" (default)
 ```
-
-This is what it ends up looking on my MacBook with the dark theme (here Ghostty and VSCode):
-
-![Screenshot](https://raw.githubusercontent.com/thomaslaich/nix-config/main/.github/images/screenshot.png)
-
-I currently use [buntec/kauz](https://github.com/buntec/kauz) as my color scheme.
-
-## Secrets with agenix
-
-Secrets are managed with `agenix`.
-
-The rules for which SSH keys can decrypt which secret live in `secrets/secrets.nix`.
-
-To edit an existing secret:
-
-```bash
-nix run github:ryantm/agenix -- -e secrets/claptrap.age
-```
-
-Home Manager decrypts configured secrets during activation. For example, `claptrap.age` is written to `~/.claptrap` by `home/home.nix`.

@@ -39,7 +39,6 @@ in
     }
     ./fish/fish.nix
     ./neovim/neovim.nix
-    ./tmux/tmux.nix
   ];
 
   nixpkgs = {
@@ -94,6 +93,8 @@ in
 
   programs.btmux = {
     enable = true;
+    desktop.enable = true;
+    service.enable = false;
     settings = {
       prefix = "C-a";
       terminal.font-family = "JetBrains Mono";
@@ -214,9 +215,6 @@ in
         vscode-langservers-extracted # LSPs for various config formats
         yamlfmt # YAML formatter
       ];
-      gui-apps = with pkgs; [
-        # ghostty # currently broken in nixpkgs
-      ];
       git-tools = with pkgs; [
         gh # github CLI
         gitu # Magit clone for the command line
@@ -299,9 +297,6 @@ in
       rust-language-support
       java-language-support
       misc-langauge-tools
-
-      # GUI apps
-      gui-apps
 
       # Other
       git-tools
