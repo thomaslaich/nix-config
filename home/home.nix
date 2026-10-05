@@ -24,6 +24,9 @@ in
     ../stylix.nix
     {
       stylix.targets = {
+        # The pinned Stylix still assigns the deprecated programs.rofi.font.
+        # Use the renamed option below until Stylix migrates its Rofi module.
+        rofi.fonts.enable = false;
         neovim = {
           transparentBackground = {
             main = true;
@@ -36,6 +39,12 @@ in
           profileNames = [ "default" ];
         };
       };
+      programs.rofi.settings.font = lib.mkIf (config.stylix.enable && config.stylix.targets.rofi.enable) (
+        let
+          fonts = config.stylix.fonts;
+        in
+        "${fonts.monospace.name} ${toString fonts.sizes.popups}"
+      );
     }
     ./fish/fish.nix
     ./neovim/neovim.nix
@@ -94,13 +103,16 @@ in
   programs.btmux = {
     enable = true;
     desktop.enable = true;
-    service.enable = false;
+    service.enable = true;
     settings = {
       prefix = "C-a";
       terminal.font-family = "JetBrains Mono";
       terminal.font-size = 16;
       vi-mode = true;
       shell = "${pkgs.fish}/bin/fish";
+      wallpaper-shader = "radiant:smolder";
+      # wallpaper-shader = "btmux:ridgeline";
+      wallpaper-seed = "mellow-comet-engine";
     };
     service = {
       host = "127.0.0.1";
@@ -154,12 +166,9 @@ in
       );
       python-language-support = with pkgs; [
         pixi # dep management with Conda
-        # pyrefly # LSP from Meta
-        pyright # LSP from Microsoft
-        basedpyright # Improved pyright
+        pyrefly # Python type checker and LSP from Meta
         python-with-packages
-        ruff # formatter
-        ty # LSP from Astral
+        ruff # LSP for linting/code actions, plus formatting through Conform
         uv # dep management with PyPI
       ];
       nix-tools = with pkgs; [
@@ -208,8 +217,16 @@ in
       ];
       java-language-support = with pkgs; [
         jdk # compiler / JVM
+        jdt-language-server # LSP
       ];
       misc-langauge-tools = with pkgs; [
+        buf # Protobuf LSP
+        protols # Protobuf LSP
+        neocmakelsp # CMake LSP
+        texlab # LaTeX LSP
+        tinymist # Typst LSP
+        zig # Toolchain used by ZLS
+        zls # Zig LSP
         taplo # TOML tools
         vale # markdown linter
         vscode-langservers-extracted # LSPs for various config formats

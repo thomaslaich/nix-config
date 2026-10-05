@@ -66,6 +66,6 @@ blink.setup({
     -- cmdline = {},
   },
 
-  -- experimental signature help support
-  -- signature = { enabled = true }
+  -- Show function parameters while typing a call.
+  signature = { enabled = true },
 })

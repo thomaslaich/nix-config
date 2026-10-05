@@ -51,12 +51,21 @@ opt.swapfile = false
 -- opt.conceallevel = 2 -- Hide * markup for bold and italic (Neorg)
 
 vim.diagnostic.config({
-  virtual_text = false,
-  virtual_lines = true,
+  virtual_text = true,
+  virtual_lines = false,
   signs = true,
   update_in_insert = false,
   underline = true,
   severity_sort = true,
+})
+
+-- Keep diagnostics compact, then show the full message after a short pause.
+opt.updatetime = 500
+vim.api.nvim_create_autocmd("CursorHold", {
+  group = vim.api.nvim_create_augroup("DiagnosticHover", { clear = true }),
+  callback = function()
+    vim.diagnostic.open_float(nil, { focus = false, scope = "line" })
+  end,
 })
 
 -- KEYBINDINGS
@@ -202,11 +211,13 @@ vim.api.nvim_create_autocmd("FileType", {
   group = spell_augroup,
 })
 
--- LSP hover
+-- Floating windows, including LSP hover and signature help.
+vim.o.winborder = "rounded"
 vim.diagnostic.config({
   float = {
     border = "rounded",
+    source = "if_many",
+    max_width = 80,
+    wrap = true,
   },
 })
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = "rounded" })
