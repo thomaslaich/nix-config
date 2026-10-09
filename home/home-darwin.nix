@@ -13,8 +13,6 @@
   ];
 
   home.packages = with pkgs; [
-    mos # smooth scrolling
-
     pinentry_mac # gpg
   ];
 

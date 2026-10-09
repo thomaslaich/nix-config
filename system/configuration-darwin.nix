@@ -23,6 +23,71 @@
     keyboard.remapCapsLockToControl = true;
 
     defaults = {
+      # Preference keys verified against Vorssaint 3.4.0. Open the app once after
+      # activation and grant Accessibility; it registers its own login item.
+      CustomUserPreferences."com.vorssaint.utils" = {
+        # First-run presets otherwise overwrite the configured feature selection.
+        hasOnboarded = true;
+        launchAtLoginWanted = true;
+        "featureAvailable.scrollInverter" = true;
+        scrollInverterEnabled = true;
+        scrollInverterHorizontalEnabled = false;
+        smoothScrollEnabled = false;
+
+        # Clipboard and Finder conveniences.
+        "featureAvailable.clipboardHistory" = true;
+        clipboardHistoryEnabled = true;
+        clipboardHistoryShortcutEnabled = true;
+        clipboardHistorySkipSensitive = true;
+        "featureAvailable.pastePlain" = true;
+        pastePlainEnabled = true;
+        "featureAvailable.finderCutPaste" = true;
+        finderCutPasteEnabled = true;
+        finderPasteImageAsFile = true;
+        "featureAvailable.finderRename" = true;
+        finderRenameEnabled = true;
+
+        # Capture tools use Control-Option-Command shortcuts.
+        "featureAvailable.screenshot" = true;
+        screenshotShortcutEnabled = true;
+        "featureAvailable.screenOCR" = true;
+        screenOCRShortcutEnabled = true;
+        "featureAvailable.colorPicker" = true;
+        colorPickerShortcutEnabled = true;
+
+        # Audio tools and on-demand menu bar utilities.
+        "featureAvailable.mixer" = true;
+        "featureAvailable.soundOutputSwitcher" = true;
+        soundOutputSwitcherEnabled = true;
+        "featureAvailable.musicBlock" = true;
+        musicBlockEnabled = true;
+        "featureAvailable.keepAwake" = true;
+        "featureAvailable.micMute" = true;
+        "featureAvailable.mediaTools" = true;
+        "featureAvailable.monitorCPU" = true;
+        "featureAvailable.monitorGPU" = true;
+        "featureAvailable.monitorMemory" = true;
+        "featureAvailable.monitorNetwork" = true;
+        "featureAvailable.monitorDisk" = true;
+        "featureAvailable.monitorPower" = true;
+
+        # Leave window management and focus to AeroSpace.
+        "featureAvailable.switcher" = false;
+        "featureAvailable.dockPreview" = false;
+        "featureAvailable.dockClick" = false;
+        "featureAvailable.windowMaximizer" = false;
+        "featureAvailable.windowLayout" = false;
+        "featureAvailable.focusFollowsMouse" = false;
+        "featureAvailable.autoQuit" = false;
+        "featureAvailable.quitWindowProtection" = false;
+        switcherEnabled = false;
+        focusFollowsMouseEnabled = false;
+        windowMaximizeEnabled = false;
+        dockClickMinimize = false;
+        dockClickHide = false;
+        dockClickCycleWindows = false;
+      };
+
       dock = {
         autohide = true;
         static-only = true; # show only running apps
@@ -34,7 +99,7 @@
       };
 
       NSGlobalDomain = {
-        "com.apple.swipescrolldirection" = true; # use natural scroll (we use MOS to invert it again for mouse)
+        "com.apple.swipescrolldirection" = true; # natural trackpad scrolling; Vorssaint reverses the mouse wheel
 
         # key repeat: lower is faster
         InitialKeyRepeat = 15;
@@ -94,6 +159,7 @@
       "spotify"
       "studio-3t"
       "tailscale-app"
+      "vorssaint"
       "whatsapp"
     ];
   };

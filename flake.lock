@@ -110,11 +110,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1791163543,
-        "narHash": "sha256-4Zo8yb2VZDSd0cgC9upSkgTgCtZ1jL1h2YgDpRIc6Ik=",
+        "lastModified": 1791538794,
+        "narHash": "sha256-dhaT3+kNgeak1mR9LB+tMIZjTZBPDuWgYTKG1ik0i0g=",
         "owner": "buntec",
         "repo": "btmux",
-        "rev": "84fcd40a18570422e555d91163bc35d1e7aff503",
+        "rev": "7e8fded2c334aaba907dbcf2a09520fcca4ffb4c",
         "type": "github"
       },
       "original": {

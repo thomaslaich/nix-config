@@ -270,28 +270,9 @@
           type = "lua";
           config = builtins.readFile ./plugins/neorg.lua;
         };
-        orgmode = with pkgs; [
-          {
-            plugin = vimPlugins.orgmode;
-            type = "lua";
-            config = builtins.readFile ./plugins/orgmode.lua;
-          }
-          {
-            plugin = vimPlugins.org-bullets-nvim;
-            type = "lua";
-            config = ''
-              require('org-bullets').setup()
-            '';
-          }
-        ];
 
         haskell-tools = {
           plugin = pkgs.vimPlugins.haskell-tools-nvim;
-        };
-        kubectl = {
-          plugin = pkgs.vimPlugins.kubectl-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/kubectl-nvim.lua;
         };
       in
       pkgs.lib.lists.flatten [
@@ -303,11 +284,9 @@
         git-plugins
         grug-far
         haskell-tools
-        kubectl
         lspconfig
         nvim-lint
         oil
-        orgmode
         plenary
         refactoring
         snacks
