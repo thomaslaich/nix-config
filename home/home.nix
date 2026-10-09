@@ -58,7 +58,13 @@ in
       outputs.overlays.modifications
       outputs.overlays.stable-packages
 
-      inputs.neorg-overlay.overlays.default
+      # upstream overlay still reads the deprecated `final.system`; shadow it to silence the warning
+      (
+        final: prev:
+        inputs.neorg-overlay.overlays.default (
+          final // { system = final.stdenv.hostPlatform.system; }
+        ) prev
+      )
       inputs.vimplugins-overlay.overlays.default
       inputs.nix-vscode-extensions.overlays.default
       inputs.claude-code-nix.overlays.default
