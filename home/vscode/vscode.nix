@@ -392,11 +392,11 @@
             esbenp.prettier-vscode
 
             # Python
-            ms-python.debugpy
-            ms-python.python
-            ms-python.vscode-pylance
-            ms-python.vscode-python-envs
-            renan-r-santos.pixi-code
+            # ms-python.debugpy
+            # ms-python.python
+            # ms-python.vscode-pylance
+            # ms-python.vscode-python-envs
+            # renan-r-santos.pixi-code
             # meta.pyrefly # typechecker/LSP by Meta
             # astral-sh.ty # typechecker/LSP by Astral
             charliermarsh.ruff # linter by Astral
@@ -466,7 +466,7 @@
             timonwong.shellcheck
 
             # DuckDB, parquet
-            lucien-martijn.parquet-visualizer
+            # lucien-martijn.parquet-visualizer
 
             # SQL Server
             ms-mssql.mssql

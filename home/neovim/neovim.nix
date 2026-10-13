@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  # plugin configs, `require("plugins.<name>")`-able from lazy-loading specs
+  xdg.configFile."nvim/lua/plugins".source = ./plugins;
+
   programs.neovim = {
     enable = true;
     package = pkgs.neovim-unwrapped;
@@ -9,294 +12,118 @@
 
     plugins =
       let
-        treesitter = {
-          plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
-          type = "lua";
-          config = builtins.readFile ./plugins/treesitter.lua;
-        };
-
-        ts-context = {
-          plugin = pkgs.vimPlugins.nvim-treesitter-context;
-          type = "lua";
-          config = ''
-            require("treesitter-context").setup({
-              enable = false
-            })
-          '';
-        };
-
-        lspconfig = {
-          plugin = pkgs.vimPlugins.nvim-lspconfig;
-          type = "lua";
-          config = builtins.readFile ./plugins/lspconfig.lua;
-        };
-
-        # https://github.com/Saghen/blink.cmp
-        blink-cmp = {
-          plugin = pkgs.vimPlugins.blink-cmp;
-          type = "lua";
-          config = builtins.readFile ./plugins/blink-cmp.lua;
-        };
-
-        # https://github.com/folke/snacks.nvim
-        snacks = {
-          plugin = pkgs.vimPlugins.snacks-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/snacks.lua;
-        };
-
-        fzf-lua = {
-          plugin = pkgs.vimPlugins.fzf-lua;
-          type = "lua";
-          config = builtins.readFile ./plugins/fzf-lua.lua;
-        };
-
-        # https://github.com/MagicDuck/grug-far.nvim
-        grug-far = {
-          plugin = pkgs.vimPlugins.grug-far-nvim;
-          type = "lua";
-          config = ''
-            require("grug-far").setup({});
-          '';
-        };
-
-        # linting for some languages (when no lsp available)
-        nvim-lint = {
-          plugin = pkgs.vimPlugins.nvim-lint;
-          type = "lua";
-          config = builtins.readFile ./plugins/nvim-lint.lua;
-        };
-
-        # formatter for some languages (when no lsp available)
-        conform-nvim = {
-          plugin = pkgs.vimPlugins.conform-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/conform-nvim.lua;
-        };
-
-        # file browser
-        oil = {
-          plugin = pkgs.vimPlugins.oil-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/oil.lua;
-        };
-
-        plenary = {
-          plugin = pkgs.vimPlugins.plenary-nvim;
-        };
-
-        refactoring = {
-          plugin = pkgs.vimPlugins.refactoring-nvim;
-          type = "lua";
-          config = builtins.readFile ./plugins/refactoring.lua;
-        };
-
-        core-motion-plugins = [
-          # manipulate surrouding characters (e.g. brackets)
+        # Plugins loaded at startup. Keep this list short: everything here is
+        # sourced (and `setup()`) before the first frame is drawn.
+        eager = [
           {
-            plugin = pkgs.vimPlugins.nvim-surround;
+            plugin = pkgs.vimPlugins.nvim-treesitter.withAllGrammars;
             type = "lua";
-            config = ''
-              require("nvim-surround").setup({})
-            '';
-          }
-          # comment/uncomment with gcc
-          {
-            plugin = pkgs.vimPlugins.comment-nvim;
-            type = "lua";
-            config = ''
-              require("Comment").setup({})
-            '';
-          }
-          # use 'jk' and 'jj' to escape insert mode
-          {
-            plugin = pkgs.vimPlugins.better-escape-nvim;
-            type = "lua";
-            config = ''
-              require("better_escape").setup({})
-            '';
-          }
-          # vim motions hints
-          {
-            plugin = pkgs.vimPlugins.precognition-nvim;
-            type = "lua";
-            config = ''
-              require("precognition").setup({
-                startVisible = false
-              })
-            '';
+            config = builtins.readFile ./plugins/treesitter.lua;
           }
 
+          {
+            plugin = pkgs.vimPlugins.nvim-lspconfig;
+            type = "lua";
+            config = builtins.readFile ./plugins/lspconfig.lua;
+          }
+
+          # https://github.com/Saghen/blink.cmp
+          # setup() is deferred to the first InsertEnter in plugins/lazy.lua
+          { plugin = pkgs.vimPlugins.blink-cmp; }
+          { plugin = pkgs.vimPlugins.lspkind-nvim; }
+
+          # https://github.com/folke/snacks.nvim
+          # bigfile/quickfile need to be active before the first buffer is read
+          {
+            plugin = pkgs.vimPlugins.snacks-nvim;
+            type = "lua";
+            config = builtins.readFile ./plugins/snacks.lua;
+          }
+
+          # linting for some languages (when no lsp available)
+          {
+            plugin = pkgs.vimPlugins.nvim-lint;
+            type = "lua";
+            config = builtins.readFile ./plugins/nvim-lint.lua;
+          }
+
+          { plugin = pkgs.vimPlugins.plenary-nvim; }
+          { plugin = pkgs.vimPlugins.haskell-tools-nvim; }
           { plugin = pkgs.vimPlugins.vim-tmux-navigator; }
-        ];
 
-        ui-plugins =
-          let
-            # https://github.com/romgrk/barbar.nvim/
-            barbar = {
-              plugin = pkgs.vimPlugins.barbar-nvim;
-              type = "lua";
-              config = ''
-                vim.g.barbar_auto_setup = false
-                require("barbar").setup({})
-              '';
-            };
-            # https://github.com/j-hui/fidget.nvim
-            fidget = {
-              plugin = pkgs.vimPlugins.fidget-nvim;
-              type = "lua";
-              config = builtins.readFile ./plugins/fidget.lua;
-            };
+          # copilot is starting to annoy me
+          # {
+          #   plugin = pkgs.vimPlugins.copilot-lua;
+          #   type = "lua";
+          #   config = builtins.readFile ./plugins/copilot.lua;
+          # }
 
-            # nice popup windows
-            dressing = {
-              plugin = pkgs.vimPlugins.dressing-nvim;
-            };
+          # nice popup windows
+          { plugin = pkgs.vimPlugins.dressing-nvim; }
 
-            # https://github.com/echasnovski/mini.icons
-            mini-icons = {
-              plugin = pkgs.vimPlugins.mini-icons;
-              type = "lua";
-              config = ''
-                require"mini.icons".setup {}
-              '';
-            };
-
-            mini-colors = {
-              plugin = pkgs.vimPlugins.mini-colors;
-              type = "lua";
-              config = ''
-                require"mini.colors".setup {}
-              '';
-            };
-
-            web-devicons = {
-              plugin = pkgs.vimPlugins.nvim-web-devicons;
-            };
-
-            lsp-kind = {
-              plugin = pkgs.vimPlugins.lspkind-nvim;
-              type = "lua";
-            };
-
-            indent-blank-line = {
-              plugin = pkgs.vimPlugins.indent-blankline-nvim;
-              type = "lua";
-              config = builtins.readFile ./plugins/indent-blankline.lua;
-            };
-
-            which-key = {
-              plugin = pkgs.vimPlugins.which-key-nvim;
-              type = "lua";
-              config = builtins.readFile ./plugins/which-key.lua;
-            };
-
-            trouble = {
-              plugin = pkgs.vimPlugins.trouble-nvim;
-              type = "lua";
-              config = builtins.readFile ./plugins/trouble.lua;
-            };
-
-            # status line
-            lualine = {
-              plugin = pkgs.vimPlugins.lualine-nvim;
-              type = "lua";
-              config = builtins.readFile ./plugins/lualine.lua;
-            };
-
-            # show lsp progress in status line
-            lsp-progress = {
-              plugin = pkgs.vimPlugins.lsp-progress-nvim;
-              type = "lua";
-              config = ''
-                require"lsp-progress".setup {}
-              '';
-            };
-
-          in
-          pkgs.lib.lists.flatten [
-            barbar
-            dressing
-            fidget
-            indent-blank-line
-            lsp-kind
-            lsp-progress
-            lualine
-            mini-colors
-            mini-icons
-            trouble
-            web-devicons
-            which-key
-          ];
-
-        git-plugins = [
+          # https://github.com/echasnovski/mini.icons
+          # also stands in for nvim-web-devicons, which is much slower to load
           {
-            plugin = pkgs.vimPlugins.gitsigns-nvim;
-            type = "lua";
-            config = builtins.readFile ./plugins/gitsigns.lua;
-          }
-          {
-            plugin = pkgs.vimPlugins.git-blame-nvim;
+            plugin = pkgs.vimPlugins.mini-icons;
             type = "lua";
             config = ''
-              require"gitblame".setup {
-                enabled = false,
-              }
+              require("mini.icons").setup({})
+              MiniIcons.mock_nvim_web_devicons()
             '';
           }
+
           {
-            plugin = pkgs.vimPlugins.neogit;
-            type = "lua";
-            config = builtins.readFile ./plugins/neogit.lua;
-          }
-          {
-            plugin = pkgs.vimPlugins.diffview-nvim;
+            plugin = pkgs.vimPlugins.mini-colors;
             type = "lua";
             config = ''
-              require("diffview").setup({})
+              require("mini.colors").setup({})
             '';
+          }
+
+          # status line
+          {
+            plugin = pkgs.vimPlugins.lualine-nvim;
+            type = "lua";
+            config = builtins.readFile ./plugins/lualine.lua;
+          }
+
+          # https://github.com/nvim-neorocks/lz.n
+          {
+            plugin = pkgs.vimPlugins.lz-n;
+            type = "lua";
+            config = builtins.readFile ./plugins/lazy.lua;
           }
         ];
 
-        # copilot is starting to annoy me
-        # copilot = {
-        #   plugin = pkgs.vimPlugins.copilot-lua;
-        #   type = "lua";
-        #   config = builtins.readFile ./plugins/copilot.lua;
-        # };
-
-        neorg = with pkgs; {
-          plugin = vimPlugins.neorg;
-          type = "lua";
-          config = builtins.readFile ./plugins/neorg.lua;
-        };
-
-        haskell-tools = {
-          plugin = pkgs.vimPlugins.haskell-tools-nvim;
-        };
+        # Plugins loaded on demand by lz.n; their specs and configs are in
+        # plugins/lazy.lua.
+        lazy = map (plugin: {
+          inherit plugin;
+          optional = true;
+        }) (
+          with pkgs.vimPlugins;
+          [
+            fzf-lua
+            conform-nvim
+            diffview-nvim
+            neogit
+            git-blame-nvim
+            grug-far-nvim
+            refactoring-nvim
+            trouble-nvim
+            nvim-treesitter-context
+            precognition-nvim
+            neorg
+            better-escape-nvim
+            gitsigns-nvim
+            which-key-nvim
+            indent-blankline-nvim
+            nvim-surround
+            comment-nvim
+          ]
+        );
       in
-      pkgs.lib.lists.flatten [
-        neorg
-        blink-cmp
-        conform-nvim
-        # copilot
-        fzf-lua
-        git-plugins
-        grug-far
-        haskell-tools
-        lspconfig
-        nvim-lint
-        oil
-        plenary
-        refactoring
-        snacks
-        treesitter
-        ts-context
-
-        core-motion-plugins
-
-        ui-plugins
-      ];
+      eager ++ lazy;
 
     extraPackages = [ ];
 

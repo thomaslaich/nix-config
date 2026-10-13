@@ -1,5 +1,3 @@
-vim.o.timeout = true
-vim.o.timeoutlen = 800 -- 800ms (the same as doom emacs)
 local whichkey = require("which-key")
 
 whichkey.setup({})

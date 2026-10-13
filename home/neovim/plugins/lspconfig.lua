@@ -1,10 +1,4 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
-
-vim.lsp.config("*", {
-  capabilities = capabilities,
-})
+-- blink.cmp's plugin/ file registers its completion capabilities for all servers.
 
 -- Server executables are installed through Home Manager.
 vim.lsp.enable("bashls")

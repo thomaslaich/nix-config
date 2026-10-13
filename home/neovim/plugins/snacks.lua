@@ -11,7 +11,8 @@ snacks.setup({
     enabled = true,
   },
   scroll = {
-    enabled = true,
+    -- btmux does its own smooth scrolling
+    enabled = not vim.g.btmux,
     animate = {
       duration = { step = 10, total = 100 },
       easing = "linear",

@@ -1,3 +1,6 @@
+-- byte-compile and cache lua modules for faster require()
+vim.loader.enable()
+
 -- local cmd = vim.cmd
 -- local api = vim.api
 local g = vim.g
@@ -8,11 +11,6 @@ local global_opt = vim.opt_global
 
 g.mapleader = " "
 g.maplocalleader = ","
-
-local oil = require("oil")
-local fzf = require("fzf-lua")
-local conform = require("conform")
-local tscontext = require("treesitter-context")
 
 -- cmd.language("en_US")
 
@@ -68,22 +66,24 @@ vim.api.nvim_create_autocmd("CursorHold", {
   end,
 })
 
+o.timeout = true
+o.timeoutlen = 800 -- 800ms (the same as doom emacs)
+
 -- KEYBINDINGS
-map("n", "<leader>-", oil.open, { desc = "Browse parent directory" })
+-- Plugins are lazy-loaded (see plugins/lazy.lua), so map to their commands
+-- rather than `require()`-ing them here.
+map("n", "<leader>-", "<cmd>Explore<CR>", { desc = "Browse parent directory" })
 -- inspired by doom emacs
-map("n", "<leader>.", oil.open, { desc = "Browse parent directory" })
+map("n", "<leader>.", "<cmd>Explore<CR>", { desc = "Browse parent directory" })
 
 map("n", "<leader>cf", "<cmd>edit $MYVIMRC<CR>", { desc = "open init.lua" })
 
-map("n", "<leader>ctx", tscontext.toggle, { desc = "toggle treesitter context" })
+map("n", "<leader>ctx", "<cmd>TSContext toggle<CR>", { desc = "toggle treesitter context" })
 
 -- leaving this for reference, but adjusting this to conform to lsp-zero standards
 -- map("n", "<localleader>a", vim.lsp.buf.code_action, { desc = "lsp code action" })
 -- map("n", "<localleader>d", vim.lsp.buf.definition, { desc = "lsp definition" })
 -- map({ "n", "v" }, "<localleader>f", vim.lsp.buf.format, { desc = "lsp format" })
-map({ "n", "v" }, "<localleader>f", function()
-  conform.format({ async = true, lsp_fallback = true })
-end, { desc = "format" })
 -- map("n", "<localleader>i", vim.lsp.buf.implementation, { desc = "lsp implementation" })
 -- map("n", "<localleader>h", vim.lsp.buf.hover, { desc = "lsp hover" })
 -- map("n", "<localleader>m", vim.lsp.buf.rename, { desc = "lsp rename" })
@@ -111,8 +111,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- general
     nmap("gd", vim.lsp.buf.definition, "Goto Definition")
     -- nmap('gd', fzf.lsp_definitions, '[G]oto [D]efinition')
-    nmap("gr", fzf.lsp_references, "Goto References")
-    nmap("gI", fzf.lsp_implementations, "Goto Implementation")
+    nmap("gr", "<cmd>FzfLua lsp_references<CR>", "Goto References")
+    nmap("gI", "<cmd>FzfLua lsp_implementations<CR>", "Goto Implementation")
     -- nmap("<leader>D", fzf.lsp_type_definitions, "Type Definition")
     -- nmap("<leader>ds", fzf.lsp_document_symbols, "Document Symbols")
     nmap("K", vim.lsp.buf.hover, "Hover Documentation")
@@ -158,11 +158,11 @@ map("n", "<leader>wc", "<C-W>q", { desc = "Close Window" })
 map("n", "<leader>bk", ":bdelete<CR>", { desc = "Kill buffer" })
 map("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 map("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
-map("n", "<leader>bb", fzf.buffers, { desc = "Switch buffer" })
+map("n", "<leader>bb", "<cmd>FzfLua buffers<CR>", { desc = "Switch buffer" })
 
 -- [f] FIND KEYBINDINGS
-map("n", "<leader>?", fzf.man_pages, { desc = "[?] Find in help" })
-map("n", "<leader><space>", fzf.buffers, { desc = "[ ] Find existing buffers" })
+map("n", "<leader>?", "<cmd>FzfLua manpages<CR>", { desc = "[?] Find in help" })
+map("n", "<leader><space>", "<cmd>FzfLua buffers<CR>", { desc = "[ ] Find existing buffers" })
 -- map("n", "<leader>/", function()
 --   -- You can pass additional configuration to telescope to change theme, layout, etc.
 --   fzf.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
@@ -171,35 +171,40 @@ map("n", "<leader><space>", fzf.buffers, { desc = "[ ] Find existing buffers" })
 --   }))
 -- end, { desc = "[/] Fuzzily search in current buffer" })
 
-map("n", "<leader>ff", fzf.files, { desc = "Search Files" })
+map("n", "<leader>ff", "<cmd>FzfLua files<CR>", { desc = "Search Files" })
 
-map("n", "<leader>fa", function()
-  fzf.find_files({ no_ignore = true, hidden = true })
-end, { desc = "Find all Files" })
-map("n", "<leader>fh", fzf.help_tags, { desc = "Search Help" })
+map("n", "<leader>fa", "<cmd>FzfLua files no_ignore=true hidden=true<CR>", { desc = "Find all Files" })
+map("n", "<leader>fh", "<cmd>FzfLua helptags<CR>", { desc = "Search Help" })
 -- map("n", "<leader>fw", telescope_builtin.grep_string, { desc = "Search current Word" })
-map("n", "<leader>fg", function()
-  fzf.live_grep({})
-end, { desc = "Search by Grep" })
+map("n", "<leader>fg", "<cmd>FzfLua live_grep<CR>", { desc = "Search by Grep" })
 map("n", "<leader>fG", ":LiveGrepGitRoot<cr>", { desc = "Search by Grep on Git Root" })
-map("n", "<leader>fd", fzf.diagnostics_document, { desc = "Search Diagnostics" })
-map("n", "<leader>fr", fzf.resume, { desc = "Search Resume" })
-map("n", "<leader>fc", fzf.commands, { desc = "Search Commands" })
+map("n", "<leader>fd", "<cmd>FzfLua diagnostics_document<CR>", { desc = "Search Diagnostics" })
+map("n", "<leader>fr", "<cmd>FzfLua resume<CR>", { desc = "Search Resume" })
+map("n", "<leader>fc", "<cmd>FzfLua commands<CR>", { desc = "Search Commands" })
 -- map("n", "<leader>fy", telescope_builtin.symbols, { desc = "Search emoji/symbols" })
-map("n", "<leader>fo", fzf.oldfiles, { desc = "Find recently opened files" })
+map("n", "<leader>fo", "<cmd>FzfLua oldfiles<CR>", { desc = "Find recently opened files" })
 
-map("n", "<leader>ft", fzf.treesitter, { desc = "Search Treesitter" })
+map("n", "<leader>ft", "<cmd>FzfLua treesitter<CR>", { desc = "Search Treesitter" })
 
 -- [g] GIT KEYBINDINGS
 
-map("n", "<leader>gf", fzf.git_files, { desc = "Search Git Files" })
-map("n", "<leader>gc", fzf.git_commits, { desc = "Git Commits" })
-map("n", "<leader>gb", fzf.git_branches, { desc = "Git Branches" })
-map("n", "<leader>gs", fzf.git_status, { desc = "Git Status" })
+map("n", "<leader>gf", "<cmd>FzfLua git_files<CR>", { desc = "Search Git Files" })
+map("n", "<leader>gc", "<cmd>FzfLua git_commits<CR>", { desc = "Git Commits" })
+map("n", "<leader>gb", "<cmd>FzfLua git_branches<CR>", { desc = "Git Branches" })
+map("n", "<leader>gs", "<cmd>FzfLua git_status<CR>", { desc = "Git Status" })
+
+map("n", "<leader>gg", "<cmd>Neogit<CR>", { desc = "[g] Neo[g]it" })
 
 -- [t] Toggle
 map("n", "<leader>tb", "<cmd>GitBlameToggle<cr>", { desc = "Toggle git [b]lame" })
 map("n", "<leader>tp", "<cmd>Precognition toggle<cr>", { desc = "Toggle [p]recognition" })
+
+-- TROUBLE
+map("n", "<localleader>tt", "<cmd>Trouble diagnostics toggle<CR>", { desc = "toggle trouble" })
+map("n", "<localleader>tw", "<cmd>Trouble diagnostics toggle<CR>", { desc = "toggle workspace diagnostics" })
+map("n", "<localleader>td", "<cmd>Trouble diagnostics toggle filter.buf=0<CR>", { desc = "toggle document diagnostics" })
+map("n", "<localleader>tl", "<cmd>Trouble loclist toggle<CR>", { desc = "toggle trouble (loclist)" })
+map("n", "<localleader>tq", "<cmd>Trouble qflist toggle<CR>", { desc = "toggle trouble (quickfix)" })
 
 -- enable spell checking for text files
 local spell_augroup = vim.api.nvim_create_augroup("spell", { clear = true })

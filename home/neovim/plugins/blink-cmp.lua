@@ -66,6 +66,6 @@ blink.setup({
     -- cmdline = {},
   },
 
-  -- Show function parameters while typing a call.
-  signature = { enabled = true },
+  -- Show function parameters while typing a call (btmux provides its own).
+  signature = { enabled = not vim.g.btmux },
 })
