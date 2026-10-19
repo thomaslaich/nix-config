@@ -392,12 +392,12 @@
             esbenp.prettier-vscode
 
             # Python
-            # ms-python.debugpy
-            # ms-python.python
+            ms-python.debugpy
+            ms-python.python
             # ms-python.vscode-pylance
-            # ms-python.vscode-python-envs
-            # renan-r-santos.pixi-code
-            # meta.pyrefly # typechecker/LSP by Meta
+            ms-python.vscode-python-envs
+            renan-r-santos.pixi-code
+            meta.pyrefly # typechecker/LSP by Meta
             # astral-sh.ty # typechecker/LSP by Astral
             charliermarsh.ruff # linter by Astral
 
@@ -445,8 +445,8 @@
             # justusadam.language-haskel # currently broken for darwinl
 
             # Scala
-            scala-lang.scala
-            scalameta.metals
+            # scala-lang.scala
+            # scalameta.metals
 
             # Java
             redhat.java
