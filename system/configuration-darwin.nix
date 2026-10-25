@@ -131,7 +131,7 @@
     ubuntu-classic
     et-book
     nerd-fonts.droid-sans-mono
-    nerd-fonts.jetbrains-mono
+    nerd-fonts.geist-mono
     nerd-fonts.fira-code
     nerd-fonts.symbols-only
     nerd-fonts.ubuntu

@@ -31,13 +31,13 @@ in
       };
 
       sansSerif = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans";
+        package = pkgs.geist-font;
+        name = "Geist";
       };
 
       monospace = {
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font";
+        package = pkgs.nerd-fonts.geist-mono;
+        name = "GeistMono Nerd Font";
         # package = pkgs.dejavu_fonts;
         # name = "DejaVu Sans Mono";
       };

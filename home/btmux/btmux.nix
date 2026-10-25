@@ -19,9 +19,9 @@
     settings = {
       prefix = "C-a";
       shell = "${pkgs.fish}/bin/fish";
-      vi-mode = true;
 
-      colors = "${config.stylix.base16Scheme}";
+      appearance = "dark";
+      colors-dark = "${config.stylix.base16Scheme}";
 
       # wallpaper-shader = "ink-flow";
       # wallpaper-saturate = 1.0;
@@ -44,7 +44,7 @@
       # };
 
       terminal = {
-        font-family = "JetBrains Mono";
+        font-family = config.stylix.fonts.monospace.name;
         font-size = 16;
         font-weight = 300;
       };
