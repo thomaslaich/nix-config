@@ -92,20 +92,3 @@ See all available recipes with:
 just --list
 ```
 
-## Theming with stylix
-
-For theming I use [stylix](https://github.com/nix-community/stylix). This allows me to use a single base24-color-scheme
-and let stylix magically apply this color theme to everything:
-
-- Gnome
-- neovim
-- VSCode
-- etc.
-
-All my installation scripts also allow for applying a "light" or "dark" variant. Simply run:
-
-```bash
-just system-manager-switch "dark" # or "light" (default)
-just nix-darwin-switch "dark" # or "light" (default)
-just hm-switch "dark" # or "light" (default)
-```

@@ -1,7 +1,6 @@
 {
   inputs,
   pkgs,
-  config,
   ...
 }:
 {
@@ -20,8 +19,8 @@
       prefix = "C-a";
       shell = "${pkgs.fish}/bin/fish";
 
-      appearance = "dark";
-      colors-dark = "${config.stylix.base16Scheme}";
+      # Use desktop VS Code's settings, keybindings and extensions (from programs.vscode).
+      vscode.desktop = true;
 
       # wallpaper-shader = "ink-flow";
       # wallpaper-saturate = 1.0;
@@ -44,7 +43,7 @@
       # };
 
       terminal = {
-        font-family = config.stylix.fonts.monospace.name;
+        font-family = "GeistMono Nerd Font";
         font-size = 16;
         font-weight = 300;
       };

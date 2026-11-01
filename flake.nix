@@ -50,18 +50,6 @@
     codex-cli-nix.url = "github:sadjow/codex-cli-nix";
     claude-code-nix.url = "github:sadjow/claude-code-nix";
 
-    # theming
-    stylix.url = "github:nix-community/stylix";
-    stylix.inputs.nixpkgs.follows = "nixpkgs";
-    kauz = {
-      url = "github:buntec/kauz";
-      flake = false;
-    };
-    tinted-theming-schemes = {
-      url = "github:tinted-theming/schemes";
-      flake = false;
-    };
-
     btmux.url = "github:buntec/btmux";
   };
 

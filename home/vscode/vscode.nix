@@ -66,7 +66,6 @@
           "editor.semanticHighlighting.enabled" = true;
           "terminal.integrated.minimumContrastRatio" = 1;
           "window.titleBarStyle" = "custom";
-          # font and theme is set by stylix
 
           # editor basics
           "editor.tabSize" = 2;

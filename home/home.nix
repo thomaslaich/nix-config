@@ -19,32 +19,6 @@ in
 {
   imports = [
     inputs.agenix.homeManagerModules.default
-    inputs.stylix.homeModules.stylix
-    ../stylix.nix
-    {
-      stylix.targets = {
-        # The pinned Stylix still assigns the deprecated programs.rofi.font.
-        # Use the renamed option below until Stylix migrates its Rofi module.
-        rofi.fonts.enable = false;
-        neovim = {
-          transparentBackground = {
-            main = true;
-            numberLine = true;
-            signColumn = true;
-          };
-        };
-        vscode = {
-          enable = true;
-          profileNames = [ "default" ];
-        };
-      };
-      programs.rofi.settings.font = lib.mkIf (config.stylix.enable && config.stylix.targets.rofi.enable) (
-        let
-          fonts = config.stylix.fonts;
-        in
-        "${fonts.monospace.name} ${toString fonts.sizes.popups}"
-      );
-    }
     ./fish/fish.nix
     ./neovim/neovim.nix
     ./btmux/btmux.nix
@@ -201,7 +175,7 @@ in
         cargo # compiler / dep management
       ];
       java-language-support = with pkgs; [
-        jdk # compiler / JVM
+        jdk25 # compiler / JVM
         jdt-language-server # LSP
       ];
       misc-langauge-tools = with pkgs; [
@@ -234,7 +208,7 @@ in
         xh
       ];
       cloud-tools = with pkgs; [
-        azure-cli
+        # azure-cli # broken: fabric vs invoke 3, see https://github.com/NixOS/nixpkgs/issues/575989
         (google-cloud-sdk.withExtraComponents (
           with google-cloud-sdk.components;
           [

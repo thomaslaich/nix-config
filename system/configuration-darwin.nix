@@ -8,8 +8,6 @@
   imports = [
     ./shared.nix
     inputs.agenix.darwinModules.default
-    inputs.stylix.darwinModules.stylix
-    ../stylix.nix
     ./aerospace/aerospace.nix
   ];
 
@@ -126,10 +124,10 @@
   };
 
   # Fonts
-  # NOTE: managed by stylix
   fonts.packages = with pkgs; [
     ubuntu-classic
     et-book
+    geist-font
     nerd-fonts.droid-sans-mono
     nerd-fonts.geist-mono
     nerd-fonts.fira-code
