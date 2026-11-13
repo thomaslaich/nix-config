@@ -208,7 +208,7 @@ in
         xh
       ];
       cloud-tools = with pkgs; [
-        # azure-cli # broken: fabric vs invoke 3, see https://github.com/NixOS/nixpkgs/issues/575989
+        azure-cli
         (google-cloud-sdk.withExtraComponents (
           with google-cloud-sdk.components;
           [

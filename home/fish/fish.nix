@@ -27,16 +27,6 @@
         '';
       };
 
-      code = {
-        body = ''
-          if set -q BTMUX_PANE_ID
-              btmux open-editor --kind vscode $argv
-          else
-              command code $argv
-          end
-        '';
-      };
-
       reload_all_fish_instances = {
         body = ''
           # Get the process IDs of all running fish processes except the current one

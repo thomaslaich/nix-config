@@ -22,6 +22,9 @@
       # Use desktop VS Code's settings, keybindings and extensions (from programs.vscode).
       vscode.desktop = true;
 
+      # C-a v toggles VS Code over the active pane (unbound by default).
+      keys.editor-vscode = "v";
+
       # wallpaper-shader = "ink-flow";
       # wallpaper-saturate = 1.0;
       # wallpaper-speed = 1.0;
@@ -41,12 +44,6 @@
       #     radius = 0.25;
       #   };
       # };
-
-      terminal = {
-        font-family = "GeistMono Nerd Font";
-        font-size = 16;
-        font-weight = 300;
-      };
     };
   };
 }

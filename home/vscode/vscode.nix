@@ -348,12 +348,13 @@
           "claptrap.configEndpoint" = config.age.secrets.claptrap.path;
           "claptrap.modules.isomorph.projectPath" = "/Users/thomaslaich/repos/galaxus/isomorph";
           "python.analysis.typeCheckingMode" = "standard";
-          "editor.fontSize" = pkgs.lib.mkForce 12.0;
-          "chat.editor.fontSize" = pkgs.lib.mkForce 12.0;
-          "debug.console.fontSize" = pkgs.lib.mkForce 12.0;
-          "markdown.preview.fontSize" = pkgs.lib.mkForce 12.0;
-          "terminal.integrated.fontSize" = pkgs.lib.mkForce 12.0;
+          "editor.fontSize" = 14.0;
+          "chat.editor.fontSize" = 14.0;
+          "debug.console.fontSize" = 14.0;
+          "markdown.preview.fontSize" = 14.0;
+          "terminal.integrated.fontSize" = 14.0;
           "workbench.sideBar.location" = "right";
+          "workbench.secondarySideBar.defaultVisibility" = "hidden"; # agent/chat panel closed by default
 
           "github.copilot.enable" = {
             "*" = false; # disable suggestions
@@ -361,6 +362,10 @@
           };
           "chat.agent.enabled" = true;
           "postman.settings.dotenv-detection-notification-visibility" = false;
+
+          # Use the nix-packaged language server instead of letting the extension
+          # download an x86_64 coursier binary (which got truncated and failed to spawn).
+          "smithy.server.executable" = "${pkgs.smithy-language-server}/bin/smithy-language-server";
         };
 
         extensions =
@@ -408,7 +413,7 @@
 
             # .NET
             # ms-dotnettools.vscode-dotnet-runtime # .NET install tool
-            # ionide.ionide-fsharp
+            ionide.ionide-fsharp
             csharpier.csharpier-vscode # formatter
             tintoy.msbuild-project-tools
 
