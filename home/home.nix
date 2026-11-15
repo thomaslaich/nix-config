@@ -248,6 +248,7 @@ in
         fd
         fzf
         httpie
+        just # command runner - https://github.com/casey/just
         killall
         libnotify
         ncdu
