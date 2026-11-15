@@ -208,6 +208,7 @@ in
         xh
       ];
       cloud-tools = with pkgs; [
+        awscli2
         azure-cli
         (google-cloud-sdk.withExtraComponents (
           with google-cloud-sdk.components;
