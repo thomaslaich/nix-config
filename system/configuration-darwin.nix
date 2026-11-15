@@ -151,6 +151,7 @@
       "firefox"
       "github"
       "google-chrome"
+      "multipass"
       "obsidian"
       "spotify"
       "studio-3t"
