@@ -1,5 +1,3 @@
--- blink.cmp's plugin/ file registers its completion capabilities for all servers.
-
 -- Server executables are installed through Home Manager.
 vim.lsp.enable("bashls")
 vim.lsp.enable("buf-lsp")

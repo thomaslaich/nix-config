@@ -6,7 +6,7 @@ require("conform").setup({
     c = { "clang-format" },
     cpp = { "clang-format" },
     cs = { "csharpier" },
-    css = { { "prettierd", "prettier" }, "stylelint" },
+    css = { "prettierd", "stylelint" },
     fs = { "fantomas" },
     hcl = { "hcl" },
     html = { "prettierd" },

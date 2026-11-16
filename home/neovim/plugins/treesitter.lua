@@ -1,7 +1,7 @@
+-- start treesitter highlighting for every filetype that has a parser
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = "*",
+  group = vim.api.nvim_create_augroup("TreesitterStart", { clear = true }),
   callback = function()
-    local ok, _ = pcall(vim.treesitter.start)
-    -- optional: fallback or silent fail if no parser installed
+    pcall(vim.treesitter.start)
   end,
 })

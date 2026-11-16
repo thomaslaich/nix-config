@@ -1,6 +1,6 @@
--- Git signs
-require("gitsigns").setup({
-  -- See `:help gitsigns.txt`
+local gitsigns = require("gitsigns")
+
+gitsigns.setup({
   signs = {
     add = { text = "+" },
     change = { text = "~" },
@@ -9,27 +9,25 @@ require("gitsigns").setup({
     changedelete = { text = "~" },
   },
   on_attach = function(bufnr)
-    vim.keymap.set("n", "<leader>hp", require("gitsigns").preview_hunk, { buffer = bufnr, desc = "Preview git hunk" })
+    local function map(mode, lhs, rhs, desc)
+      vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+    end
 
-    -- don't override the built-in and fugitive keymaps
-    local gs = package.loaded.gitsigns
-    vim.keymap.set({ "n", "v" }, "]c", function()
+    map("n", "<leader>hp", gitsigns.preview_hunk, "Preview git hunk")
+    -- keep the built-in ]c / [c in diff mode
+    map({ "n", "v" }, "]c", function()
       if vim.wo.diff then
-        return "]c"
+        vim.cmd.normal({ "]c", bang = true })
+      else
+        gitsigns.nav_hunk("next")
       end
-      vim.schedule(function()
-        gs.next_hunk()
-      end)
-      return "<Ignore>"
-    end, { expr = true, buffer = bufnr, desc = "Jump to next hunk" })
-    vim.keymap.set({ "n", "v" }, "[c", function()
+    end, "Jump to next hunk")
+    map({ "n", "v" }, "[c", function()
       if vim.wo.diff then
-        return "[c"
+        vim.cmd.normal({ "[c", bang = true })
+      else
+        gitsigns.nav_hunk("prev")
       end
-      vim.schedule(function()
-        gs.prev_hunk()
-      end)
-      return "<Ignore>"
-    end, { expr = true, buffer = bufnr, desc = "Jump to previous hunk" })
+    end, "Jump to previous hunk")
   end,
 })
