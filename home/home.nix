@@ -173,6 +173,8 @@ in
         rust-analyzer # LSP
         rustfmt # formatter
         cargo # compiler / dep management
+        rustc # compiler; rust-analyzer asks it for the sysroot
+        clippy # linter
       ];
       java-language-support = with pkgs; [
         jdk25 # compiler / JVM
@@ -318,5 +320,7 @@ in
 
   home.sessionVariables = {
     DOTNET_ROOT = "${dotnet-packages}/share/dotnet";
+    # std sources for rust-analyzer (completion, hover, go to definition in std)
+    RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
   };
 }
