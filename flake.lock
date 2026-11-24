@@ -42,11 +42,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1794745385,
-        "narHash": "sha256-fHbSsYpdsFpPp7ipRr+26FxD/KA1GaR5nwtGmCGt+Bs=",
+        "lastModified": 1795355455,
+        "narHash": "sha256-9zKYHpinReVTfaDKO5hw6zhiA/l5LgP0EL/SWesP4ms=",
         "owner": "buntec",
         "repo": "btmux",
-        "rev": "bf054b273360ac99bb0a803b596be95616d1c090",
+        "rev": "cc3fcc83485a70da9fd88833245bb0d324087713",
         "type": "github"
       },
       "original": {
@@ -80,11 +80,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1794543096,
-        "narHash": "sha256-+RU5LuNCgkeED6DCwChvm8DllZw9SfoBqN32gpk7FVQ=",
+        "lastModified": 1794561060,
+        "narHash": "sha256-qtrORrnwjvvMRyJI1ZVZjTbTyMzKP1GkA+yJJjJUgH4=",
         "owner": "sadjow",
         "repo": "codex-cli-nix",
-        "rev": "2343eecd03ba6ca2996136f81464a5418af68155",
+        "rev": "30e33f61d0df01fdd3bcf8063467951b27cc4c34",
         "type": "github"
       },
       "original": {

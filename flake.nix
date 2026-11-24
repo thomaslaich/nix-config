@@ -153,95 +153,71 @@
       );
 
       systemConfigs = builtins.listToAttrs (
-        builtins.concatMap
-          (
-            mode:
-            builtins.map (machine: {
-              name = "${machine.name}-${mode}";
-              value = system-manager.lib.makeSystemConfig {
-                specialArgs = {
-                  inherit inputs outputs mode;
-                };
-                modules = [
-                  { nixpkgs.hostPlatform = machine.system; }
-                  ./system/configuration-system-manager.nix
-                  ./system/configuration-${machine.name}.nix
-                ];
-              };
-            }) systemManagerMachines
-          )
-          [
-            "light"
-            "dark"
-          ]
+        builtins.map (machine: {
+          inherit (machine) name;
+          value = system-manager.lib.makeSystemConfig {
+            specialArgs = {
+              inherit inputs outputs;
+            };
+            modules = [
+              { nixpkgs.hostPlatform = machine.system; }
+              ./system/configuration-system-manager.nix
+              ./system/configuration-${machine.name}.nix
+            ];
+          };
+        }) systemManagerMachines
       );
 
       darwinConfigurations = builtins.listToAttrs (
-        builtins.concatMap
-          (
-            mode:
-            builtins.map (machine: {
-              name = "${machine.name}-${mode}";
-              value = darwin.lib.darwinSystem {
-                inherit (machine) system;
-                specialArgs = {
-                  inherit inputs outputs mode;
+        builtins.map (machine: {
+          inherit (machine) name;
+          value = darwin.lib.darwinSystem {
+            inherit (machine) system;
+            specialArgs = {
+              inherit inputs outputs;
+            };
+            modules = [
+              ./system/configuration-darwin.nix
+              ./system/configuration-${machine.name}.nix
+              inputs.nix-homebrew.darwinModules.nix-homebrew
+              {
+                nix-homebrew = {
+                  inherit (machine) user;
+                  enable = true;
+                  enableRosetta = true;
+                  taps = {
+                    "homebrew/homebrew-core" = inputs.homebrew-core;
+                    "homebrew/homebrew-cask" = inputs.homebrew-cask;
+                  };
+                  autoMigrate = true; # Automatically migrate existing Homebrew installations
+                  mutableTaps = false;
                 };
-                modules = [
-                  ./system/configuration-darwin.nix
-                  ./system/configuration-${machine.name}.nix
-                  inputs.nix-homebrew.darwinModules.nix-homebrew
-                  {
-                    nix-homebrew = {
-                      inherit (machine) user;
-                      enable = true;
-                      enableRosetta = true;
-                      taps = {
-                        "homebrew/homebrew-core" = inputs.homebrew-core;
-                        "homebrew/homebrew-cask" = inputs.homebrew-cask;
-                      };
-                      autoMigrate = true; # Automatically migrate existing Homebrew installations
-                      mutableTaps = false;
-                    };
-                  }
-                ];
-              };
-            }) darwinMachines
-          )
-          [
-            "light"
-            "dark"
-          ]
+              }
+            ];
+          };
+        }) darwinMachines
       );
 
       homeConfigurations = builtins.listToAttrs (
-        builtins.concatMap
-          (
-            mode:
-            builtins.map (machine: {
-              name = "${machine.name}-${mode}";
-              value = home-manager.lib.homeManagerConfiguration {
-                pkgs = pkgsBySystem.${machine.system};
-                extraSpecialArgs = {
-                  inherit inputs outputs mode;
-                };
-                modules = [
-                  {
-                    home.username = machine.user;
-                    home.homeDirectory =
-                      if (isDarwin machine.system) then "/Users/${machine.user}" else "/home/${machine.user}";
-                  }
-                  ./home/home.nix
-                  ./home/home-${if (isDarwin machine.system) then "darwin" else "linux"}.nix
-                  ./home/home-${machine.name}.nix
-                ];
-              };
-            }) machines
-          )
-          [
-            "light"
-            "dark"
-          ]
+        builtins.map (machine: {
+          inherit (machine) name;
+          value = home-manager.lib.homeManagerConfiguration {
+            pkgs = pkgsBySystem.${machine.system};
+            extraSpecialArgs = {
+              inherit inputs outputs;
+            };
+            modules = [
+              {
+                home.username = machine.user;
+                home.homeDirectory =
+                  if (isDarwin machine.system) then "/Users/${machine.user}" else "/home/${machine.user}";
+              }
+              ./home/home.nix
+              ./home/home-${if (isDarwin machine.system) then "darwin" else "linux"}.nix
+              ./home/home-${machine.name}.nix
+            ];
+          };
+        }) machines
       );
 
       apps = builtins.mapAttrs (
@@ -252,64 +228,35 @@
               machine:
               let
                 pkgs = pkgsBySystem.${system};
-                rebuildScriptLight = pkgs.writeShellScript "rebuild-${machine.name}-light" (
+                rebuildScript = pkgs.writeShellScript "rebuild-${machine.name}" (
                   if (isDarwin machine.system) then
                     "${
-                      self.darwinConfigurations.${"${machine.name}-light"}.system
-                    }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}-light"
+                      self.darwinConfigurations.${machine.name}.system
+                    }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}"
                   else
                     "${
                       inputs.system-manager.packages.${system}.default
-                    }/bin/system-manager switch --flake ${self}#${machine.name}-light --sudo"
+                    }/bin/system-manager switch --flake ${self}#${machine.name} --sudo"
                 );
-                rebuildScriptDark = pkgs.writeShellScript "rebuild-${machine.name}-dark" (
-                  if (isDarwin machine.system) then
-                    "${
-                      self.darwinConfigurations.${"${machine.name}-dark"}.system
-                    }/sw/bin/darwin-rebuild switch --flake ${self}#${machine.name}-dark"
-                  else
-                    "${
-                      inputs.system-manager.packages.${system}.default
-                    }/bin/system-manager switch --flake ${self}#${machine.name}-dark --sudo"
-                );
-                hmSwitchScriptLight = pkgs.writeShellScript "hm-switch-${machine.name}-light" "${
+                hmSwitchScript = pkgs.writeShellScript "hm-switch-${machine.name}" "${
                   inputs.home-manager.packages.${system}.home-manager
-                }/bin/home-manager switch --flake ${self}#${machine.name}-light";
-                hmSwitchScriptDark = pkgs.writeShellScript "hm-switch-${machine.name}-dark" "${
-                  inputs.home-manager.packages.${system}.home-manager
-                }/bin/home-manager switch --flake ${self}#${machine.name}-dark";
+                }/bin/home-manager switch --flake ${self}#${machine.name}";
               in
               [
                 {
-                  name = "rebuild-${machine.name}-light";
+                  name = "rebuild-${machine.name}";
                   value = {
                     type = "app";
-                    program = "${rebuildScriptLight}";
-                    meta.description = "Switch the ${machine.name} system to the light configuration.";
+                    program = "${rebuildScript}";
+                    meta.description = "Switch the ${machine.name} system configuration.";
                   };
                 }
                 {
-                  name = "rebuild-${machine.name}-dark";
+                  name = "hm-switch-${machine.name}";
                   value = {
                     type = "app";
-                    program = "${rebuildScriptDark}";
-                    meta.description = "Switch the ${machine.name} system to the dark configuration.";
-                  };
-                }
-                {
-                  name = "hm-switch-${machine.name}-dark";
-                  value = {
-                    type = "app";
-                    program = "${hmSwitchScriptDark}";
-                    meta.description = "Switch Home Manager for ${machine.name} to the dark configuration.";
-                  };
-                }
-                {
-                  name = "hm-switch-${machine.name}-light";
-                  value = {
-                    type = "app";
-                    program = "${hmSwitchScriptLight}";
-                    meta.description = "Switch Home Manager for ${machine.name} to the light configuration.";
+                    program = "${hmSwitchScript}";
+                    meta.description = "Switch Home Manager for ${machine.name}.";
                   };
                 }
               ]
@@ -324,29 +271,14 @@
           (builtins.mapAttrs (
             system: machines:
             builtins.listToAttrs (
-              builtins.concatMap (
-                machine:
-                builtins.map
-                  (
-                    mode:
-                    let
-                      configurationName = "${machine.name}-${mode}";
-                      toplevel =
-                        if (isDarwin machine.system) then
-                          darwinConfigurations.${configurationName}.config.system.build.toplevel
-                        else
-                          systemConfigs.${configurationName};
-                    in
-                    {
-                      name = "toplevel-${configurationName}";
-                      value = toplevel;
-                    }
-                  )
-                  [
-                    "light"
-                    "dark"
-                  ]
-              ) machines
+              builtins.map (machine: {
+                name = "toplevel-${machine.name}";
+                value =
+                  if (isDarwin machine.system) then
+                    darwinConfigurations.${machine.name}.config.system.build.toplevel
+                  else
+                    systemConfigs.${machine.name};
+              }) machines
             )
           ) machinesBySystem)
           (

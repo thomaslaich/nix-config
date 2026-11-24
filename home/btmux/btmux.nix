@@ -22,6 +22,9 @@
       # Use desktop VS Code's settings, keybindings and extensions (from programs.vscode).
       vscode.desktop = true;
 
+      # Vim keybindings in btmux's own editor.
+      native-editor.vim = true;
+
       # C-a v toggles VS Code over the active pane (unbound by default).
       keys.editor-vscode = "v";
 

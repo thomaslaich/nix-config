@@ -66,7 +66,7 @@ nix develop --impure
 just system-manager-switch
 
 # alternatively, without the devshell:
-nix run .#rebuild-desktop-ubuntu-wsl-light
+nix run .#rebuild-desktop-ubuntu-wsl
 ```
 
 6. Activate Home Manager:
@@ -75,7 +75,7 @@ nix run .#rebuild-desktop-ubuntu-wsl-light
 just hm-switch
 
 # alternatively, without the devshell:
-nix run .#hm-switch-desktop-ubuntu-wsl-light
+nix run .#hm-switch-desktop-ubuntu-wsl
 ```
 
 7. After successful installation, again `cd` into the repo and type `direnv allow`. This will start the devshell automatically

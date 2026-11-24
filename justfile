@@ -3,20 +3,20 @@ host := `hostname`
 default:
     @just --list
 
-# rebuild system-manager configuration and switch. mode = 'dark' or 'light'
+# rebuild system-manager configuration and switch
 [linux]
-system-manager-switch mode='light':
-    nix run .#rebuild-{{ host }}-{{ mode }}
+system-manager-switch:
+    nix run .#rebuild-{{ host }}
 
-# rebuild nix darwin configuration and switch. mode = 'dark' or 'light'
+# rebuild nix darwin configuration and switch
 [macos]
-nix-darwin-switch mode='light':
-    sudo nix run .#rebuild-{{ host }}-{{ mode }}
+nix-darwin-switch:
+    sudo nix run .#rebuild-{{ host }}
 
-# rebuild Home Manager config and switch. mode = 'dark' or 'light'
+# rebuild Home Manager config and switch
 [unix]
-hm-switch mode='light':
-    nix run .#hm-switch-{{ host }}-{{ mode }}
+hm-switch:
+    nix run .#hm-switch-{{ host }}
 
 # format all sources in the repository
 format:
